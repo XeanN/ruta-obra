@@ -1,0 +1,44 @@
+name: Limpieza de ramas
+
+# Borra las ramas que ya no se usan: todas menos master y las que tienen un PR abierto.
+# Las ramas de PRs fusionados se borran solas al hacer merge (ajuste del repo).
+on:
+  schedule:
+    - cron: "0 11 * * 1" # lunes 06:00 hora de Lima
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Solo listar, sin borrar"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Borrar ramas sin PR abierto
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+        run: |
+          set -euo pipefail
+          open_heads=$(gh pr list --repo "$REPO" --state open --limit 500 --json headRefName --jq '.[].headRefName')
+          gh api --paginate "repos/$REPO/branches" --jq '.[].name' | while read -r branch; do
+            if [ "$branch" = "$DEFAULT_BRANCH" ]; then continue; fi
+            if printf '%s\n' "$open_heads" | grep -Fxq "$branch"; then
+              echo "Se conserva (PR abierto): $branch"
+              continue
+            fi
+            if [ "$DRY_RUN" = "true" ]; then
+              echo "[simulación] Se borraría: $branch"
+            else
+              echo "Borrando: $branch"
+              gh api -X DELETE "repos/$REPO/git/refs/heads/$branch"
+            fi
+          done

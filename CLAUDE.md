@@ -2,6 +2,8 @@
 
 Instrucciones para Claude Code en este repo. Léelas completas antes de cada tarea.
 
+@AGENTS.md
+
 ## Qué es
 
 Prototipo de validación de un orquestador de trámites de construcción en Perú (saneamiento → licencia → obra → conformidad). Producto y alcance: `docs/PRD.md`. Datos: `docs/modelo-datos.md`.
