@@ -21,6 +21,13 @@ jobs:
       - run: pip install jsonschema openpyxl
       - run: python scripts/validate_data.py
       - run: python scripts/simulate.py
+      - name: resultados-motor.json al día (paridad con el motor TS)
+        run: |
+          python scripts/simulate.py --export
+          git diff --exit-code fixtures/resultados-motor.json || {
+            echo "::error::Corre 'python scripts/simulate.py --export' y sube fixtures/resultados-motor.json"
+            exit 1
+          }
 
   app:
     name: app
@@ -35,5 +42,5 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
-      - run: pnpm test
+      - run: pnpm test:coverage
       - run: pnpm build

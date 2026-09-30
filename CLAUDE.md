@@ -67,6 +67,8 @@ pnpm test                         # vitest (dominio + paridad con fixtures)
 pnpm lint && pnpm typecheck
 python scripts/validate_data.py   # antes de commitear cambios en data/
 python scripts/simulate.py        # motor de referencia contra fixtures
+python scripts/simulate.py --export  # regenerar fixtures/resultados-motor.json (paridad TS)
+pnpm test:coverage                # tests + cobertura del dominio (mínimo 90 %)
 python scripts/export_excel.py    # regenerar data/ruta-obra.xlsx
 ```
 
@@ -74,7 +76,7 @@ python scripts/export_excel.py    # regenerar data/ruta-obra.xlsx
 
 - Código y nombres de archivos en inglés; **textos de UI y datos en español (Perú)**.
 - Commits: Conventional Commits (`feat:`, `fix:`, `data:` para cambios de datos).
-- Cada cambio en `data/` → correr `validate_data.py` y `simulate.py`.
+- Cada cambio en `data/` o `fixtures/casos.json` → correr `validate_data.py`, `simulate.py` y `simulate.py --export` (CI falla si `resultados-motor.json` no está al día).
 - Fechas de UI `dd/mm/aaaa`; moneda `S/ 1,234.50`.
 - Móvil primero; probar a 375 px.
 
