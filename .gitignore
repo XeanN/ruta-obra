@@ -11,3 +11,5 @@ coverage/
 playwright-report/
 ~$*.xlsx
 .venv/
+*.tsbuildinfo
+next-env.d.ts
