@@ -15,7 +15,7 @@
       "alturas_pisos": "2 a 4 (zonas residenciales RDMB, RDB, RDM)",
       "area_libre_pct": "30 a 60",
       "retiro_frontal_m": "5 a 25",
-      "otros": "Arborizacion obligatoria; restriccion de subdivisiones; ZHR max. 2 pisos; IE max. 1 piso"
+      "otros": "Arborización obligatoria; restricción de subdivisiones; ZHR max. 2 pisos; IE max. 1 piso"
     },
     "geometria": null,
     "fuentes": [
@@ -26,7 +26,7 @@
   },
   {
     "id": "Z-ANP-AMORTIGUAMIENTO",
-    "nombre": "Area Natural Protegida nacional o su zona de amortiguamiento",
+    "nombre": "Área Natural Protegida nacional o su zona de amortiguamiento",
     "tipo": "ambiental_nacional",
     "autoridad_id": "I-SERNANP",
     "distritos": [],

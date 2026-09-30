@@ -499,7 +499,7 @@
       "P-EIV",
       "P-CERT-AMB"
     ],
-    "nota": "Segun envergadura; confirmar con la municipalidad"
+    "nota": "Según envergadura; confirmar con la municipalidad"
   },
   {
     "id": "R-E5-A",
@@ -710,7 +710,7 @@
         }
       ]
     },
-    "mensaje": "Lo construido despues del 17-09-2018 solo se regulariza si tu distrito tiene una ordenanza de beneficio vigente. Sin ella hay riesgo de multa o demolicion."
+    "mensaje": "Lo construido después del 17-09-2018 solo se regulariza si tu distrito tiene una ordenanza de beneficio vigente. Sin ella hay riesgo de multa o demolición."
   },
   {
     "id": "A-PANTANOS",
@@ -724,7 +724,7 @@
         }
       ]
     },
-    "mensaje": "Necesitas opinion de PROHVILLA antes de la licencia. Suele ser la etapa mas larga: iniciala en paralelo con los documentos previos. Alturas de 2 a 4 pisos y area libre de 30% a 60% segun zona."
+    "mensaje": "Necesitas opinión de PROHVILLA antes de la licencia. Suele ser la etapa más larga: iníciala en paralelo con los documentos previos. Alturas de 2 a 4 pisos y área libre de 30% a 60% según zona."
   },
   {
     "id": "A-ZONA-NOSE",
@@ -738,7 +738,7 @@
         }
       ]
     },
-    "mensaje": "Pide primero el certificado de parametros: indica si el predio esta en zona especial."
+    "mensaje": "Pide primero el certificado de parámetros: indica si el predio está en zona especial."
   },
   {
     "id": "A-EXCAV",
@@ -752,7 +752,7 @@
         }
       ]
     },
-    "mensaje": "Excavaciones de mas de 2 m requieren plano de sostenimiento."
+    "mensaje": "Excavaciones de más de 2 m requieren plano de sostenimiento."
   },
   {
     "id": "A-TECHO-TITULO",
@@ -784,7 +784,7 @@
         }
       ]
     },
-    "mensaje": "Tu distrito aun no tiene tasas cargadas: la ruta es valida (norma nacional), pero montos y canal deben confirmarse en su TUPA."
+    "mensaje": "Tu distrito aún no tiene tasas cargadas: la ruta es válida (norma nacional), pero montos y canal deben confirmarse en su TUPA."
   },
   {
     "id": "PG-TECHO",

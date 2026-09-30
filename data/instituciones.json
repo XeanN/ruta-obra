@@ -1,30 +1,30 @@
 [
   {
     "id": "I-SUNARP",
-    "nombre": "Superintendencia Nacional de los Registros Publicos",
+    "nombre": "Superintendencia Nacional de los Registros Públicos",
     "siglas": "SUNARP",
     "nivel": "nacional",
     "rol": "registro",
     "web": "https://www.gob.pe/sunarp",
-    "canal": "SID-Sunarp (notarios), Publicidad Registral en Linea, Siguelo, Alerta Registral"
+    "canal": "SID-Sunarp (notarios), Publicidad Registral en Línea, Síguelo, Alerta Registral"
   },
   {
     "id": "I-NOTARIA",
-    "nombre": "Notaria publica",
+    "nombre": "Notaría pública",
     "siglas": "Notaria",
     "nivel": "privado",
     "rol": "fe_publica",
     "web": null,
-    "canal": "Presencial; presenta a SUNARP via SID-Sunarp"
+    "canal": "Presencial; presenta a SUNARP vía SID-Sunarp"
   },
   {
     "id": "I-COFOPRI",
-    "nombre": "Organismo de Formalizacion de la Propiedad Informal",
+    "nombre": "Organismo de Formalización de la Propiedad Informal",
     "siglas": "COFOPRI",
     "nivel": "nacional",
     "rol": "formalizacion",
     "web": "https://www.gob.pe/cofopri",
-    "canal": "Campanas y oficinas"
+    "canal": "Campañas y oficinas"
   },
   {
     "id": "I-PJ",
@@ -33,16 +33,16 @@
     "nivel": "nacional",
     "rol": "judicial",
     "web": "https://www.pj.gob.pe",
-    "canal": "Mesa de partes electronica"
+    "canal": "Mesa de partes electrónica"
   },
   {
     "id": "I-MUN-DIST",
-    "nombre": "Municipalidad distrital (segun ubicacion del predio)",
+    "nombre": "Municipalidad distrital (según ubicación del predio)",
     "siglas": "Municipalidad",
     "nivel": "distrital",
     "rol": "licencias",
     "web": null,
-    "canal": "Varia por distrito: ver distritos.json"
+    "canal": "Varía por distrito: ver distritos.json"
   },
   {
     "id": "I-MML",
@@ -55,7 +55,7 @@
   },
   {
     "id": "I-SAT",
-    "nombre": "Servicio de Administracion Tributaria de Lima",
+    "nombre": "Servicio de Administración Tributaria de Lima",
     "siglas": "SAT",
     "nivel": "provincial",
     "rol": "ratificacion_tupa",
@@ -69,16 +69,16 @@
     "nivel": "provincial",
     "rol": "ambiental",
     "web": "https://www.gob.pe/institucion/pantanosdevilla",
-    "canal": "Tramite en gob.pe"
+    "canal": "Trámite en gob.pe"
   },
   {
     "id": "I-SERNANP",
-    "nombre": "Servicio Nacional de Areas Naturales Protegidas",
+    "nombre": "Servicio Nacional de Áreas Naturales Protegidas",
     "siglas": "SERNANP",
     "nivel": "nacional",
     "rol": "ambiental",
     "web": "https://compatibilidad.sernanp.gob.pe",
-    "canal": "Modulo de Compatibilidad en linea"
+    "canal": "Módulo de Compatibilidad en línea"
   },
   {
     "id": "I-CULTURA",
@@ -91,12 +91,12 @@
   },
   {
     "id": "I-MVCS",
-    "nombre": "Ministerio de Vivienda, Construccion y Saneamiento",
+    "nombre": "Ministerio de Vivienda, Construcción y Saneamiento",
     "siglas": "MVCS",
     "nivel": "nacional",
     "rol": "rector",
     "web": "https://www.gob.pe/vivienda",
-    "canal": "Plataforma de tramites digitales"
+    "canal": "Plataforma de trámites digitales"
   },
   {
     "id": "I-FMV",
@@ -105,16 +105,16 @@
     "nivel": "nacional",
     "rol": "financiamiento",
     "web": "https://www.mivivienda.com.pe",
-    "canal": "Postulacion en linea, 0800-12-200"
+    "canal": "Postulación en línea, 0800-12-200"
   },
   {
     "id": "I-MTPE",
-    "nombre": "Ministerio de Trabajo y Promocion del Empleo",
+    "nombre": "Ministerio de Trabajo y Promoción del Empleo",
     "siglas": "MTPE",
     "nivel": "nacional",
     "rol": "laboral",
     "web": "https://www.gob.pe/mtpe",
-    "canal": "Registros de construccion civil en linea"
+    "canal": "Registros de construcción civil en línea"
   },
   {
     "id": "I-SEDAPAL",
@@ -132,25 +132,25 @@
     "nivel": "privado",
     "rol": "servicios",
     "web": "https://www.luzdelsur.pe",
-    "canal": "Atencion virtual; atiende Lima Sur y Este"
+    "canal": "Atención virtual; atiende Lima Sur y Este"
   },
   {
     "id": "I-ENEL",
-    "nombre": "Enel Distribucion Peru",
+    "nombre": "Enel Distribución Perú",
     "siglas": "Enel",
     "nivel": "privado",
     "rol": "servicios",
     "web": "https://www.enel.pe",
-    "canal": "Atencion virtual; atiende Lima Norte y Oeste"
+    "canal": "Atención virtual; atiende Lima Norte y Oeste"
   },
   {
     "id": "I-COLEGIOS",
-    "nombre": "Colegio de Arquitectos / Colegio de Ingenieros del Peru",
+    "nombre": "Colegio de Arquitectos / Colegio de Ingenieros del Perú",
     "siglas": "CAP/CIP",
     "nivel": "gremio",
     "rol": "comision_tecnica",
     "web": null,
-    "canal": "Delegados en comisiones tecnicas; habilidad profesional"
+    "canal": "Delegados en comisiones técnicas; habilidad profesional"
   },
   {
     "id": "I-REVISORES",
@@ -159,34 +159,34 @@
     "nivel": "privado",
     "rol": "evaluacion",
     "web": null,
-    "canal": "Alternativa a la municipalidad/comision en B, C y D"
+    "canal": "Alternativa a la municipalidad/comisión en B, C y D"
   },
   {
     "id": "I-ASEGURADORA",
-    "nombre": "Compania de seguros",
+    "nombre": "Compañía de seguros",
     "siglas": "Aseguradora",
     "nivel": "privado",
     "rol": "seguros",
     "web": null,
-    "canal": "Poliza CAR / responsabilidad civil / SCTR"
+    "canal": "Póliza CAR / responsabilidad civil / SCTR"
   },
   {
     "id": "I-SENCICO",
-    "nombre": "Servicio Nacional de Capacitacion para la Industria de la Construccion",
+    "nombre": "Servicio Nacional de Capacitación para la Industria de la Construcción",
     "siglas": "SENCICO",
     "nivel": "nacional",
     "rol": "aporte",
     "web": "https://www.sencico.gob.pe",
-    "canal": "Declaracion y pago"
+    "canal": "Declaración y pago"
   },
   {
     "id": "I-CONAFOVICER",
-    "nombre": "Fondo de Vivienda del Trabajador de Construccion Civil",
+    "nombre": "Fondo de Vivienda del Trabajador de Construcción Civil",
     "siglas": "CONAFOVICER",
     "nivel": "gremio",
     "rol": "aporte",
     "web": "https://conafovicer.com",
-    "canal": "Retencion por el empleador"
+    "canal": "Retención por el empleador"
   },
   {
     "id": "I-CENEPRED",
@@ -195,6 +195,6 @@
     "nivel": "nacional",
     "rol": "seguridad",
     "web": null,
-    "canal": "Participan en comision tecnica"
+    "canal": "Participan en comisión técnica"
   }
 ]

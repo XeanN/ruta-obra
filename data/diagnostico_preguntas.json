@@ -1,7 +1,7 @@
 [
   {
     "id": "titulo",
-    "texto": "Como esta la propiedad del terreno hoy?",
+    "texto": "¿Cómo está la propiedad del terreno hoy?",
     "tipo": "opcion",
     "obligatoria": true,
     "opciones": [
@@ -15,11 +15,11 @@
       },
       {
         "valor": "posesion_estatal",
-        "etiqueta": "Posesion en terreno del Estado, sin titulo"
+        "etiqueta": "Posesión en terreno del Estado, sin título"
       },
       {
         "valor": "posesion_privada",
-        "etiqueta": "Posesion en terreno privado por mas de 10 anos, sin titulo"
+        "etiqueta": "Posesión en terreno privado por más de 10 años, sin título"
       },
       {
         "valor": "herencia",
@@ -27,19 +27,19 @@
       },
       {
         "valor": "no_se",
-        "etiqueta": "No lo se"
+        "etiqueta": "No lo sé"
       }
     ]
   },
   {
     "id": "lote_individual",
-    "texto": "El predio tiene partida registral propia (no es parte de un lote mayor)?",
+    "texto": "¿El predio tiene partida registral propia (no es parte de un lote mayor)?",
     "tipo": "opcion",
     "obligatoria": true,
     "opciones": [
       {
         "valor": "si",
-        "etiqueta": "Si"
+        "etiqueta": "Sí"
       },
       {
         "valor": "no",
@@ -47,13 +47,13 @@
       },
       {
         "valor": "no_se",
-        "etiqueta": "No lo se"
+        "etiqueta": "No lo sé"
       }
     ]
   },
   {
     "id": "construccion_existente",
-    "texto": "Ya hay algo construido en el terreno?",
+    "texto": "¿Ya hay algo construido en el terreno?",
     "tipo": "opcion",
     "obligatoria": true,
     "opciones": [
@@ -63,17 +63,17 @@
       },
       {
         "valor": "si_declarada",
-        "etiqueta": "Si, y esta declarada en SUNARP"
+        "etiqueta": "Sí, y está declarada en SUNARP"
       },
       {
         "valor": "si_sin_declarar",
-        "etiqueta": "Si, pero sin licencia o sin declarar"
+        "etiqueta": "Sí, pero sin licencia o sin declarar"
       }
     ]
   },
   {
     "id": "fecha_construccion",
-    "texto": "Cuando se termino lo construido sin licencia?",
+    "texto": "¿Cuándo se terminó lo construido sin licencia?",
     "tipo": "opcion",
     "obligatoria": false,
     "mostrar_si": {
@@ -91,17 +91,17 @@
       },
       {
         "valor": "post_sep2018",
-        "etiqueta": "Despues del 17-09-2018"
+        "etiqueta": "Después del 17-09-2018"
       },
       {
         "valor": "no_se",
-        "etiqueta": "No lo se"
+        "etiqueta": "No lo sé"
       }
     ]
   },
   {
     "id": "distrito",
-    "texto": "En que distrito esta el predio?",
+    "texto": "¿En qué distrito está el predio?",
     "tipo": "opcion",
     "obligatoria": true,
     "opciones": [
@@ -129,7 +129,7 @@
   },
   {
     "id": "zona_especial",
-    "texto": "El predio esta en alguna de estas zonas?",
+    "texto": "¿El predio está en alguna de estas zonas?",
     "tipo": "opcion",
     "obligatoria": true,
     "opciones": [
@@ -139,11 +139,11 @@
       },
       {
         "valor": "anp",
-        "etiqueta": "Area natural protegida o su zona de amortiguamiento"
+        "etiqueta": "Área natural protegida o su zona de amortiguamiento"
       },
       {
         "valor": "monumental",
-        "etiqueta": "Zona monumental o inmueble historico"
+        "etiqueta": "Zona monumental o inmueble histórico"
       },
       {
         "valor": "ninguna",
@@ -151,13 +151,13 @@
       },
       {
         "valor": "no_se",
-        "etiqueta": "No lo se"
+        "etiqueta": "No lo sé"
       }
     ]
   },
   {
     "id": "tipo_obra",
-    "texto": "Que quieres hacer?",
+    "texto": "¿Qué quieres hacer?",
     "tipo": "opcion",
     "obligatoria": true,
     "opciones": [
@@ -167,7 +167,7 @@
       },
       {
         "valor": "ampliacion",
-        "etiqueta": "Ampliar (mas pisos o mas area)"
+        "etiqueta": "Ampliar (más pisos o más área)"
       },
       {
         "valor": "remodelacion",
@@ -179,13 +179,13 @@
       },
       {
         "valor": "cerco",
-        "etiqueta": "Solo cerco perimetrico"
+        "etiqueta": "Solo cerco perimétrico"
       }
     ]
   },
   {
     "id": "uso",
-    "texto": "Para que uso?",
+    "texto": "¿Para qué uso?",
     "tipo": "opcion",
     "obligatoria": true,
     "opciones": [
@@ -211,13 +211,13 @@
       },
       {
         "valor": "educacion_salud_hospedaje",
-        "etiqueta": "Educacion, salud u hospedaje"
+        "etiqueta": "Educación, salud u hospedaje"
       }
     ]
   },
   {
     "id": "pisos",
-    "texto": "Cuantos pisos tendra en total?",
+    "texto": "¿Cuántos pisos tendrá en total?",
     "tipo": "numero",
     "obligatoria": true,
     "min": 1,
@@ -225,7 +225,7 @@
   },
   {
     "id": "area_total_m2",
-    "texto": "Area techada total al terminar (m2)",
+    "texto": "Área techada total al terminar (m²)",
     "tipo": "numero",
     "obligatoria": true,
     "min": 1,
@@ -233,7 +233,7 @@
   },
   {
     "id": "cambio_estructural",
-    "texto": "La obra modifica la estructura (columnas, vigas, losas)?",
+    "texto": "¿La obra modifica la estructura (columnas, vigas, losas)?",
     "tipo": "opcion",
     "obligatoria": false,
     "mostrar_si": {
@@ -246,7 +246,7 @@
     "opciones": [
       {
         "valor": "si",
-        "etiqueta": "Si"
+        "etiqueta": "Sí"
       },
       {
         "valor": "no",
@@ -254,19 +254,19 @@
       },
       {
         "valor": "no_se",
-        "etiqueta": "No lo se"
+        "etiqueta": "No lo sé"
       }
     ]
   },
   {
     "id": "excavacion_mas_2m",
-    "texto": "Habra sotano o excavacion de mas de 2 m?",
+    "texto": "¿Habrá sótano o excavación de más de 2 m?",
     "tipo": "opcion",
     "obligatoria": false,
     "opciones": [
       {
         "valor": "si",
-        "etiqueta": "Si"
+        "etiqueta": "Sí"
       },
       {
         "valor": "no",
@@ -283,7 +283,7 @@
   },
   {
     "id": "financiamiento",
-    "texto": "Como piensas financiarla?",
+    "texto": "¿Cómo piensas financiarla?",
     "tipo": "opcion",
     "obligatoria": false,
     "opciones": [
@@ -293,7 +293,7 @@
       },
       {
         "valor": "credito",
-        "etiqueta": "Credito hipotecario / MiVivienda"
+        "etiqueta": "Crédito hipotecario / MiVivienda"
       },
       {
         "valor": "propio",
@@ -303,13 +303,13 @@
   },
   {
     "id": "contrata_obreros",
-    "texto": "Contrataras maestro de obra y obreros?",
+    "texto": "¿Contratarás maestro de obra y obreros?",
     "tipo": "opcion",
     "obligatoria": false,
     "opciones": [
       {
         "valor": "si",
-        "etiqueta": "Si"
+        "etiqueta": "Sí"
       },
       {
         "valor": "no",

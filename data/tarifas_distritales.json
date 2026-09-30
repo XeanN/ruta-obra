@@ -429,7 +429,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-MOLINA-TUPA25",
     "estado_verificacion": "verificado",
-    "nota": "Monto atipicamente bajo en la extraccion: confirmar"
+    "nota": "Monto atípicamente bajo en la extracción: confirmar"
   },
   {
     "id": "T-150114-P-MUN-CONF-CV-B",
@@ -525,7 +525,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-SURCO-REQ22",
     "estado_verificacion": "desactualizado",
-    "nota": "Rango 2022: S/ 56.10 a 122.20 segun submodalidad"
+    "nota": "Rango 2022: S/ 56.10 a 122.20 según submodalidad"
   },
   {
     "id": "T-150140-P-MUN-LIC-A-rango_max",
@@ -609,7 +609,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-LIC-A-vivienda_unifamiliar_120m2",
@@ -621,7 +621,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-LIC-A-ampliacion",
@@ -633,7 +633,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-LIC-A-remodelacion",
@@ -645,7 +645,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-LIC-B-multifamiliar_5_pisos",
@@ -657,7 +657,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-LIC-B-ampliacion_remodelacion",
@@ -669,7 +669,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-LIC-C-multifamiliar_mas_5_pisos",
@@ -681,7 +681,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-LIC-D-industria",
@@ -693,7 +693,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-ANTEPROY-B",
@@ -705,7 +705,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-CONF-SV-A",
@@ -717,7 +717,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-CONF-SV-B",
@@ -729,7 +729,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-CONF-CV-A",
@@ -741,7 +741,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-REVALID-general",
@@ -753,7 +753,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-REGULARIZ-general",
@@ -765,7 +765,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-SUBDIV-general",
@@ -777,7 +777,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-NUMERACION-asignacion",
@@ -789,7 +789,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-PRORROGA-general",
@@ -801,7 +801,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150108-P-MUN-PREDECL-general",
@@ -813,7 +813,7 @@
     "plazo_dias_habiles": null,
     "fuente_id": "F-CHORR-TUPA21",
     "estado_verificacion": "por_verificar",
-    "nota": "Codigo del TUPA 2021; monto por extraer"
+    "nota": "Código del TUPA 2021; monto por extraer"
   },
   {
     "id": "T-150142-P-MUN-PARAM-general",

@@ -1,13 +1,13 @@
 [
   {
     "id": "PR-TP-CSP",
-    "nombre": "Techo Propio - Construccion en Sitio Propio",
+    "nombre": "Techo Propio - Construcción en Sitio Propio",
     "institucion_id": "I-FMV",
     "activo": true,
     "beneficio": "Bono de S/ 33,000 (hasta S/ 41,250 con integrante con discapacidad severa)",
     "requisitos": [
       "Ingreso familiar mensual hasta S/ 2,706",
-      "Ahorro minimo S/ 2,475",
+      "Ahorro mínimo S/ 2,475",
       "Terreno o aires inscritos en SUNARP",
       "No tener otra propiedad ni beneficio previo",
       "Grupo familiar constituido"
@@ -25,10 +25,10 @@
   },
   {
     "id": "PR-TP-AVN",
-    "nombre": "Techo Propio - Adquisicion de Vivienda Nueva",
+    "nombre": "Techo Propio - Adquisición de Vivienda Nueva",
     "institucion_id": "I-FMV",
     "activo": true,
-    "beneficio": "Segun convocatoria",
+    "beneficio": "Según convocatoria",
     "requisitos": [],
     "requiere_etapas": [],
     "anio": 2026,
@@ -39,10 +39,10 @@
   },
   {
     "id": "PR-MIVIVIENDA",
-    "nombre": "Creditos MiVivienda y productos de construccion",
+    "nombre": "Créditos MiVivienda y productos de construcción",
     "institucion_id": "I-FMV",
     "activo": true,
-    "beneficio": "Credito hipotecario via bancos y cajas",
+    "beneficio": "Crédito hipotecario vía bancos y cajas",
     "requisitos": [],
     "requiere_etapas": [
       "E1"
@@ -55,12 +55,12 @@
   },
   {
     "id": "PR-COFOPRI",
-    "nombre": "Formalizacion gratuita COFOPRI",
+    "nombre": "Formalización gratuita COFOPRI",
     "institucion_id": "I-COFOPRI",
     "activo": true,
-    "beneficio": "Titulo de propiedad gratuito inscrito",
+    "beneficio": "Título de propiedad gratuito inscrito",
     "requisitos": [
-      "Terreno estatal ocupado hasta 31-12-2021 o privado con posesion de mas de 10 anos"
+      "Terreno estatal ocupado hasta 31-12-2021 o privado con posesión de más de 10 años"
     ],
     "requiere_etapas": [],
     "anio": 2026,
@@ -74,7 +74,7 @@
     "nombre": "Banco de Materiales (BANMAT)",
     "institucion_id": null,
     "activo": false,
-    "beneficio": "En liquidacion: no otorga creditos nuevos",
+    "beneficio": "En liquidación: no otorga créditos nuevos",
     "requisitos": [],
     "requiere_etapas": [],
     "anio": 2024,

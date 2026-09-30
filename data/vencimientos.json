@@ -7,7 +7,7 @@
       7,
       2
     ],
-    "mensaje": "La copia literal vence: la licencia exige maximo 30 dias de antiguedad."
+    "mensaje": "La copia literal vence: la licencia exige máximo 30 días de antigüedad."
   },
   {
     "id": "V-PARAMETROS",
@@ -17,7 +17,7 @@
       90,
       30
     ],
-    "mensaje": "El certificado de parametros vence (36 meses)."
+    "mensaje": "El certificado de parámetros vence (36 meses)."
   },
   {
     "id": "V-FACT-AGUA",
@@ -38,7 +38,7 @@
       60,
       15
     ],
-    "mensaje": "La licencia vence (36 meses). Pide la prorroga de 12 meses ANTES del vencimiento."
+    "mensaje": "La licencia vence (36 meses). Pide la prórroga de 12 meses ANTES del vencimiento."
   },
   {
     "id": "V-VIGENCIA-PODER",
@@ -57,7 +57,7 @@
     "alertar_dias_antes": [
       2
     ],
-    "mensaje": "Tienes 5 dias habiles para subsanar observaciones (prorrogables 5 mas en algunos distritos).",
+    "mensaje": "Tienes 5 días hábiles para subsanar observaciones (prorrogables 5 más en algunos distritos).",
     "fuente_id": "F-MOLINA-PROC"
   }
 ]
