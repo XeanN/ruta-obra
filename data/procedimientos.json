@@ -4,10 +4,10 @@
     "etapa_id": "E1",
     "nombre": "Certificado Registral Inmobiliario (CRI)",
     "institucion_id": "I-SUNARP",
-    "descripcion": "Verifica titularidad, cargas y gravamenes antes de comprar o iniciar.",
+    "descripcion": "Verifica titularidad, cargas y gravámenes antes de comprar o iniciar.",
     "calificacion": "servicio",
     "plazo_dias_habiles": null,
-    "plazo_nota": "Segun SUNARP",
+    "plazo_nota": "Según SUNARP",
     "costo_referencial": {
       "tipo": "por_verificar",
       "monto": null,
@@ -31,15 +31,15 @@
     "etapa_id": "E1",
     "nombre": "Copia literal de partida",
     "institucion_id": "I-SUNARP",
-    "descripcion": "Copia de la partida; la licencia exige antiguedad maxima de 30 dias.",
+    "descripcion": "Copia de la partida; la licencia exige antigüedad máxima de 30 días.",
     "calificacion": "servicio",
     "plazo_dias_habiles": null,
-    "plazo_nota": "Inmediata en linea",
+    "plazo_nota": "Inmediata en línea",
     "costo_referencial": {
       "tipo": "por_verificar",
       "monto": null,
       "formula": null,
-      "nota": "Publicidad registral en linea: S/ 5 por asiento/pagina"
+      "nota": "Publicidad registral en línea: S/ 5 por asiento/página"
     },
     "requisitos": [],
     "documentos_resultado": [
@@ -57,12 +57,12 @@
   {
     "id": "P-NOT-ESCRITURA",
     "etapa_id": "E1",
-    "nombre": "Escritura publica de compraventa",
+    "nombre": "Escritura pública de compraventa",
     "institucion_id": "I-NOTARIA",
-    "descripcion": "El notario eleva la minuta a escritura publica y la presenta a SUNARP por SID-Sunarp.",
+    "descripcion": "El notario eleva la minuta a escritura pública y la presenta a SUNARP por SID-Sunarp.",
     "calificacion": "servicio",
     "plazo_dias_habiles": null,
-    "plazo_nota": "Segun notaria",
+    "plazo_nota": "Según notaría",
     "costo_referencial": {
       "tipo": "honorarios_libres",
       "monto": null,
@@ -89,9 +89,9 @@
   {
     "id": "P-SUN-INSC-CV",
     "etapa_id": "E1",
-    "nombre": "Inscripcion de compraventa",
+    "nombre": "Inscripción de compraventa",
     "institucion_id": "I-SUNARP",
-    "descripcion": "Calificacion registral e inscripcion de la transferencia.",
+    "descripcion": "Calificación registral e inscripción de la transferencia.",
     "calificacion": "evaluacion_registral",
     "plazo_dias_habiles": null,
     "plazo_nota": "Desde 48 h si no hay observaciones",
@@ -99,7 +99,7 @@
       "tipo": "fijo",
       "monto": 41.7,
       "formula": null,
-      "nota": "Derecho de calificacion; mas derecho de inscripcion segun valor (usar Calculadora Registral)"
+      "nota": "Derecho de calificación; más derecho de inscripción según valor (usar Calculadora Registral)"
     },
     "requisitos": [
       "D-ESCRITURA"
@@ -145,12 +145,12 @@
   {
     "id": "P-COF-FORMALIZ",
     "etapa_id": "E1",
-    "nombre": "Formalizacion de la propiedad (COFOPRI)",
+    "nombre": "Formalización de la propiedad (COFOPRI)",
     "institucion_id": "I-COFOPRI",
-    "descripcion": "Titulo gratuito para posesiones informales: terreno estatal ocupado hasta el 31-12-2021; privado con posesion pacifica de mas de 10 anos.",
+    "descripcion": "Título gratuito para posesiones informales: terreno estatal ocupado hasta el 31-12-2021; privado con posesión pacífica de más de 10 años.",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": null,
-    "plazo_nota": "Proceso por campanas",
+    "plazo_nota": "Proceso por campañas",
     "costo_referencial": {
       "tipo": "gratuito",
       "monto": 0,
@@ -174,12 +174,12 @@
   {
     "id": "P-NOT-PRESCRIP",
     "etapa_id": "E1",
-    "nombre": "Prescripcion adquisitiva de dominio",
+    "nombre": "Prescripción adquisitiva de dominio",
     "institucion_id": "I-NOTARIA",
-    "descripcion": "Via notarial o judicial para quien posee como propietario por mas de 10 anos.",
+    "descripcion": "Vía notarial o judicial para quien posee como propietario por más de 10 años.",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": null,
-    "plazo_nota": "Meses; varia por caso",
+    "plazo_nota": "Meses; varía por caso",
     "costo_referencial": {
       "tipo": "honorarios_libres",
       "monto": null,
@@ -207,9 +207,9 @@
   {
     "id": "P-NOT-SUCESION",
     "etapa_id": "E1",
-    "nombre": "Sucesion intestada",
+    "nombre": "Sucesión intestada",
     "institucion_id": "I-NOTARIA",
-    "descripcion": "Declara herederos cuando el titular fallecio sin testamento; luego se inscribe en SUNARP.",
+    "descripcion": "Declara herederos cuando el titular falleció sin testamento; luego se inscribe en SUNARP.",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": null,
     "plazo_nota": "Semanas",
@@ -234,7 +234,7 @@
   {
     "id": "P-MUN-SUBDIV",
     "etapa_id": "E1",
-    "nombre": "Subdivision de lote",
+    "nombre": "Subdivisión de lote",
     "institucion_id": "I-MUN-DIST",
     "descripcion": "Divide un lote mayor para individualizar el predio.",
     "calificacion": "evaluacion_previa",
@@ -264,7 +264,7 @@
   {
     "id": "P-SUN-INDEP",
     "etapa_id": "E1",
-    "nombre": "Independizacion registral",
+    "nombre": "Independización registral",
     "institucion_id": "I-SUNARP",
     "descripcion": "Abre partida propia para el predio o cada unidad.",
     "calificacion": "evaluacion_registral",
@@ -273,7 +273,7 @@
     "costo_referencial": {
       "tipo": "formula",
       "monto": null,
-      "formula": "S/ 89-99 por unidad resultante + calificacion",
+      "formula": "S/ 89-99 por unidad resultante + calificación",
       "nota": "Fuente secundaria 2026"
     },
     "requisitos": [],
@@ -291,9 +291,9 @@
   {
     "id": "P-MUN-PARAM",
     "etapa_id": "E2",
-    "nombre": "Certificado de Parametros Urbanisticos y Edificatorios",
+    "nombre": "Certificado de Parámetros Urbanísticos y Edificatorios",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Zonificacion, altura, retiros, area libre, densidad y estacionamientos del predio.",
+    "descripcion": "Zonificación, altura, retiros, área libre, densidad y estacionamientos del predio.",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": 5,
     "plazo_nota": null,
@@ -325,9 +325,9 @@
   {
     "id": "P-MML-ZONIF",
     "etapa_id": "E2",
-    "nombre": "Certificado de Zonificacion y Vias",
+    "nombre": "Certificado de Zonificación y Vías",
     "institucion_id": "I-MML",
-    "descripcion": "Uso de suelo y seccion vial (principalmente habilitaciones urbanas).",
+    "descripcion": "Uso de suelo y sección vial (principalmente habilitaciones urbanas).",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -350,7 +350,7 @@
   {
     "id": "P-SED-FACT",
     "etapa_id": "E2",
-    "nombre": "Factibilidad de agua y desague",
+    "nombre": "Factibilidad de agua y desagüe",
     "institucion_id": "I-SEDAPAL",
     "descripcion": "Confirma capacidad de la red para la nueva carga.",
     "calificacion": "evaluacion_previa",
@@ -377,7 +377,7 @@
   {
     "id": "P-ELE-FACT",
     "etapa_id": "E2",
-    "nombre": "Factibilidad electrica",
+    "nombre": "Factibilidad eléctrica",
     "institucion_id": "I-LUZDELSUR",
     "descripcion": "Luz del Sur (Lima Sur/Este) o Enel (Lima Norte/Oeste).",
     "calificacion": "evaluacion_previa",
@@ -402,9 +402,9 @@
   {
     "id": "P-MUN-NUMERACION",
     "etapa_id": "E2",
-    "nombre": "Asignacion / certificado de numeracion",
+    "nombre": "Asignación / certificado de numeración",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Numeracion municipal del predio.",
+    "descripcion": "Numeración municipal del predio.",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -429,7 +429,7 @@
     "etapa_id": "E2",
     "nombre": "Anteproyecto en consulta (B, C, D)",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Revision del diseno antes del expediente completo; reduce observaciones.",
+    "descripcion": "Revisión del diseño antes del expediente completo; reduce observaciones.",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -462,7 +462,7 @@
   {
     "id": "P-SUN-FAB27157",
     "etapa_id": "E3",
-    "nombre": "Declaratoria de fabrica por regularizacion (Ley 27157)",
+    "nombre": "Declaratoria de fábrica por regularización (Ley 27157)",
     "institucion_id": "I-SUNARP",
     "descripcion": "Para construcciones terminadas hasta el 31-12-2016. Va directo a SUNARP con verificador responsable, sin licencia municipal.",
     "calificacion": "evaluacion_registral",
@@ -471,7 +471,7 @@
     "costo_referencial": {
       "tipo": "formula",
       "monto": null,
-      "formula": "S/ 41-50 fijo + 3/1000 del valor de la construccion",
+      "formula": "S/ 41-50 fijo + 3/1000 del valor de la construcción",
       "nota": "SUNARP / fuente secundaria 2026"
     },
     "requisitos": [
@@ -500,7 +500,7 @@
   {
     "id": "P-MUN-REGULARIZ",
     "etapa_id": "E3",
-    "nombre": "Licencia de edificacion en via de regularizacion",
+    "nombre": "Licencia de edificación en vía de regularización",
     "institucion_id": "I-MUN-DIST",
     "descripcion": "Para edificaciones ejecutadas sin licencia entre el 01-01-2017 y el 17-09-2018 (art. 30 Ley 29090).",
     "calificacion": "evaluacion_previa",
@@ -538,9 +538,9 @@
   {
     "id": "P-MUN-REG-BENEF",
     "etapa_id": "E3",
-    "nombre": "Beneficio municipal de regularizacion (por ordenanza temporal)",
+    "nombre": "Beneficio municipal de regularización (por ordenanza temporal)",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Para obras posteriores al 17-09-2018 solo si el distrito tiene una ordenanza vigente. Ej.: Surco Ord. 682-MSS (obras 18-09-2018 a 31-12-2022), vencio el 17-07-2025.",
+    "descripcion": "Para obras posteriores al 17-09-2018 solo si el distrito tiene una ordenanza vigente. Ej.: Surco Ord. 682-MSS (obras 18-09-2018 a 31-12-2022), venció el 17-07-2025.",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -548,7 +548,7 @@
       "tipo": "por_verificar",
       "monto": null,
       "formula": null,
-      "nota": "Segun ordenanza"
+      "nota": "Según ordenanza"
     },
     "requisitos": [],
     "documentos_resultado": [],
@@ -567,17 +567,17 @@
   {
     "id": "P-PROH-OPINION",
     "etapa_id": "E4",
-    "nombre": "Opinion ambiental PROHVILLA",
+    "nombre": "Opinión ambiental PROHVILLA",
     "institucion_id": "I-PROHVILLA",
     "descripcion": "Obligatoria para predios en el entorno de los Pantanos de Villa (Chorrillos).",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": null,
-    "plazo_nota": "Suele demorar; en el caso real de referencia fue la etapa mas larga",
+    "plazo_nota": "Suele demorar; en el caso real de referencia fue la etapa más larga",
     "costo_referencial": {
       "tipo": "por_verificar",
       "monto": null,
       "formula": null,
-      "nota": "Tasa segun TUPA MML/PROHVILLA"
+      "nota": "Tasa según TUPA MML/PROHVILLA"
     },
     "requisitos": [],
     "documentos_resultado": [
@@ -597,9 +597,9 @@
   {
     "id": "P-SERN-COMPAT",
     "etapa_id": "E4",
-    "nombre": "Compatibilidad y opinion tecnica previa vinculante SERNANP",
+    "nombre": "Compatibilidad y opinión técnica previa vinculante SERNANP",
     "institucion_id": "I-SERNANP",
-    "descripcion": "Actividades en areas naturales protegidas de administracion nacional o su zona de amortiguamiento.",
+    "descripcion": "Actividades en áreas naturales protegidas de administración nacional o su zona de amortiguamiento.",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -607,7 +607,7 @@
       "tipo": "por_verificar",
       "monto": null,
       "formula": null,
-      "nota": "Segun SERNANP"
+      "nota": "Según SERNANP"
     },
     "requisitos": [],
     "documentos_resultado": [
@@ -626,7 +626,7 @@
   {
     "id": "P-CUL-AUTORIZ",
     "etapa_id": "E4",
-    "nombre": "Autorizacion del Ministerio de Cultura",
+    "nombre": "Autorización del Ministerio de Cultura",
     "institucion_id": "I-CULTURA",
     "descripcion": "Intervenciones en zona monumental, ambiente urbano monumental o inmueble declarado patrimonio.",
     "calificacion": "evaluacion_previa",
@@ -681,9 +681,9 @@
   {
     "id": "P-CERT-AMB",
     "etapa_id": "E4",
-    "nombre": "Certificacion ambiental",
+    "nombre": "Certificación ambiental",
     "institucion_id": null,
-    "descripcion": "Segun tipo y escala del proyecto (C/D).",
+    "descripcion": "Según tipo y escala del proyecto (C/D).",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -708,12 +708,12 @@
   {
     "id": "P-MUN-LIC-A",
     "etapa_id": "E5",
-    "nombre": "Licencia de edificacion - Modalidad A (aprobacion automatica)",
+    "nombre": "Licencia de edificación - Modalidad A (aprobación automática)",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Vivienda unifamiliar nueva hasta 120 m2; ampliacion hasta 200 m2 totales; remodelacion sin cambio estructural; cercos de mas de 20 m; demolicion hasta 3 pisos; obras menores.",
+    "descripcion": "Vivienda unifamiliar nueva hasta 120 m²; ampliación hasta 200 m² totales; remodelación sin cambio estructural; cercos de más de 20 m; demolición hasta 3 pisos; obras menores.",
     "calificacion": "aprobacion_automatica",
     "plazo_dias_habiles": 10,
-    "plazo_nota": "Licencia al ingreso; verificacion administrativa en 10 dias habiles",
+    "plazo_nota": "Licencia al ingreso; verificación administrativa en 10 días hábiles",
     "costo_referencial": {
       "tipo": "tupa_distrital",
       "monto": null,
@@ -757,12 +757,12 @@
   {
     "id": "P-MUN-LIC-B",
     "etapa_id": "E5",
-    "nombre": "Licencia de edificacion - Modalidad B (evaluacion municipal)",
+    "nombre": "Licencia de edificación - Modalidad B (evaluación municipal)",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Vivienda hasta 5 pisos y hasta 3,000 m2; ampliaciones o remodelaciones con cambio estructural; demolicion parcial.",
+    "descripcion": "Vivienda hasta 5 pisos y hasta 3,000 m²; ampliaciones o remodelaciones con cambio estructural; demolición parcial.",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": 15,
-    "plazo_nota": "15 dias habiles (Pueblo Libre, La Molina)",
+    "plazo_nota": "15 días hábiles (Pueblo Libre, La Molina)",
     "costo_referencial": {
       "tipo": "tupa_distrital",
       "monto": null,
@@ -809,9 +809,9 @@
   {
     "id": "P-MUN-LIC-B-RU",
     "etapa_id": "E5",
-    "nombre": "Licencia de edificacion - Modalidad B (revisores urbanos)",
+    "nombre": "Licencia de edificación - Modalidad B (revisores urbanos)",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Mismo alcance que B; el proyecto llega con informe tecnico favorable de revisores urbanos y la municipalidad cobra una tasa menor.",
+    "descripcion": "Mismo alcance que B; el proyecto llega con informe técnico favorable de revisores urbanos y la municipalidad cobra una tasa menor.",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -847,12 +847,12 @@
   {
     "id": "P-MUN-LIC-C",
     "etapa_id": "E5",
-    "nombre": "Licencia de edificacion - Modalidad C (comision tecnica)",
+    "nombre": "Licencia de edificación - Modalidad C (comisión técnica)",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Vivienda multifamiliar de mas de 5 pisos o mas de 3,000 m2; usos distintos a vivienda; uso mixto; patrimonio cultural; comercio hasta 30,000 m2; mercados hasta 15,000 m2.",
+    "descripcion": "Vivienda multifamiliar de más de 5 pisos o más de 3,000 m²; usos distintos a vivienda; uso mixto; patrimonio cultural; comercio hasta 30,000 m²; mercados hasta 15,000 m².",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": 25,
-    "plazo_nota": "Hasta 25 dias habiles de evaluacion de comision (La Molina, flujo anterior)",
+    "plazo_nota": "Hasta 25 días hábiles de evaluación de comisión (La Molina, flujo anterior)",
     "costo_referencial": {
       "tipo": "tupa_distrital",
       "monto": null,
@@ -900,7 +900,7 @@
   {
     "id": "P-MUN-LIC-C-RU",
     "etapa_id": "E5",
-    "nombre": "Licencia de edificacion - Modalidad C (revisores urbanos)",
+    "nombre": "Licencia de edificación - Modalidad C (revisores urbanos)",
     "institucion_id": "I-MUN-DIST",
     "descripcion": "Alcance C con informe favorable de revisores urbanos.",
     "calificacion": "evaluacion_previa",
@@ -932,9 +932,9 @@
   {
     "id": "P-MUN-LIC-D",
     "etapa_id": "E5",
-    "nombre": "Licencia de edificacion - Modalidad D (comision tecnica)",
+    "nombre": "Licencia de edificación - Modalidad D (comisión técnica)",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Industria; comercio de mas de 30,000 m2; mercados de mas de 15,000 m2; educacion, salud, hospedaje.",
+    "descripcion": "Industria; comercio de más de 30,000 m²; mercados de más de 15,000 m²; educación, salud, hospedaje.",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": 25,
     "plazo_nota": "Referencial, igual a C",
@@ -976,7 +976,7 @@
   {
     "id": "P-MUN-LIC-D-RU",
     "etapa_id": "E5",
-    "nombre": "Licencia de edificacion - Modalidad D (revisores urbanos)",
+    "nombre": "Licencia de edificación - Modalidad D (revisores urbanos)",
     "institucion_id": "I-MUN-DIST",
     "descripcion": "Alcance D con informe favorable de revisores urbanos.",
     "calificacion": "evaluacion_previa",
@@ -1008,7 +1008,7 @@
   {
     "id": "P-MUN-MODIF",
     "etapa_id": "E5",
-    "nombre": "Modificacion de proyecto (antes o despues de la licencia; sustancial o no sustancial)",
+    "nombre": "Modificación de proyecto (antes o después de la licencia; sustancial o no sustancial)",
     "institucion_id": "I-MUN-DIST",
     "descripcion": "Cambios al proyecto aprobado.",
     "calificacion": "evaluacion_previa",
@@ -1038,9 +1038,9 @@
   {
     "id": "P-MUN-PRORROGA",
     "etapa_id": "E5",
-    "nombre": "Prorroga de licencia (12 meses)",
+    "nombre": "Prórroga de licencia (12 meses)",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Unica prorroga; debe pedirse antes del vencimiento de los 36 meses.",
+    "descripcion": "Única prórroga; debe pedirse antes del vencimiento de los 36 meses.",
     "calificacion": "aprobacion_automatica",
     "plazo_dias_habiles": null,
     "plazo_nota": "Solicitar antes del vencimiento",
@@ -1066,9 +1066,9 @@
   {
     "id": "P-MUN-REVALID",
     "etapa_id": "E5",
-    "nombre": "Revalidacion de licencia",
+    "nombre": "Revalidación de licencia",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Cuando la licencia ya vencio.",
+    "descripcion": "Cuando la licencia ya venció.",
     "calificacion": "evaluacion_previa",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -1092,9 +1092,9 @@
   {
     "id": "P-MUN-INICIO",
     "etapa_id": "E6",
-    "nombre": "Comunicacion de inicio de obra (Anexo H)",
+    "nombre": "Comunicación de inicio de obra (Anexo H)",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Aviso formal antes de iniciar, con cronograma de verificaciones tecnicas.",
+    "descripcion": "Aviso formal antes de iniciar, con cronograma de verificaciones técnicas.",
     "calificacion": "comunicacion",
     "plazo_dias_habiles": null,
     "plazo_nota": "Antes de iniciar obra",
@@ -1102,7 +1102,7 @@
       "tipo": "por_verificar",
       "monto": null,
       "formula": null,
-      "nota": "Segun TUPA; en varios distritos sin costo"
+      "nota": "Según TUPA; en varios distritos sin costo"
     },
     "requisitos": [
       "D-LICENCIA",
@@ -1123,9 +1123,9 @@
   {
     "id": "P-MUN-VERIF-TEC",
     "etapa_id": "E6",
-    "nombre": "Verificaciones tecnicas durante la obra",
+    "nombre": "Verificaciones técnicas durante la obra",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Visitas en hitos (cimentacion, albanileria, techos). Desvios respecto a planos pueden derivar en paralizacion.",
+    "descripcion": "Visitas en hitos (cimentación, albañilería, techos). Desvíos respecto a planos pueden derivar en paralización.",
     "calificacion": "fiscalizacion",
     "plazo_dias_habiles": null,
     "plazo_nota": "Por etapas de obra",
@@ -1133,7 +1133,7 @@
       "tipo": "por_verificar",
       "monto": null,
       "formula": null,
-      "nota": "Segun TUPA"
+      "nota": "Según TUPA"
     },
     "requisitos": [],
     "documentos_resultado": [],
@@ -1148,9 +1148,9 @@
   {
     "id": "P-SEG-CAR",
     "etapa_id": "E6",
-    "nombre": "Contratar poliza CAR o de responsabilidad civil",
+    "nombre": "Contratar póliza CAR o de responsabilidad civil",
     "institucion_id": "I-ASEGURADORA",
-    "descripcion": "Cobertura por danos a terceros durante toda la obra (C y D, y segun reglamento).",
+    "descripcion": "Cobertura por daños a terceros durante toda la obra (C y D, y según reglamento).",
     "calificacion": "servicio",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -1175,9 +1175,9 @@
   {
     "id": "P-MTPE-RENOCC",
     "etapa_id": "E6",
-    "nombre": "Inscripcion de la obra en RENOCC",
+    "nombre": "Inscripción de la obra en RENOCC",
     "institucion_id": "I-MTPE",
-    "descripcion": "Obligatoria para obras de construccion civil de mas de 50 UIT (S/ 275,000 en 2026).",
+    "descripcion": "Obligatoria para obras de construcción civil de más de 50 UIT (S/ 275,000 en 2026).",
     "calificacion": "comunicacion",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -1185,7 +1185,7 @@
       "tipo": "por_verificar",
       "monto": null,
       "formula": null,
-      "nota": "Segun MTPE"
+      "nota": "Según MTPE"
     },
     "requisitos": [],
     "documentos_resultado": [
@@ -1205,9 +1205,9 @@
   {
     "id": "P-MTPE-RETCC",
     "etapa_id": "E6",
-    "nombre": "Registro de trabajadores de construccion civil (RETCC)",
+    "nombre": "Registro de trabajadores de construcción civil (RETCC)",
     "institucion_id": "I-MTPE",
-    "descripcion": "Trabajadores del regimen de construccion civil deben estar registrados.",
+    "descripcion": "Trabajadores del régimen de construcción civil deben estar registrados.",
     "calificacion": "comunicacion",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -1215,7 +1215,7 @@
       "tipo": "por_verificar",
       "monto": null,
       "formula": null,
-      "nota": "Segun MTPE"
+      "nota": "Según MTPE"
     },
     "requisitos": [],
     "documentos_resultado": [],
@@ -1232,7 +1232,7 @@
     "etapa_id": "E6",
     "nombre": "Seguro Complementario de Trabajo de Riesgo (SCTR)",
     "institucion_id": "I-ASEGURADORA",
-    "descripcion": "Obligatorio para actividades de riesgo, incluida construccion.",
+    "descripcion": "Obligatorio para actividades de riesgo, incluida construcción.",
     "calificacion": "servicio",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -1257,7 +1257,7 @@
     "etapa_id": "E6",
     "nombre": "Aporte CONAFOVICER",
     "institucion_id": "I-CONAFOVICER",
-    "descripcion": "Aporte de los obreros de construccion civil, retenido por el empleador.",
+    "descripcion": "Aporte de los obreros de construcción civil, retenido por el empleador.",
     "calificacion": "aporte",
     "plazo_dias_habiles": null,
     "plazo_nota": "Mensual",
@@ -1265,7 +1265,7 @@
       "tipo": "por_verificar",
       "monto": null,
       "formula": null,
-      "nota": "Porcentaje del jornal basico por confirmar"
+      "nota": "Porcentaje del jornal básico por confirmar"
     },
     "requisitos": [],
     "documentos_resultado": [],
@@ -1280,7 +1280,7 @@
     "etapa_id": "E6",
     "nombre": "Aporte al SENCICO",
     "institucion_id": "I-SENCICO",
-    "descripcion": "Contribucion sobre ingresos por obras de construccion. Confirmar si aplica a autoconstruccion familiar.",
+    "descripcion": "Contribución sobre ingresos por obras de construcción. Confirmar si aplica a autoconstrucción familiar.",
     "calificacion": "aporte",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -1301,9 +1301,9 @@
   {
     "id": "P-CARTEL",
     "etapa_id": "E6",
-    "nombre": "Cartel de obra con numero de licencia",
+    "nombre": "Cartel de obra con número de licencia",
     "institucion_id": "I-MUN-DIST",
-    "descripcion": "Visible durante toda la ejecucion.",
+    "descripcion": "Visible durante toda la ejecución.",
     "calificacion": "obligacion",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
@@ -1324,7 +1324,7 @@
   {
     "id": "P-MUN-CONF-SV",
     "etapa_id": "E7",
-    "nombre": "Conformidad de obra y declaratoria de edificacion sin variaciones",
+    "nombre": "Conformidad de obra y declaratoria de edificación sin variaciones",
     "institucion_id": "I-MUN-DIST",
     "descripcion": "Lo construido coincide con los planos aprobados.",
     "calificacion": "evaluacion_previa",
@@ -1361,7 +1361,7 @@
   {
     "id": "P-MUN-CONF-CV",
     "etapa_id": "E7",
-    "nombre": "Conformidad de obra y declaratoria de edificacion con variaciones",
+    "nombre": "Conformidad de obra y declaratoria de edificación con variaciones",
     "institucion_id": "I-MUN-DIST",
     "descripcion": "Hubo cambios en obra; se presentan planos de replanteo.",
     "calificacion": "evaluacion_previa",
@@ -1425,7 +1425,7 @@
   {
     "id": "P-MUN-PREDECL",
     "etapa_id": "E7",
-    "nombre": "Predeclaratoria de edificacion",
+    "nombre": "Predeclaratoria de edificación",
     "institucion_id": "I-MUN-DIST",
     "descripcion": "Permite inscribir una pre-declaratoria (venta en planos).",
     "calificacion": "evaluacion_previa",
@@ -1451,7 +1451,7 @@
   {
     "id": "P-SUN-DECL-EDIF",
     "etapa_id": "E7",
-    "nombre": "Inscripcion de la declaratoria de edificacion",
+    "nombre": "Inscripción de la declaratoria de edificación",
     "institucion_id": "I-SUNARP",
     "descripcion": "Inscribe la obra terminada en la partida.",
     "calificacion": "evaluacion_registral",
@@ -1460,7 +1460,7 @@
     "costo_referencial": {
       "tipo": "formula",
       "monto": null,
-      "formula": "Calificacion (~S/ 41-50) + 3/1000 del valor de la obra",
+      "formula": "Calificación (~S/ 41-50) + 3/1000 del valor de la obra",
       "nota": "Referencial"
     },
     "requisitos": [
@@ -1481,16 +1481,16 @@
   {
     "id": "P-SUN-RI",
     "etapa_id": "E7",
-    "nombre": "Inscripcion de reglamento interno e independizacion de unidades",
+    "nombre": "Inscripción de reglamento interno e independización de unidades",
     "institucion_id": "I-SUNARP",
-    "descripcion": "Multifamiliares: cada departamento, estacionamiento o deposito con partida propia.",
+    "descripcion": "Multifamiliares: cada departamento, estacionamiento o depósito con partida propia.",
     "calificacion": "evaluacion_registral",
     "plazo_dias_habiles": null,
     "plazo_nota": null,
     "costo_referencial": {
       "tipo": "formula",
       "monto": null,
-      "formula": "S/ 89-99 por unidad + calificacion",
+      "formula": "S/ 89-99 por unidad + calificación",
       "nota": null
     },
     "requisitos": [
@@ -1509,7 +1509,7 @@
   {
     "id": "P-MUN-DJ-PREDIAL",
     "etapa_id": "E7",
-    "nombre": "Actualizar declaracion jurada del impuesto predial",
+    "nombre": "Actualizar declaración jurada del impuesto predial",
     "institucion_id": "I-MUN-DIST",
     "descripcion": "Declarar el nuevo valor del predio tras la conformidad.",
     "calificacion": "comunicacion",
