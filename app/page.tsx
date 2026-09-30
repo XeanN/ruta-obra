@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -10,9 +10,9 @@ export default function Home() {
         solo lugar.
       </p>
       <div>
-        <Button nativeButton={false} render={<Link href="/diagnostico" />}>
+        <Link href="/diagnostico" className={buttonVariants({ size: "lg" })}>
           Diagnosticar mi predio
-        </Button>
+        </Link>
       </div>
     </main>
   );
