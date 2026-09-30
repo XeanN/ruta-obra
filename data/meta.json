@@ -1,0 +1,19 @@
+{
+  "proyecto": "RutaObra",
+  "version_datos": "0.1.0",
+  "fecha_corte": "2026-09-30",
+  "moneda": "PEN",
+  "uit": {
+    "anio": 2026,
+    "valor": 5500,
+    "norma_id": "N-DS-301-2025-EF"
+  },
+  "alcance": "Edificaciones privadas en Lima Metropolitana. Capa nacional + distritos Chorrillos, Santiago de Surco y Villa El Salvador (La Molina como referencia de tasas completas).",
+  "estados_verificacion": {
+    "verificado": "Dato leido en la fuente oficial citada.",
+    "fuente_secundaria": "Dato de una fuente no oficial (medio, estudio, consultora); confirmar en la oficial.",
+    "desactualizado": "Dato oficial de una version anterior del TUPA o norma; confirmar vigencia.",
+    "por_verificar": "Campo previsto pero sin dato confirmado. No mostrar como cierto al usuario."
+  },
+  "aviso_legal": "Informacion referencial. No es asesoria legal. Montos y plazos deben confirmarse en el TUPA vigente de cada entidad antes de presentar un tramite."
+}

@@ -1,0 +1,68 @@
+[
+  {
+    "ubigeo": "150108",
+    "nombre": "Chorrillos",
+    "provincia": "Lima",
+    "institucion_local": "Municipalidad Distrital de Chorrillos",
+    "tupa": {
+      "norma_id": "N-ORD-409-2021-MDCH",
+      "anio": 2021,
+      "estandarizado_ds146": null,
+      "fuente_id": "F-CHORR-TUPA21",
+      "nota": "El PDF publicado no expone montos legibles de edificacion; confirmar TUPA vigente y su adecuacion al D.S. 146-2023-PCM."
+    },
+    "canal": "Presencial (mesa de partes); canal virtual por confirmar",
+    "zonas_especiales": [
+      "Z-PANTANOS-VILLA"
+    ],
+    "estado_verificacion": "desactualizado"
+  },
+  {
+    "ubigeo": "150140",
+    "nombre": "Santiago de Surco",
+    "provincia": "Lima",
+    "institucion_local": "Municipalidad de Santiago de Surco",
+    "tupa": {
+      "norma_id": "N-ORD-704-MSS",
+      "anio": 2024,
+      "estandarizado_ds146": true,
+      "fuente_id": "F-SURCO-TUPA24",
+      "nota": "TUPA publicado el 27-09-2024 (220 procedimientos). Montos de licencias tomados de la version 2022: confirmar."
+    },
+    "canal": "Presencial con planos en digital; confirmar mesa de partes virtual",
+    "zonas_especiales": [],
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "ubigeo": "150142",
+    "nombre": "Villa El Salvador",
+    "provincia": "Lima",
+    "institucion_local": "Municipalidad Distrital de Villa El Salvador",
+    "tupa": {
+      "norma_id": null,
+      "anio": 2025,
+      "estandarizado_ds146": true,
+      "fuente_id": "F-VES-TUPA25",
+      "nota": "TUPA 2025 ratificado por la MML; 123 procedimientos de HU y edificacion adecuados al D.S. 146-2023-PCM (vigente desde 22-06-2024). Montos por extraer del anexo."
+    },
+    "canal": "Por confirmar",
+    "zonas_especiales": [],
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "ubigeo": "150114",
+    "nombre": "La Molina (referencia)",
+    "provincia": "Lima",
+    "institucion_local": "Municipalidad de La Molina",
+    "tupa": {
+      "norma_id": null,
+      "anio": 2025,
+      "estandarizado_ds146": true,
+      "fuente_id": "F-MOLINA-TUPA25",
+      "nota": "Distrito de referencia: unico con tasas completas extraidas (TUPA 2025, UIT 5,350)."
+    },
+    "canal": "Presencial; fichas por procedimiento publicadas",
+    "zonas_especiales": [],
+    "estado_verificacion": "verificado"
+  }
+]

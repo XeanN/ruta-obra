@@ -1,0 +1,338 @@
+[
+  {
+    "id": "D-DNI",
+    "nombre": "DNI del solicitante / propietarios",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Identificacion.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-CONTRATO-CV",
+    "nombre": "Contrato o minuta de compraventa",
+    "emisor_id": "I-NOTARIA",
+    "vigencia_dias": null,
+    "descripcion": "Punto de partida cuando la propiedad no esta inscrita.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-ESCRITURA",
+    "nombre": "Escritura publica",
+    "emisor_id": "I-NOTARIA",
+    "vigencia_dias": null,
+    "descripcion": "Instrumento notarial que se inscribe en SUNARP.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-CRI",
+    "nombre": "Certificado Registral Inmobiliario (CRI)",
+    "emisor_id": "I-SUNARP",
+    "vigencia_dias": null,
+    "descripcion": "Muestra cargas, gravamenes y titularidad.",
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "id": "D-COPIA-LITERAL",
+    "nombre": "Copia literal de la partida registral",
+    "emisor_id": "I-SUNARP",
+    "vigencia_dias": 30,
+    "descripcion": "La licencia exige una copia con antiguedad maxima de 30 dias.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-TITULO-COFOPRI",
+    "nombre": "Titulo de propiedad COFOPRI inscrito",
+    "emisor_id": "I-COFOPRI",
+    "vigencia_dias": null,
+    "descripcion": "Resultado de la formalizacion.",
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "id": "D-SUCESION",
+    "nombre": "Sucesion intestada o testamento inscrito",
+    "emisor_id": "I-NOTARIA",
+    "vigencia_dias": null,
+    "descripcion": "Necesario si el titular registral fallecio.",
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "id": "D-VIGENCIA-PODER",
+    "nombre": "Vigencia de poder",
+    "emisor_id": "I-SUNARP",
+    "vigencia_dias": 30,
+    "descripcion": "Si tramita un representante o persona juridica.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-PARAMETROS",
+    "nombre": "Certificado de Parametros Urbanisticos y Edificatorios",
+    "emisor_id": "I-MUN-DIST",
+    "vigencia_dias": 1095,
+    "descripcion": "Vigencia 36 meses.",
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "id": "D-ZONIF-VIAS",
+    "nombre": "Certificado de Zonificacion y Vias",
+    "emisor_id": "I-MML",
+    "vigencia_dias": 1095,
+    "descripcion": "Usado sobre todo en habilitaciones urbanas.",
+    "estado_verificacion": "por_verificar"
+  },
+  {
+    "id": "D-FACT-AGUA",
+    "nombre": "Certificado de factibilidad de agua y desague",
+    "emisor_id": "I-SEDAPAL",
+    "vigencia_dias": 1095,
+    "descripcion": "Vigencia 36 meses segun Pueblo Libre.",
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "id": "D-FACT-LUZ",
+    "nombre": "Certificado de factibilidad electrica",
+    "emisor_id": null,
+    "vigencia_dias": 1095,
+    "descripcion": "Luz del Sur o Enel segun zona. Vigencia por confirmar.",
+    "estado_verificacion": "por_verificar"
+  },
+  {
+    "id": "D-FUE",
+    "nombre": "Formulario Unico de Edificaciones (FUE)",
+    "emisor_id": "I-MUN-DIST",
+    "vigencia_dias": null,
+    "descripcion": "Formato oficial; se presenta en 3 juegos en varias municipalidades.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-FUE-ANEXOS",
+    "nombre": "Anexos del FUE (A: condominos, B, D: autoliquidacion, H: inicio de obra)",
+    "emisor_id": "I-MUN-DIST",
+    "vigencia_dias": null,
+    "descripcion": "Anexo H = comunicacion de inicio de obra.",
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "id": "D-PLANO-UBIC",
+    "nombre": "Plano de ubicacion y localizacion",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Firmado por arquitecto colegiado.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-PLANOS-ARQ",
+    "nombre": "Planos de arquitectura",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Firmados por arquitecto colegiado.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-PLANOS-EST",
+    "nombre": "Planos de estructuras + memoria",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Firmados por ingeniero civil colegiado.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-PLANOS-IISS",
+    "nombre": "Planos de instalaciones sanitarias",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Ingeniero sanitario colegiado.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-PLANOS-IIEE",
+    "nombre": "Planos de instalaciones electricas",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Ingeniero electricista colegiado.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-EMS",
+    "nombre": "Estudio de Mecanica de Suelos (EMS)",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Surco: obligatorio desde 4 pisos o mas de 500 m2 en primer piso.",
+    "estado_verificacion": "desactualizado"
+  },
+  {
+    "id": "D-SOSTENIMIENTO",
+    "nombre": "Plano de sostenimiento de excavaciones",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Excavaciones de mas de 2 m.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-SEGURIDAD",
+    "nombre": "Planos de seguridad y evacuacion",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Edificios de mas de 5 pisos y usos con afluencia de publico.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-PRESUPUESTO",
+    "nombre": "Presupuesto de obra (valores unitarios oficiales)",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Base para tasas y RENOCC.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-HABILIDAD",
+    "nombre": "Certificados de habilidad profesional",
+    "emisor_id": "I-COLEGIOS",
+    "vigencia_dias": null,
+    "descripcion": "De los profesionales responsables.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-POLIZA-CAR",
+    "nombre": "Poliza CAR o de responsabilidad civil",
+    "emisor_id": "I-ASEGURADORA",
+    "vigencia_dias": null,
+    "descripcion": "Cobertura durante toda la obra; exigida en C y D.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-EIV",
+    "nombre": "Estudio de Impacto Vial",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Proyectos de envergadura (C/D).",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-CERT-AMB",
+    "nombre": "Certificacion ambiental",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Segun tipo de proyecto (C/D).",
+    "estado_verificacion": "desactualizado"
+  },
+  {
+    "id": "D-OPINION-PROHVILLA",
+    "nombre": "Opinion ambiental de PROHVILLA",
+    "emisor_id": "I-PROHVILLA",
+    "vigencia_dias": null,
+    "descripcion": "Predios en el entorno de los Pantanos de Villa.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-COMPAT-SERNANP",
+    "nombre": "Compatibilidad / opinion tecnica previa vinculante SERNANP",
+    "emisor_id": "I-SERNANP",
+    "vigencia_dias": null,
+    "descripcion": "ANP y zonas de amortiguamiento.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-AUTORIZ-CULTURA",
+    "nombre": "Autorizacion del Ministerio de Cultura",
+    "emisor_id": "I-CULTURA",
+    "vigencia_dias": null,
+    "descripcion": "Zonas monumentales o bienes culturales.",
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "id": "D-ANTEPROYECTO-OK",
+    "nombre": "Anteproyecto aprobado",
+    "emisor_id": "I-MUN-DIST",
+    "vigencia_dias": 1095,
+    "descripcion": "Vigencia por confirmar (referencia 36 meses).",
+    "estado_verificacion": "por_verificar"
+  },
+  {
+    "id": "D-LICENCIA",
+    "nombre": "Resolucion de licencia de edificacion",
+    "emisor_id": "I-MUN-DIST",
+    "vigencia_dias": 1095,
+    "descripcion": "Vigencia 36 meses, prorrogable 12.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-FOR",
+    "nombre": "Formulario Registral (FOR) Ley 27157",
+    "emisor_id": "I-SUNARP",
+    "vigencia_dias": null,
+    "descripcion": "Declaratoria de fabrica por regularizacion.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-INFORME-VERIF",
+    "nombre": "Informe tecnico del verificador responsable",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Arquitecto o ingeniero inscrito como verificador.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-DJ-PROPIETARIOS",
+    "nombre": "Declaraciones juradas de propietarios (firmas legalizadas)",
+    "emisor_id": "I-NOTARIA",
+    "vigencia_dias": null,
+    "descripcion": "Ley 27157.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-CRONOGRAMA-VT",
+    "nombre": "Cronograma de visitas de verificacion tecnica",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Se presenta con el inicio de obra.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-SCTR",
+    "nombre": "Poliza SCTR (salud y pension)",
+    "emisor_id": "I-ASEGURADORA",
+    "vigencia_dias": null,
+    "descripcion": "Obligatoria para trabajadores de construccion civil.",
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "id": "D-CONSTANCIA-RENOCC",
+    "nombre": "Constancia de inscripcion de obra en RENOCC",
+    "emisor_id": "I-MTPE",
+    "vigencia_dias": null,
+    "descripcion": "Obras de mas de 50 UIT.",
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "id": "D-PLANOS-REPLANTEO",
+    "nombre": "Planos de replanteo",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Conformidad con variaciones.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-CONFORMIDAD",
+    "nombre": "Resolucion de conformidad de obra y declaratoria de edificacion",
+    "emisor_id": "I-MUN-DIST",
+    "vigencia_dias": null,
+    "descripcion": "Autoriza la inscripcion registral.",
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "D-REGLAMENTO-INTERNO",
+    "nombre": "Reglamento interno",
+    "emisor_id": null,
+    "vigencia_dias": null,
+    "descripcion": "Multifamiliares / propiedad exclusiva y comun.",
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "id": "D-DJ-PREDIAL",
+    "nombre": "Declaracion jurada de autoavaluo actualizada",
+    "emisor_id": "I-MUN-DIST",
+    "vigencia_dias": null,
+    "descripcion": "Actualiza el impuesto predial.",
+    "estado_verificacion": "fuente_secundaria"
+  }
+]

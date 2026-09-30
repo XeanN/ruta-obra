@@ -1,0 +1,51 @@
+[
+  {
+    "id": "E1",
+    "orden": 1,
+    "nombre": "Saneamiento fisico-legal y titularidad",
+    "descripcion": "Convertir la posesion o el contrato en propiedad inscrita en SUNARP.",
+    "condicional": false
+  },
+  {
+    "id": "E2",
+    "orden": 2,
+    "nombre": "Documentos previos",
+    "descripcion": "Parametros urbanisticos, factibilidades y anteproyecto: definen que y cuanto se puede construir.",
+    "condicional": false
+  },
+  {
+    "id": "E3",
+    "orden": 3,
+    "nombre": "Regularizacion de lo construido",
+    "descripcion": "Solo si ya existe construccion sin licencia o sin declarar.",
+    "condicional": true
+  },
+  {
+    "id": "E4",
+    "orden": 4,
+    "nombre": "Opiniones sectoriales y zonas especiales",
+    "descripcion": "Solo si el predio esta en zona especial (Pantanos de Villa, ANP, zona monumental) o el proyecto lo exige.",
+    "condicional": true
+  },
+  {
+    "id": "E5",
+    "orden": 5,
+    "nombre": "Licencia de edificacion",
+    "descripcion": "Modalidad A, B, C o D segun tamano y uso.",
+    "condicional": false
+  },
+  {
+    "id": "E6",
+    "orden": 6,
+    "nombre": "Inicio y ejecucion de obra",
+    "descripcion": "Comunicacion de inicio, verificaciones tecnicas, seguros y obligaciones laborales.",
+    "condicional": false
+  },
+  {
+    "id": "E7",
+    "orden": 7,
+    "nombre": "Conformidad de obra, declaratoria e inscripcion",
+    "descripcion": "Cierre legal: conformidad municipal, inscripcion en SUNARP y actualizacion predial.",
+    "condicional": false
+  }
+]

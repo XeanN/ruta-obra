@@ -1,0 +1,59 @@
+[
+  {
+    "id": "Z-PANTANOS-VILLA",
+    "nombre": "Entorno de los Pantanos de Villa",
+    "tipo": "ambiental_municipal",
+    "autoridad_id": "I-PROHVILLA",
+    "distritos": [
+      "150108"
+    ],
+    "procedimiento_requerido": "P-PROH-OPINION",
+    "normas": [
+      "N-ORD-184-MML"
+    ],
+    "parametros": {
+      "alturas_pisos": "2 a 4 (zonas residenciales RDMB, RDB, RDM)",
+      "area_libre_pct": "30 a 60",
+      "retiro_frontal_m": "5 a 25",
+      "otros": "Arborizacion obligatoria; restriccion de subdivisiones; ZHR max. 2 pisos; IE max. 1 piso"
+    },
+    "geometria": null,
+    "fuentes": [
+      "F-CHORR-PANT",
+      "F-PROHVILLA"
+    ],
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "Z-ANP-AMORTIGUAMIENTO",
+    "nombre": "Area Natural Protegida nacional o su zona de amortiguamiento",
+    "tipo": "ambiental_nacional",
+    "autoridad_id": "I-SERNANP",
+    "distritos": [],
+    "procedimiento_requerido": "P-SERN-COMPAT",
+    "normas": [
+      "N-RP-049-2023-SERNANP"
+    ],
+    "parametros": {},
+    "geometria": null,
+    "fuentes": [
+      "F-SERNANP-MOD"
+    ],
+    "estado_verificacion": "verificado"
+  },
+  {
+    "id": "Z-MONUMENTAL",
+    "nombre": "Zona monumental, ambiente urbano monumental o inmueble declarado patrimonio",
+    "tipo": "patrimonio",
+    "autoridad_id": "I-CULTURA",
+    "distritos": [],
+    "procedimiento_requerido": "P-CUL-AUTORIZ",
+    "normas": [
+      "N-LEY-28296"
+    ],
+    "parametros": {},
+    "geometria": null,
+    "fuentes": [],
+    "estado_verificacion": "por_verificar"
+  }
+]

@@ -1,0 +1,86 @@
+[
+  {
+    "id": "PR-TP-CSP",
+    "nombre": "Techo Propio - Construccion en Sitio Propio",
+    "institucion_id": "I-FMV",
+    "activo": true,
+    "beneficio": "Bono de S/ 33,000 (hasta S/ 41,250 con integrante con discapacidad severa)",
+    "requisitos": [
+      "Ingreso familiar mensual hasta S/ 2,706",
+      "Ahorro minimo S/ 2,475",
+      "Terreno o aires inscritos en SUNARP",
+      "No tener otra propiedad ni beneficio previo",
+      "Grupo familiar constituido"
+    ],
+    "requiere_etapas": [
+      "E1",
+      "E5"
+    ],
+    "anio": 2026,
+    "fuentes": [
+      "F-TECHO26",
+      "F-MIVIVIENDA-CSP"
+    ],
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "id": "PR-TP-AVN",
+    "nombre": "Techo Propio - Adquisicion de Vivienda Nueva",
+    "institucion_id": "I-FMV",
+    "activo": true,
+    "beneficio": "Segun convocatoria",
+    "requisitos": [],
+    "requiere_etapas": [],
+    "anio": 2026,
+    "fuentes": [
+      "F-TECHO26"
+    ],
+    "estado_verificacion": "por_verificar"
+  },
+  {
+    "id": "PR-MIVIVIENDA",
+    "nombre": "Creditos MiVivienda y productos de construccion",
+    "institucion_id": "I-FMV",
+    "activo": true,
+    "beneficio": "Credito hipotecario via bancos y cajas",
+    "requisitos": [],
+    "requiere_etapas": [
+      "E1"
+    ],
+    "anio": 2026,
+    "fuentes": [
+      "F-MIVIVIENDA-CSP"
+    ],
+    "estado_verificacion": "por_verificar"
+  },
+  {
+    "id": "PR-COFOPRI",
+    "nombre": "Formalizacion gratuita COFOPRI",
+    "institucion_id": "I-COFOPRI",
+    "activo": true,
+    "beneficio": "Titulo de propiedad gratuito inscrito",
+    "requisitos": [
+      "Terreno estatal ocupado hasta 31-12-2021 o privado con posesion de mas de 10 anos"
+    ],
+    "requiere_etapas": [],
+    "anio": 2026,
+    "fuentes": [
+      "F-COFOPRI"
+    ],
+    "estado_verificacion": "fuente_secundaria"
+  },
+  {
+    "id": "PR-BANMAT",
+    "nombre": "Banco de Materiales (BANMAT)",
+    "institucion_id": null,
+    "activo": false,
+    "beneficio": "En liquidacion: no otorga creditos nuevos",
+    "requisitos": [],
+    "requiere_etapas": [],
+    "anio": 2024,
+    "fuentes": [
+      "F-BANMAT"
+    ],
+    "estado_verificacion": "verificado"
+  }
+]

@@ -1,0 +1,63 @@
+[
+  {
+    "id": "V-COPIA-LITERAL",
+    "documento_id": "D-COPIA-LITERAL",
+    "vigencia_dias": 30,
+    "alertar_dias_antes": [
+      7,
+      2
+    ],
+    "mensaje": "La copia literal vence: la licencia exige maximo 30 dias de antiguedad."
+  },
+  {
+    "id": "V-PARAMETROS",
+    "documento_id": "D-PARAMETROS",
+    "vigencia_dias": 1095,
+    "alertar_dias_antes": [
+      90,
+      30
+    ],
+    "mensaje": "El certificado de parametros vence (36 meses)."
+  },
+  {
+    "id": "V-FACT-AGUA",
+    "documento_id": "D-FACT-AGUA",
+    "vigencia_dias": 1095,
+    "alertar_dias_antes": [
+      90,
+      30
+    ],
+    "mensaje": "La factibilidad de agua vence."
+  },
+  {
+    "id": "V-LICENCIA",
+    "documento_id": "D-LICENCIA",
+    "vigencia_dias": 1095,
+    "alertar_dias_antes": [
+      120,
+      60,
+      15
+    ],
+    "mensaje": "La licencia vence (36 meses). Pide la prorroga de 12 meses ANTES del vencimiento."
+  },
+  {
+    "id": "V-VIGENCIA-PODER",
+    "documento_id": "D-VIGENCIA-PODER",
+    "vigencia_dias": 30,
+    "alertar_dias_antes": [
+      7
+    ],
+    "mensaje": "La vigencia de poder vence."
+  },
+  {
+    "id": "V-SUBSANAR",
+    "documento_id": null,
+    "evento": "observacion_recibida",
+    "vigencia_dias_habiles": 5,
+    "alertar_dias_antes": [
+      2
+    ],
+    "mensaje": "Tienes 5 dias habiles para subsanar observaciones (prorrogables 5 mas en algunos distritos).",
+    "fuente_id": "F-MOLINA-PROC"
+  }
+]

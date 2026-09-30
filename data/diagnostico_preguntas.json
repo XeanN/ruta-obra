@@ -1,0 +1,320 @@
+[
+  {
+    "id": "titulo",
+    "texto": "Como esta la propiedad del terreno hoy?",
+    "tipo": "opcion",
+    "obligatoria": true,
+    "opciones": [
+      {
+        "valor": "inscrito",
+        "etiqueta": "Inscrita en SUNARP a mi nombre"
+      },
+      {
+        "valor": "compraventa_no_inscrita",
+        "etiqueta": "Tengo contrato o minuta de compraventa, sin inscribir"
+      },
+      {
+        "valor": "posesion_estatal",
+        "etiqueta": "Posesion en terreno del Estado, sin titulo"
+      },
+      {
+        "valor": "posesion_privada",
+        "etiqueta": "Posesion en terreno privado por mas de 10 anos, sin titulo"
+      },
+      {
+        "valor": "herencia",
+        "etiqueta": "Heredada, a nombre de un familiar fallecido"
+      },
+      {
+        "valor": "no_se",
+        "etiqueta": "No lo se"
+      }
+    ]
+  },
+  {
+    "id": "lote_individual",
+    "texto": "El predio tiene partida registral propia (no es parte de un lote mayor)?",
+    "tipo": "opcion",
+    "obligatoria": true,
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Si"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No, es parte de un lote mayor"
+      },
+      {
+        "valor": "no_se",
+        "etiqueta": "No lo se"
+      }
+    ]
+  },
+  {
+    "id": "construccion_existente",
+    "texto": "Ya hay algo construido en el terreno?",
+    "tipo": "opcion",
+    "obligatoria": true,
+    "opciones": [
+      {
+        "valor": "no",
+        "etiqueta": "No, terreno libre"
+      },
+      {
+        "valor": "si_declarada",
+        "etiqueta": "Si, y esta declarada en SUNARP"
+      },
+      {
+        "valor": "si_sin_declarar",
+        "etiqueta": "Si, pero sin licencia o sin declarar"
+      }
+    ]
+  },
+  {
+    "id": "fecha_construccion",
+    "texto": "Cuando se termino lo construido sin licencia?",
+    "tipo": "opcion",
+    "obligatoria": false,
+    "mostrar_si": {
+      "pregunta": "construccion_existente",
+      "igual": "si_sin_declarar"
+    },
+    "opciones": [
+      {
+        "valor": "hasta_2016",
+        "etiqueta": "Hasta el 31-12-2016"
+      },
+      {
+        "valor": "2017_sep2018",
+        "etiqueta": "Entre el 01-01-2017 y el 17-09-2018"
+      },
+      {
+        "valor": "post_sep2018",
+        "etiqueta": "Despues del 17-09-2018"
+      },
+      {
+        "valor": "no_se",
+        "etiqueta": "No lo se"
+      }
+    ]
+  },
+  {
+    "id": "distrito",
+    "texto": "En que distrito esta el predio?",
+    "tipo": "opcion",
+    "obligatoria": true,
+    "opciones": [
+      {
+        "valor": "150108",
+        "etiqueta": "Chorrillos"
+      },
+      {
+        "valor": "150140",
+        "etiqueta": "Santiago de Surco"
+      },
+      {
+        "valor": "150142",
+        "etiqueta": "Villa El Salvador"
+      },
+      {
+        "valor": "150114",
+        "etiqueta": "La Molina"
+      },
+      {
+        "valor": "otro",
+        "etiqueta": "Otro"
+      }
+    ]
+  },
+  {
+    "id": "zona_especial",
+    "texto": "El predio esta en alguna de estas zonas?",
+    "tipo": "opcion",
+    "obligatoria": true,
+    "opciones": [
+      {
+        "valor": "pantanos_villa",
+        "etiqueta": "Cerca de los Pantanos de Villa"
+      },
+      {
+        "valor": "anp",
+        "etiqueta": "Area natural protegida o su zona de amortiguamiento"
+      },
+      {
+        "valor": "monumental",
+        "etiqueta": "Zona monumental o inmueble historico"
+      },
+      {
+        "valor": "ninguna",
+        "etiqueta": "Ninguna"
+      },
+      {
+        "valor": "no_se",
+        "etiqueta": "No lo se"
+      }
+    ]
+  },
+  {
+    "id": "tipo_obra",
+    "texto": "Que quieres hacer?",
+    "tipo": "opcion",
+    "obligatoria": true,
+    "opciones": [
+      {
+        "valor": "obra_nueva",
+        "etiqueta": "Construir desde cero"
+      },
+      {
+        "valor": "ampliacion",
+        "etiqueta": "Ampliar (mas pisos o mas area)"
+      },
+      {
+        "valor": "remodelacion",
+        "etiqueta": "Remodelar"
+      },
+      {
+        "valor": "demolicion",
+        "etiqueta": "Demoler"
+      },
+      {
+        "valor": "cerco",
+        "etiqueta": "Solo cerco perimetrico"
+      }
+    ]
+  },
+  {
+    "id": "uso",
+    "texto": "Para que uso?",
+    "tipo": "opcion",
+    "obligatoria": true,
+    "opciones": [
+      {
+        "valor": "vivienda_unifamiliar",
+        "etiqueta": "Vivienda de una familia"
+      },
+      {
+        "valor": "vivienda_multifamiliar",
+        "etiqueta": "Vivienda de varias familias / departamentos"
+      },
+      {
+        "valor": "comercio",
+        "etiqueta": "Comercio u oficinas"
+      },
+      {
+        "valor": "mixto",
+        "etiqueta": "Vivienda + comercio"
+      },
+      {
+        "valor": "industria",
+        "etiqueta": "Industria"
+      },
+      {
+        "valor": "educacion_salud_hospedaje",
+        "etiqueta": "Educacion, salud u hospedaje"
+      }
+    ]
+  },
+  {
+    "id": "pisos",
+    "texto": "Cuantos pisos tendra en total?",
+    "tipo": "numero",
+    "obligatoria": true,
+    "min": 1,
+    "max": 60
+  },
+  {
+    "id": "area_total_m2",
+    "texto": "Area techada total al terminar (m2)",
+    "tipo": "numero",
+    "obligatoria": true,
+    "min": 1,
+    "max": 200000
+  },
+  {
+    "id": "cambio_estructural",
+    "texto": "La obra modifica la estructura (columnas, vigas, losas)?",
+    "tipo": "opcion",
+    "obligatoria": false,
+    "mostrar_si": {
+      "pregunta": "tipo_obra",
+      "en": [
+        "ampliacion",
+        "remodelacion"
+      ]
+    },
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Si"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      },
+      {
+        "valor": "no_se",
+        "etiqueta": "No lo se"
+      }
+    ]
+  },
+  {
+    "id": "excavacion_mas_2m",
+    "texto": "Habra sotano o excavacion de mas de 2 m?",
+    "tipo": "opcion",
+    "obligatoria": false,
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Si"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      }
+    ]
+  },
+  {
+    "id": "valor_obra_soles",
+    "texto": "Presupuesto estimado de la obra (S/)",
+    "tipo": "numero",
+    "obligatoria": false,
+    "min": 0
+  },
+  {
+    "id": "financiamiento",
+    "texto": "Como piensas financiarla?",
+    "tipo": "opcion",
+    "obligatoria": false,
+    "opciones": [
+      {
+        "valor": "techo_propio",
+        "etiqueta": "Bono Techo Propio"
+      },
+      {
+        "valor": "credito",
+        "etiqueta": "Credito hipotecario / MiVivienda"
+      },
+      {
+        "valor": "propio",
+        "etiqueta": "Recursos propios"
+      }
+    ]
+  },
+  {
+    "id": "contrata_obreros",
+    "texto": "Contrataras maestro de obra y obreros?",
+    "tipo": "opcion",
+    "obligatoria": false,
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Si"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      }
+    ]
+  }
+]

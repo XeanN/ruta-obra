@@ -1,0 +1,200 @@
+[
+  {
+    "id": "I-SUNARP",
+    "nombre": "Superintendencia Nacional de los Registros Publicos",
+    "siglas": "SUNARP",
+    "nivel": "nacional",
+    "rol": "registro",
+    "web": "https://www.gob.pe/sunarp",
+    "canal": "SID-Sunarp (notarios), Publicidad Registral en Linea, Siguelo, Alerta Registral"
+  },
+  {
+    "id": "I-NOTARIA",
+    "nombre": "Notaria publica",
+    "siglas": "Notaria",
+    "nivel": "privado",
+    "rol": "fe_publica",
+    "web": null,
+    "canal": "Presencial; presenta a SUNARP via SID-Sunarp"
+  },
+  {
+    "id": "I-COFOPRI",
+    "nombre": "Organismo de Formalizacion de la Propiedad Informal",
+    "siglas": "COFOPRI",
+    "nivel": "nacional",
+    "rol": "formalizacion",
+    "web": "https://www.gob.pe/cofopri",
+    "canal": "Campanas y oficinas"
+  },
+  {
+    "id": "I-PJ",
+    "nombre": "Poder Judicial",
+    "siglas": "PJ",
+    "nivel": "nacional",
+    "rol": "judicial",
+    "web": "https://www.pj.gob.pe",
+    "canal": "Mesa de partes electronica"
+  },
+  {
+    "id": "I-MUN-DIST",
+    "nombre": "Municipalidad distrital (segun ubicacion del predio)",
+    "siglas": "Municipalidad",
+    "nivel": "distrital",
+    "rol": "licencias",
+    "web": null,
+    "canal": "Varia por distrito: ver distritos.json"
+  },
+  {
+    "id": "I-MML",
+    "nombre": "Municipalidad Metropolitana de Lima",
+    "siglas": "MML",
+    "nivel": "provincial",
+    "rol": "planeamiento",
+    "web": "https://www.munlima.gob.pe",
+    "canal": "Mesa de partes virtual"
+  },
+  {
+    "id": "I-SAT",
+    "nombre": "Servicio de Administracion Tributaria de Lima",
+    "siglas": "SAT",
+    "nivel": "provincial",
+    "rol": "ratificacion_tupa",
+    "web": "https://www.sat.gob.pe",
+    "canal": "Publica TUPAs distritales ratificados"
+  },
+  {
+    "id": "I-PROHVILLA",
+    "nombre": "Autoridad Municipal de los Pantanos de Villa",
+    "siglas": "PROHVILLA",
+    "nivel": "provincial",
+    "rol": "ambiental",
+    "web": "https://www.gob.pe/institucion/pantanosdevilla",
+    "canal": "Tramite en gob.pe"
+  },
+  {
+    "id": "I-SERNANP",
+    "nombre": "Servicio Nacional de Areas Naturales Protegidas",
+    "siglas": "SERNANP",
+    "nivel": "nacional",
+    "rol": "ambiental",
+    "web": "https://compatibilidad.sernanp.gob.pe",
+    "canal": "Modulo de Compatibilidad en linea"
+  },
+  {
+    "id": "I-CULTURA",
+    "nombre": "Ministerio de Cultura",
+    "siglas": "MINCUL",
+    "nivel": "nacional",
+    "rol": "patrimonio",
+    "web": "https://www.gob.pe/cultura",
+    "canal": "Mesa de partes virtual"
+  },
+  {
+    "id": "I-MVCS",
+    "nombre": "Ministerio de Vivienda, Construccion y Saneamiento",
+    "siglas": "MVCS",
+    "nivel": "nacional",
+    "rol": "rector",
+    "web": "https://www.gob.pe/vivienda",
+    "canal": "Plataforma de tramites digitales"
+  },
+  {
+    "id": "I-FMV",
+    "nombre": "Fondo MiVivienda",
+    "siglas": "FMV",
+    "nivel": "nacional",
+    "rol": "financiamiento",
+    "web": "https://www.mivivienda.com.pe",
+    "canal": "Postulacion en linea, 0800-12-200"
+  },
+  {
+    "id": "I-MTPE",
+    "nombre": "Ministerio de Trabajo y Promocion del Empleo",
+    "siglas": "MTPE",
+    "nivel": "nacional",
+    "rol": "laboral",
+    "web": "https://www.gob.pe/mtpe",
+    "canal": "Registros de construccion civil en linea"
+  },
+  {
+    "id": "I-SEDAPAL",
+    "nombre": "Servicio de Agua Potable y Alcantarillado de Lima",
+    "siglas": "Sedapal",
+    "nivel": "empresa_publica",
+    "rol": "servicios",
+    "web": "https://www.sedapal.com.pe",
+    "canal": "Oficina virtual"
+  },
+  {
+    "id": "I-LUZDELSUR",
+    "nombre": "Luz del Sur",
+    "siglas": "Luz del Sur",
+    "nivel": "privado",
+    "rol": "servicios",
+    "web": "https://www.luzdelsur.pe",
+    "canal": "Atencion virtual; atiende Lima Sur y Este"
+  },
+  {
+    "id": "I-ENEL",
+    "nombre": "Enel Distribucion Peru",
+    "siglas": "Enel",
+    "nivel": "privado",
+    "rol": "servicios",
+    "web": "https://www.enel.pe",
+    "canal": "Atencion virtual; atiende Lima Norte y Oeste"
+  },
+  {
+    "id": "I-COLEGIOS",
+    "nombre": "Colegio de Arquitectos / Colegio de Ingenieros del Peru",
+    "siglas": "CAP/CIP",
+    "nivel": "gremio",
+    "rol": "comision_tecnica",
+    "web": null,
+    "canal": "Delegados en comisiones tecnicas; habilidad profesional"
+  },
+  {
+    "id": "I-REVISORES",
+    "nombre": "Revisores Urbanos (profesionales registrados en el MVCS)",
+    "siglas": "Revisores Urbanos",
+    "nivel": "privado",
+    "rol": "evaluacion",
+    "web": null,
+    "canal": "Alternativa a la municipalidad/comision en B, C y D"
+  },
+  {
+    "id": "I-ASEGURADORA",
+    "nombre": "Compania de seguros",
+    "siglas": "Aseguradora",
+    "nivel": "privado",
+    "rol": "seguros",
+    "web": null,
+    "canal": "Poliza CAR / responsabilidad civil / SCTR"
+  },
+  {
+    "id": "I-SENCICO",
+    "nombre": "Servicio Nacional de Capacitacion para la Industria de la Construccion",
+    "siglas": "SENCICO",
+    "nivel": "nacional",
+    "rol": "aporte",
+    "web": "https://www.sencico.gob.pe",
+    "canal": "Declaracion y pago"
+  },
+  {
+    "id": "I-CONAFOVICER",
+    "nombre": "Fondo de Vivienda del Trabajador de Construccion Civil",
+    "siglas": "CONAFOVICER",
+    "nivel": "gremio",
+    "rol": "aporte",
+    "web": "https://conafovicer.com",
+    "canal": "Retencion por el empleador"
+  },
+  {
+    "id": "I-CENEPRED",
+    "nombre": "Delegados ad hoc de seguridad (CENEPRED/INDECI, Bomberos)",
+    "siglas": "Delegados ad hoc",
+    "nivel": "nacional",
+    "rol": "seguridad",
+    "web": null,
+    "canal": "Participan en comision tecnica"
+  }
+]

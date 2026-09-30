@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rutaobra.pe/schema/data.schema.json",
+  "title": "RutaObra - esquema de la base de conocimiento",
+  "description": "Un $def por archivo de /data. Cada archivo es un arreglo de objetos del tipo indicado (salvo meta.json).",
+  "$defs": {
+    "estado": { "enum": ["verificado", "fuente_secundaria", "desactualizado", "por_verificar"] },
+    "id": { "type": "string", "pattern": "^[A-Z]{1,3}-[A-Za-z0-9_.-]+$" },
+    "ids": { "type": "array", "items": { "$ref": "#/$defs/id" } },
+
+    "fuente": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "titulo", "url", "tipo", "fecha_consulta"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" }, "titulo": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "tipo": { "enum": ["norma", "oficial", "secundaria"] },
+        "fecha_consulta": { "type": "string", "format": "date" }
+      }
+    },
+    "norma": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "nombre", "numero", "tema"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" }, "nombre": { "type": "string" }, "numero": { "type": "string" },
+        "fuente_id": { "type": ["string", "null"] }, "tema": { "type": "string" }
+      }
+    },
+    "institucion": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "nombre", "siglas", "nivel", "rol"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" }, "nombre": { "type": "string" }, "siglas": { "type": "string" },
+        "nivel": { "enum": ["nacional", "provincial", "distrital", "privado", "empresa_publica", "gremio"] },
+        "rol": { "type": "string" }, "web": { "type": ["string", "null"] }, "canal": { "type": ["string", "null"] }
+      }
+    },
+    "etapa": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "orden", "nombre", "descripcion", "condicional"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^E[0-9]+$" }, "orden": { "type": "integer" },
+        "nombre": { "type": "string" }, "descripcion": { "type": "string" }, "condicional": { "type": "boolean" }
+      }
+    },
+    "documento": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "nombre", "estado_verificacion"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" }, "nombre": { "type": "string" }, "emisor_id": { "type": ["string", "null"] },
+        "vigencia_dias": { "type": ["integer", "null"] }, "descripcion": { "type": ["string", "null"] },
+        "estado_verificacion": { "$ref": "#/$defs/estado" }
+      }
+    },
+    "costo": {
+      "type": "object", "additionalProperties": false, "required": ["tipo"],
+      "properties": {
+        "tipo": { "enum": ["fijo", "formula", "gratuito", "tupa_distrital", "honorarios_libres", "por_verificar"] },
+        "monto": { "type": ["number", "null"] }, "formula": { "type": ["string", "null"] }, "nota": { "type": ["string", "null"] }
+      }
+    },
+    "procedimiento": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "etapa_id", "nombre", "descripcion", "costo_referencial", "estado_verificacion"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" }, "etapa_id": { "type": "string" }, "nombre": { "type": "string" },
+        "institucion_id": { "type": ["string", "null"] }, "descripcion": { "type": "string" },
+        "calificacion": { "type": ["string", "null"], "enum": ["aprobacion_automatica", "evaluacion_previa", "evaluacion_registral", "servicio", "comunicacion", "fiscalizacion", "aporte", "obligacion", null] },
+        "plazo_dias_habiles": { "type": ["integer", "null"] }, "plazo_nota": { "type": ["string", "null"] },
+        "costo_referencial": { "$ref": "#/$defs/costo" },
+        "requisitos": { "$ref": "#/$defs/ids" }, "documentos_resultado": { "$ref": "#/$defs/ids" },
+        "profesionales": { "type": "array", "items": { "type": "string" } },
+        "depende_de": { "$ref": "#/$defs/ids" }, "normas": { "$ref": "#/$defs/ids" }, "fuentes": { "$ref": "#/$defs/ids" },
+        "estado_verificacion": { "$ref": "#/$defs/estado" }
+      }
+    },
+    "tarifa": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "ubigeo", "procedimiento_id", "variante", "fuente_id", "estado_verificacion"],
+      "properties": {
+        "id": { "type": "string" }, "ubigeo": { "type": "string", "pattern": "^[0-9]{6}$" },
+        "procedimiento_id": { "type": "string" }, "variante": { "type": "string" },
+        "codigo_tupa": { "type": ["string", "null"] }, "derecho_soles": { "type": ["number", "null"] },
+        "plazo_dias_habiles": { "type": ["integer", "null"] }, "fuente_id": { "type": "string" },
+        "estado_verificacion": { "$ref": "#/$defs/estado" }, "nota": { "type": ["string", "null"] }
+      }
+    },
+    "condicion": {
+      "type": "object",
+      "properties": {
+        "campo": { "type": "string" }, "igual": {}, "distinto": {},
+        "en": { "type": "array" }, "no_en": { "type": "array" },
+        "mayor": { "type": "number" }, "menor_igual": { "type": "number" }, "existe": { "type": "boolean" },
+        "todas": { "type": "array", "items": { "$ref": "#/$defs/condicion" } },
+        "alguna": { "type": "array", "items": { "$ref": "#/$defs/condicion" } }
+      }
+    },
+    "regla": {
+      "type": "object",
+      "required": ["id", "tipo", "si"],
+      "properties": {
+        "id": { "type": "string" },
+        "tipo": { "enum": ["modalidad", "agregar_procedimientos", "alerta", "programa"] },
+        "orden": { "type": "integer" }, "resultado": { "enum": ["A", "B", "C", "D"] },
+        "si": { "$ref": "#/$defs/condicion" },
+        "procedimientos": { "$ref": "#/$defs/ids" }, "alternativas": { "$ref": "#/$defs/ids" },
+        "opcional": { "type": "boolean" }, "nivel": { "enum": ["critica", "alta", "media", "baja"] },
+        "mensaje": { "type": "string" }, "programa_id": { "type": "string" },
+        "fuentes": { "$ref": "#/$defs/ids" }, "nota": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,86 @@
+[
+  {
+    "id": "caso-angel",
+    "descripcion": "Caso real de referencia: compraventa sin inscribir, construccion previa sin declarar, cerca de Pantanos de Villa, ampliacion de vivienda",
+    "respuestas": {
+      "titulo": "compraventa_no_inscrita", "lote_individual": "si", "construccion_existente": "si_sin_declarar",
+      "fecha_construccion": "hasta_2016", "distrito": "150108", "zona_especial": "pantanos_villa",
+      "tipo_obra": "ampliacion", "uso": "vivienda_unifamiliar", "pisos": 3, "area_total_m2": 260,
+      "cambio_estructural": "si", "valor_obra_soles": 180000, "financiamiento": "propio", "contrata_obreros": "si"
+    },
+    "esperado": {
+      "modalidad": "B",
+      "incluye": ["P-NOT-ESCRITURA", "P-SUN-INSC-CV", "P-SUN-FAB27157", "P-PROH-OPINION", "P-MUN-PARAM", "P-MUN-LIC-B", "P-MUN-INICIO", "P-MTPE-RETCC", "P-MUN-CONF-SV", "P-SUN-DECL-EDIF"],
+      "excluye": ["P-MUN-LIC-A", "P-MTPE-RENOCC", "P-SEG-CAR"],
+      "alertas": ["A-TITULO-BLOQUEA", "A-PANTANOS"]
+    }
+  },
+  {
+    "id": "unifamiliar-simple",
+    "descripcion": "Terreno inscrito y libre en Surco, casa de 2 pisos y 110 m2",
+    "respuestas": {
+      "titulo": "inscrito", "lote_individual": "si", "construccion_existente": "no", "distrito": "150140",
+      "zona_especial": "ninguna", "tipo_obra": "obra_nueva", "uso": "vivienda_unifamiliar", "pisos": 2, "area_total_m2": 110
+    },
+    "esperado": {
+      "modalidad": "A",
+      "incluye": ["P-SUN-COPIA", "P-MUN-PARAM", "P-MUN-LIC-A", "P-MUN-CONF-SV"],
+      "excluye": ["P-MUN-LIC-B", "P-SED-FACT", "P-PROH-OPINION", "P-SUN-INSC-CV"],
+      "alertas": []
+    }
+  },
+  {
+    "id": "multifamiliar-7-pisos",
+    "descripcion": "Edificio de 7 pisos en Surco, presupuesto alto, con obreros",
+    "respuestas": {
+      "titulo": "inscrito", "lote_individual": "si", "construccion_existente": "no", "distrito": "150140",
+      "zona_especial": "ninguna", "tipo_obra": "obra_nueva", "uso": "vivienda_multifamiliar", "pisos": 7, "area_total_m2": 2400,
+      "excavacion_mas_2m": "si", "valor_obra_soles": 3500000, "contrata_obreros": "si"
+    },
+    "esperado": {
+      "modalidad": "C",
+      "incluye": ["P-MUN-LIC-C", "P-SEG-CAR", "P-MTPE-RENOCC", "P-SED-FACT", "P-EIV", "P-SUN-RI"],
+      "excluye": ["P-MUN-LIC-B"],
+      "alertas": ["A-EXCAV"]
+    }
+  },
+  {
+    "id": "regularizacion-2017",
+    "descripcion": "Construccion sin licencia terminada en 2017 en Villa El Salvador",
+    "respuestas": {
+      "titulo": "inscrito", "lote_individual": "si", "construccion_existente": "si_sin_declarar", "fecha_construccion": "2017_sep2018",
+      "distrito": "150142", "zona_especial": "ninguna", "tipo_obra": "ampliacion", "uso": "vivienda_unifamiliar",
+      "pisos": 3, "area_total_m2": 180, "cambio_estructural": "no"
+    },
+    "esperado": {
+      "modalidad": "A",
+      "incluye": ["P-MUN-REGULARIZ", "P-MUN-LIC-A"],
+      "excluye": ["P-SUN-FAB27157"],
+      "alertas": []
+    }
+  },
+  {
+    "id": "post-2018-techo-propio",
+    "descripcion": "Posesion en terreno estatal, construccion 2020, quiere Techo Propio",
+    "respuestas": {
+      "titulo": "posesion_estatal", "lote_individual": "no_se", "construccion_existente": "si_sin_declarar", "fecha_construccion": "post_sep2018",
+      "distrito": "otro", "zona_especial": "no_se", "tipo_obra": "ampliacion", "uso": "vivienda_unifamiliar",
+      "pisos": 2, "area_total_m2": 90, "cambio_estructural": "no_se", "financiamiento": "techo_propio"
+    },
+    "esperado": {
+      "modalidad": "B",
+      "incluye": ["P-COF-FORMALIZ", "P-MUN-REG-BENEF"],
+      "excluye": [],
+      "alertas": ["A-TITULO-BLOQUEA", "A-REG-SIN-RUTA", "A-TECHO-TITULO", "A-ZONA-NOSE", "A-OTRO-DISTRITO"]
+    }
+  },
+  {
+    "id": "comercio-grande",
+    "descripcion": "Centro comercial de 35,000 m2",
+    "respuestas": {
+      "titulo": "inscrito", "lote_individual": "si", "construccion_existente": "no", "distrito": "150114",
+      "zona_especial": "ninguna", "tipo_obra": "obra_nueva", "uso": "comercio", "pisos": 4, "area_total_m2": 35000
+    },
+    "esperado": { "modalidad": "D", "incluye": ["P-MUN-LIC-D", "P-SEG-CAR"], "excluye": ["P-MUN-LIC-C"], "alertas": [] }
+  }
+]

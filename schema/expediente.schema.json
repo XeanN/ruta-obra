@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rutaobra.pe/schema/expediente.schema.json",
+  "title": "RutaObra - datos de usuario (expedientes, seguimiento y bitacora)",
+  "description": "Modelo de los datos que genera el usuario en la app. En el prototipo se guarda en el navegador; en produccion se mapea 1:1 a tablas Postgres.",
+  "$defs": {
+    "fecha": { "type": "string", "format": "date" },
+    "fechaHora": { "type": "string", "format": "date-time" },
+
+    "Actor": {
+      "type": "object", "required": ["id", "rol", "nombre"],
+      "properties": {
+        "id": { "type": "string" },
+        "rol": { "enum": ["propietario", "gestor", "arquitecto", "ingeniero_estructural", "ingeniero_sanitario", "ingeniero_electrico", "verificador", "notario", "maestro_obra", "obrero", "supervisor", "otro"] },
+        "nombre": { "type": "string" }, "telefono": { "type": "string" }, "email": { "type": "string" },
+        "colegiatura": { "type": "string", "description": "CAP / CIP si aplica" }
+      }
+    },
+    "Predio": {
+      "type": "object", "required": ["id", "ubigeo", "direccion"],
+      "properties": {
+        "id": { "type": "string" }, "ubigeo": { "type": "string" }, "direccion": { "type": "string" },
+        "partida_registral": { "type": "string" }, "area_terreno_m2": { "type": "number" },
+        "coordenadas": { "type": "object", "properties": { "lat": { "type": "number" }, "lng": { "type": "number" } } },
+        "zonas_especiales": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "Expediente": {
+      "type": "object", "required": ["id", "predio_id", "nombre", "respuestas_diagnostico", "modalidad", "pasos", "creado_en"],
+      "properties": {
+        "id": { "type": "string" }, "predio_id": { "type": "string" }, "nombre": { "type": "string" },
+        "respuestas_diagnostico": { "type": "object", "description": "Clave = id de pregunta de diagnostico_preguntas.json" },
+        "modalidad": { "enum": ["A", "B", "C", "D", null] },
+        "version_datos": { "type": "string", "description": "meta.version_datos con que se genero la ruta" },
+        "actores": { "type": "array", "items": { "$ref": "#/$defs/Actor" } },
+        "pasos": { "type": "array", "items": { "$ref": "#/$defs/Paso" } },
+        "documentos": { "type": "array", "items": { "$ref": "#/$defs/DocumentoCargado" } },
+        "bitacora": { "type": "array", "items": { "$ref": "#/$defs/EntradaBitacora" } },
+        "creado_en": { "$ref": "#/$defs/fechaHora" }, "actualizado_en": { "$ref": "#/$defs/fechaHora" }
+      }
+    },
+    "Paso": {
+      "type": "object", "required": ["procedimiento_id", "etapa_id", "estado"],
+      "properties": {
+        "procedimiento_id": { "type": "string" }, "etapa_id": { "type": "string" },
+        "estado": { "enum": ["pendiente", "en_preparacion", "presentado", "observado", "subsanado", "aprobado", "denegado", "no_aplica"] },
+        "numero_expediente_entidad": { "type": "string", "description": "N.o de tramite/ticket en la entidad (SUNARP, municipalidad)" },
+        "fecha_presentacion": { "$ref": "#/$defs/fecha" }, "fecha_resultado": { "$ref": "#/$defs/fecha" },
+        "fecha_observacion": { "$ref": "#/$defs/fecha" }, "monto_pagado": { "type": "number" },
+        "responsable_id": { "type": "string" }, "notas": { "type": "string" }
+      }
+    },
+    "DocumentoCargado": {
+      "type": "object", "required": ["id", "documento_id", "estado"],
+      "properties": {
+        "id": { "type": "string" }, "documento_id": { "type": "string", "description": "id de documentos.json" },
+        "estado": { "enum": ["falta", "en_tramite", "obtenido", "vencido"] },
+        "fecha_emision": { "$ref": "#/$defs/fecha" }, "fecha_vencimiento": { "$ref": "#/$defs/fecha" },
+        "archivo_url": { "type": "string" }, "notas": { "type": "string" }
+      }
+    },
+    "EntradaBitacora": {
+      "type": "object", "required": ["id", "fecha", "tipo", "descripcion"],
+      "properties": {
+        "id": { "type": "string" }, "fecha": { "$ref": "#/$defs/fecha" },
+        "tipo": { "enum": ["avance", "compra", "pago", "visita_municipal", "reunion", "incidencia", "cambio_de_obra", "otro"] },
+        "descripcion": { "type": "string" }, "monto": { "type": "number" },
+        "avance_pct": { "type": "number", "minimum": 0, "maximum": 100 },
+        "actor_id": { "type": "string" }, "fotos": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "Alerta": {
+      "type": "object", "required": ["id", "expediente_id", "tipo", "fecha", "mensaje"],
+      "properties": {
+        "id": { "type": "string" }, "expediente_id": { "type": "string" },
+        "tipo": { "enum": ["vencimiento", "plazo_subsanacion", "regla", "recordatorio"] },
+        "origen_id": { "type": "string", "description": "id de vencimientos.json o reglas.json" },
+        "fecha": { "$ref": "#/$defs/fecha" }, "mensaje": { "type": "string" },
+        "nivel": { "enum": ["critica", "alta", "media", "baja"] }, "leida": { "type": "boolean" }
+      }
+    }
+  }
+}

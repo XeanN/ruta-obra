@@ -1,0 +1,93 @@
+[
+  {
+    "id": "N-LEY-29090",
+    "nombre": "Ley de Regulacion de Habilitaciones Urbanas y de Edificaciones",
+    "numero": "Ley 29090 (TUO D.S. 006-2017-VIVIENDA)",
+    "fuente_id": "F-TUO-29090",
+    "tema": "licencias"
+  },
+  {
+    "id": "N-DL-1426",
+    "nombre": "Modifica la Ley 29090 (regularizacion art. 30)",
+    "numero": "D.L. 1426",
+    "fuente_id": "F-DL-1426",
+    "tema": "regularizacion"
+  },
+  {
+    "id": "N-DS-029-2019",
+    "nombre": "Reglamento de Licencias de Habilitacion Urbana y Edificacion",
+    "numero": "D.S. 029-2019-VIVIENDA",
+    "fuente_id": "F-DS-029-2019",
+    "tema": "licencias"
+  },
+  {
+    "id": "N-DS-146-2023",
+    "nombre": "Procedimientos administrativos estandarizados de licencias",
+    "numero": "D.S. 146-2023-PCM",
+    "fuente_id": "F-DS-146-2023",
+    "tema": "licencias"
+  },
+  {
+    "id": "N-LEY-27157",
+    "nombre": "Ley de Regularizacion de Edificaciones",
+    "numero": "Ley 27157 (ampliada por Ley 30830)",
+    "fuente_id": "F-LEY-30830",
+    "tema": "regularizacion"
+  },
+  {
+    "id": "N-ORD-184-MML",
+    "nombre": "Zonificacion de los Pantanos de Villa",
+    "numero": "Ordenanza 184-MML",
+    "fuente_id": "F-CHORR-PANT",
+    "tema": "zona_especial"
+  },
+  {
+    "id": "N-RP-049-2023-SERNANP",
+    "nombre": "Modulo de Compatibilidad SERNANP",
+    "numero": "R.P. 049-2023-SERNANP",
+    "fuente_id": "F-SERNANP-MOD",
+    "tema": "zona_especial"
+  },
+  {
+    "id": "N-LEY-28296",
+    "nombre": "Ley General del Patrimonio Cultural de la Nacion",
+    "numero": "Ley 28296",
+    "fuente_id": null,
+    "tema": "zona_especial"
+  },
+  {
+    "id": "N-DS-005-2020-TR",
+    "nombre": "Reglamento del Registro Nacional de Obras de Construccion Civil (RENOCC)",
+    "numero": "D.S. 005-2020-TR",
+    "fuente_id": "F-RENOCC",
+    "tema": "laboral"
+  },
+  {
+    "id": "N-DS-301-2025-EF",
+    "nombre": "Valor de la UIT 2026",
+    "numero": "D.S. 301-2025-EF",
+    "fuente_id": "F-UIT26",
+    "tema": "tributaria"
+  },
+  {
+    "id": "N-ORD-704-MSS",
+    "nombre": "TUPA de la Municipalidad de Santiago de Surco",
+    "numero": "Ordenanza 704-MSS",
+    "fuente_id": "F-SURCO-TUPA24",
+    "tema": "tupa"
+  },
+  {
+    "id": "N-ORD-409-2021-MDCH",
+    "nombre": "TUPA de la Municipalidad de Chorrillos",
+    "numero": "Ordenanza 409-2021-MDCH",
+    "fuente_id": "F-CHORR-TUPA21",
+    "tema": "tupa"
+  },
+  {
+    "id": "N-ORD-682-MSS",
+    "nombre": "Beneficio de regularizacion de edificaciones en Surco (vencio 17-07-2025)",
+    "numero": "Ordenanza 682-MSS",
+    "fuente_id": "F-SURCO-REG",
+    "tema": "regularizacion"
+  }
+]

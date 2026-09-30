@@ -1,0 +1,836 @@
+[
+  {
+    "id": "R-MOD-D",
+    "tipo": "modalidad",
+    "orden": 10,
+    "resultado": "D",
+    "si": {
+      "alguna": [
+        {
+          "campo": "uso",
+          "en": [
+            "industria",
+            "educacion_salud_hospedaje"
+          ]
+        },
+        {
+          "todas": [
+            {
+              "campo": "uso",
+              "en": [
+                "comercio",
+                "mixto"
+              ]
+            },
+            {
+              "campo": "area_total_m2",
+              "mayor": 30000
+            }
+          ]
+        }
+      ]
+    },
+    "fuentes": [
+      "F-ELEMENTAL-MOD"
+    ]
+  },
+  {
+    "id": "R-MOD-C-NOVIV",
+    "tipo": "modalidad",
+    "orden": 20,
+    "resultado": "C",
+    "si": {
+      "todas": [
+        {
+          "campo": "uso",
+          "en": [
+            "comercio",
+            "mixto"
+          ]
+        }
+      ]
+    },
+    "fuentes": [
+      "F-ELEMENTAL-MOD"
+    ]
+  },
+  {
+    "id": "R-MOD-C-MONUM",
+    "tipo": "modalidad",
+    "orden": 25,
+    "resultado": "C",
+    "si": {
+      "todas": [
+        {
+          "campo": "zona_especial",
+          "igual": "monumental"
+        }
+      ]
+    },
+    "fuentes": [
+      "F-CHORR-TUPA21"
+    ],
+    "nota": "Patrimonio cultural se tramita como C"
+  },
+  {
+    "id": "R-MOD-C-GRANDE",
+    "tipo": "modalidad",
+    "orden": 30,
+    "resultado": "C",
+    "si": {
+      "alguna": [
+        {
+          "campo": "pisos",
+          "mayor": 5
+        },
+        {
+          "campo": "area_total_m2",
+          "mayor": 3000
+        }
+      ]
+    },
+    "fuentes": [
+      "F-ELEMENTAL-MOD"
+    ]
+  },
+  {
+    "id": "R-MOD-A-NUEVA",
+    "tipo": "modalidad",
+    "orden": 40,
+    "resultado": "A",
+    "si": {
+      "todas": [
+        {
+          "campo": "tipo_obra",
+          "igual": "obra_nueva"
+        },
+        {
+          "campo": "uso",
+          "igual": "vivienda_unifamiliar"
+        },
+        {
+          "campo": "area_total_m2",
+          "menor_igual": 120
+        }
+      ]
+    },
+    "fuentes": [
+      "F-GOBPE-LIC-A"
+    ]
+  },
+  {
+    "id": "R-MOD-A-AMPL",
+    "tipo": "modalidad",
+    "orden": 41,
+    "resultado": "A",
+    "si": {
+      "todas": [
+        {
+          "campo": "tipo_obra",
+          "igual": "ampliacion"
+        },
+        {
+          "campo": "uso",
+          "igual": "vivienda_unifamiliar"
+        },
+        {
+          "campo": "area_total_m2",
+          "menor_igual": 200
+        },
+        {
+          "campo": "cambio_estructural",
+          "igual": "no"
+        }
+      ]
+    },
+    "fuentes": [
+      "F-GOBPE-LIC-A"
+    ]
+  },
+  {
+    "id": "R-MOD-A-REMOD",
+    "tipo": "modalidad",
+    "orden": 42,
+    "resultado": "A",
+    "si": {
+      "todas": [
+        {
+          "campo": "tipo_obra",
+          "igual": "remodelacion"
+        },
+        {
+          "campo": "cambio_estructural",
+          "igual": "no"
+        },
+        {
+          "campo": "uso",
+          "en": [
+            "vivienda_unifamiliar",
+            "vivienda_multifamiliar"
+          ]
+        }
+      ]
+    },
+    "fuentes": [
+      "F-GOBPE-LIC-A"
+    ]
+  },
+  {
+    "id": "R-MOD-A-CERCO",
+    "tipo": "modalidad",
+    "orden": 43,
+    "resultado": "A",
+    "si": {
+      "todas": [
+        {
+          "campo": "tipo_obra",
+          "igual": "cerco"
+        }
+      ]
+    },
+    "fuentes": [
+      "F-GOBPE-LIC-A"
+    ]
+  },
+  {
+    "id": "R-MOD-A-DEMOL",
+    "tipo": "modalidad",
+    "orden": 44,
+    "resultado": "A",
+    "si": {
+      "todas": [
+        {
+          "campo": "tipo_obra",
+          "igual": "demolicion"
+        },
+        {
+          "campo": "pisos",
+          "menor_igual": 3
+        }
+      ]
+    },
+    "fuentes": [
+      "F-GOBPE-LIC-A"
+    ]
+  },
+  {
+    "id": "R-MOD-B",
+    "tipo": "modalidad",
+    "orden": 50,
+    "resultado": "B",
+    "si": {
+      "todas": [
+        {
+          "campo": "pisos",
+          "menor_igual": 5
+        },
+        {
+          "campo": "area_total_m2",
+          "menor_igual": 3000
+        }
+      ]
+    },
+    "fuentes": [
+      "F-ELEMENTAL-MOD"
+    ]
+  },
+  {
+    "id": "R-E1-COMPRAVENTA",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "titulo",
+          "igual": "compraventa_no_inscrita"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-SUN-CRI",
+      "P-NOT-ESCRITURA",
+      "P-SUN-INSC-CV",
+      "P-SUN-ALERTA"
+    ]
+  },
+  {
+    "id": "R-E1-ESTATAL",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "titulo",
+          "igual": "posesion_estatal"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-COF-FORMALIZ",
+      "P-SUN-ALERTA"
+    ]
+  },
+  {
+    "id": "R-E1-PRIVADA",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "titulo",
+          "igual": "posesion_privada"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-NOT-PRESCRIP",
+      "P-SUN-ALERTA"
+    ]
+  },
+  {
+    "id": "R-E1-HERENCIA",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "titulo",
+          "igual": "herencia"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-NOT-SUCESION",
+      "P-SUN-ALERTA"
+    ]
+  },
+  {
+    "id": "R-E1-NOSE",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "titulo",
+          "igual": "no_se"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-SUN-CRI"
+    ]
+  },
+  {
+    "id": "R-E1-SUBDIV",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "lote_individual",
+          "igual": "no"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-MUN-SUBDIV",
+      "P-SUN-INDEP"
+    ]
+  },
+  {
+    "id": "R-E1-SIEMPRE",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": []
+    },
+    "procedimientos": [
+      "P-SUN-COPIA"
+    ]
+  },
+  {
+    "id": "R-E2-PARAM",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": []
+    },
+    "procedimientos": [
+      "P-MUN-PARAM"
+    ]
+  },
+  {
+    "id": "R-E2-FACT",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "_modalidad",
+          "en": [
+            "B",
+            "C",
+            "D"
+          ]
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-SED-FACT",
+      "P-ELE-FACT"
+    ]
+  },
+  {
+    "id": "R-E2-ANTEPROY",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "_modalidad",
+          "en": [
+            "B",
+            "C",
+            "D"
+          ]
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-MUN-ANTEPROY"
+    ],
+    "opcional": true
+  },
+  {
+    "id": "R-E3-27157",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "fecha_construccion",
+          "igual": "hasta_2016"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-SUN-FAB27157"
+    ]
+  },
+  {
+    "id": "R-E3-REGUL",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "fecha_construccion",
+          "igual": "2017_sep2018"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-MUN-REGULARIZ"
+    ]
+  },
+  {
+    "id": "R-E3-BENEF",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "fecha_construccion",
+          "igual": "post_sep2018"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-MUN-REG-BENEF"
+    ]
+  },
+  {
+    "id": "R-E4-PANTANOS",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "alguna": [
+        {
+          "campo": "zona_especial",
+          "igual": "pantanos_villa"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-PROH-OPINION"
+    ]
+  },
+  {
+    "id": "R-E4-ANP",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "zona_especial",
+          "igual": "anp"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-SERN-COMPAT"
+    ]
+  },
+  {
+    "id": "R-E4-CULTURA",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "zona_especial",
+          "igual": "monumental"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-CUL-AUTORIZ"
+    ]
+  },
+  {
+    "id": "R-E4-EIV",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "_modalidad",
+          "en": [
+            "C",
+            "D"
+          ]
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-EIV",
+      "P-CERT-AMB"
+    ],
+    "nota": "Segun envergadura; confirmar con la municipalidad"
+  },
+  {
+    "id": "R-E5-A",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "_modalidad",
+          "igual": "A"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-MUN-LIC-A"
+    ]
+  },
+  {
+    "id": "R-E5-B",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "_modalidad",
+          "igual": "B"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-MUN-LIC-B"
+    ],
+    "alternativas": [
+      "P-MUN-LIC-B-RU"
+    ]
+  },
+  {
+    "id": "R-E5-C",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "_modalidad",
+          "igual": "C"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-MUN-LIC-C"
+    ],
+    "alternativas": [
+      "P-MUN-LIC-C-RU"
+    ]
+  },
+  {
+    "id": "R-E5-D",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "_modalidad",
+          "igual": "D"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-MUN-LIC-D"
+    ],
+    "alternativas": [
+      "P-MUN-LIC-D-RU"
+    ]
+  },
+  {
+    "id": "R-E6-BASE",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "tipo_obra",
+          "distinto": "cerco"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-MUN-INICIO",
+      "P-MUN-VERIF-TEC",
+      "P-CARTEL"
+    ]
+  },
+  {
+    "id": "R-E6-CAR",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "_modalidad",
+          "en": [
+            "C",
+            "D"
+          ]
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-SEG-CAR"
+    ]
+  },
+  {
+    "id": "R-E6-RENOCC",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "valor_obra_soles",
+          "mayor": 275000
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-MTPE-RENOCC"
+    ],
+    "nota": "50 UIT 2026 = S/ 275,000"
+  },
+  {
+    "id": "R-E6-LABORAL",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "contrata_obreros",
+          "igual": "si"
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-MTPE-RETCC",
+      "P-SCTR",
+      "P-CONAFOVICER",
+      "P-SENCICO"
+    ]
+  },
+  {
+    "id": "R-E7-CONF",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "tipo_obra",
+          "en": [
+            "obra_nueva",
+            "ampliacion",
+            "remodelacion"
+          ]
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-MUN-CONF-SV",
+      "P-SUN-DECL-EDIF",
+      "P-MUN-DJ-PREDIAL"
+    ],
+    "alternativas": [
+      "P-MUN-CONF-CV"
+    ]
+  },
+  {
+    "id": "R-E7-MULTI",
+    "tipo": "agregar_procedimientos",
+    "si": {
+      "todas": [
+        {
+          "campo": "uso",
+          "en": [
+            "vivienda_multifamiliar",
+            "mixto"
+          ]
+        }
+      ]
+    },
+    "procedimientos": [
+      "P-SUN-RI"
+    ],
+    "alternativas": [
+      "P-MUN-CONF-ANT"
+    ]
+  },
+  {
+    "id": "A-TITULO-BLOQUEA",
+    "tipo": "alerta",
+    "nivel": "critica",
+    "si": {
+      "todas": [
+        {
+          "campo": "titulo",
+          "distinto": "inscrito"
+        }
+      ]
+    },
+    "mensaje": "Sin predio inscrito a tu nombre no puedes pedir la licencia: la municipalidad exige copia literal de SUNARP."
+  },
+  {
+    "id": "A-REG-SIN-RUTA",
+    "tipo": "alerta",
+    "nivel": "critica",
+    "si": {
+      "todas": [
+        {
+          "campo": "fecha_construccion",
+          "igual": "post_sep2018"
+        }
+      ]
+    },
+    "mensaje": "Lo construido despues del 17-09-2018 solo se regulariza si tu distrito tiene una ordenanza de beneficio vigente. Sin ella hay riesgo de multa o demolicion."
+  },
+  {
+    "id": "A-PANTANOS",
+    "tipo": "alerta",
+    "nivel": "alta",
+    "si": {
+      "todas": [
+        {
+          "campo": "zona_especial",
+          "igual": "pantanos_villa"
+        }
+      ]
+    },
+    "mensaje": "Necesitas opinion de PROHVILLA antes de la licencia. Suele ser la etapa mas larga: iniciala en paralelo con los documentos previos. Alturas de 2 a 4 pisos y area libre de 30% a 60% segun zona."
+  },
+  {
+    "id": "A-ZONA-NOSE",
+    "tipo": "alerta",
+    "nivel": "media",
+    "si": {
+      "todas": [
+        {
+          "campo": "zona_especial",
+          "igual": "no_se"
+        }
+      ]
+    },
+    "mensaje": "Pide primero el certificado de parametros: indica si el predio esta en zona especial."
+  },
+  {
+    "id": "A-EXCAV",
+    "tipo": "alerta",
+    "nivel": "media",
+    "si": {
+      "todas": [
+        {
+          "campo": "excavacion_mas_2m",
+          "igual": "si"
+        }
+      ]
+    },
+    "mensaje": "Excavaciones de mas de 2 m requieren plano de sostenimiento."
+  },
+  {
+    "id": "A-TECHO-TITULO",
+    "tipo": "alerta",
+    "nivel": "alta",
+    "si": {
+      "todas": [
+        {
+          "campo": "financiamiento",
+          "igual": "techo_propio"
+        },
+        {
+          "campo": "titulo",
+          "distinto": "inscrito"
+        }
+      ]
+    },
+    "mensaje": "Techo Propio exige terreno inscrito en SUNARP: sin sanear pierdes el bono de S/ 33,000."
+  },
+  {
+    "id": "A-OTRO-DISTRITO",
+    "tipo": "alerta",
+    "nivel": "media",
+    "si": {
+      "todas": [
+        {
+          "campo": "distrito",
+          "igual": "otro"
+        }
+      ]
+    },
+    "mensaje": "Tu distrito aun no tiene tasas cargadas: la ruta es valida (norma nacional), pero montos y canal deben confirmarse en su TUPA."
+  },
+  {
+    "id": "PG-TECHO",
+    "tipo": "programa",
+    "si": {
+      "todas": [
+        {
+          "campo": "financiamiento",
+          "igual": "techo_propio"
+        },
+        {
+          "campo": "uso",
+          "igual": "vivienda_unifamiliar"
+        }
+      ]
+    },
+    "programa_id": "PR-TP-CSP"
+  },
+  {
+    "id": "PG-COFOPRI",
+    "tipo": "programa",
+    "si": {
+      "alguna": [
+        {
+          "campo": "titulo",
+          "igual": "posesion_estatal"
+        },
+        {
+          "campo": "titulo",
+          "igual": "posesion_privada"
+        }
+      ]
+    },
+    "programa_id": "PR-COFOPRI"
+  },
+  {
+    "id": "PG-CREDITO",
+    "tipo": "programa",
+    "si": {
+      "todas": [
+        {
+          "campo": "financiamiento",
+          "igual": "credito"
+        }
+      ]
+    },
+    "programa_id": "PR-MIVIVIENDA"
+  }
+]
