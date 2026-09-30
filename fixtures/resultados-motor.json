@@ -1,0 +1,756 @@
+{
+  "caso-angel": {
+    "modalidad": "B",
+    "pasos": [
+      {
+        "procedimiento_id": "P-SUN-CRI",
+        "opcional": false,
+        "regla_id": "R-E1-COMPRAVENTA",
+        "etapa_id": "E1",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-NOT-ESCRITURA",
+        "opcional": false,
+        "regla_id": "R-E1-COMPRAVENTA",
+        "etapa_id": "E1",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SUN-INSC-CV",
+        "opcional": false,
+        "regla_id": "R-E1-COMPRAVENTA",
+        "etapa_id": "E1",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SUN-ALERTA",
+        "opcional": false,
+        "regla_id": "R-E1-COMPRAVENTA",
+        "etapa_id": "E1",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SUN-COPIA",
+        "opcional": false,
+        "regla_id": "R-E1-SIEMPRE",
+        "etapa_id": "E1",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-PARAM",
+        "opcional": false,
+        "regla_id": "R-E2-PARAM",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SED-FACT",
+        "opcional": false,
+        "regla_id": "R-E2-FACT",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-ELE-FACT",
+        "opcional": false,
+        "regla_id": "R-E2-FACT",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-ANTEPROY",
+        "opcional": true,
+        "regla_id": "R-E2-ANTEPROY",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SUN-FAB27157",
+        "opcional": false,
+        "regla_id": "R-E3-27157",
+        "etapa_id": "E3",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-PROH-OPINION",
+        "opcional": false,
+        "regla_id": "R-E4-PANTANOS",
+        "etapa_id": "E4",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-LIC-B",
+        "opcional": false,
+        "regla_id": "R-E5-B",
+        "etapa_id": "E5",
+        "alternativas": [
+          "P-MUN-LIC-B-RU"
+        ]
+      },
+      {
+        "procedimiento_id": "P-MUN-INICIO",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-VERIF-TEC",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-CARTEL",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MTPE-RETCC",
+        "opcional": false,
+        "regla_id": "R-E6-LABORAL",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SCTR",
+        "opcional": false,
+        "regla_id": "R-E6-LABORAL",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-CONAFOVICER",
+        "opcional": false,
+        "regla_id": "R-E6-LABORAL",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SENCICO",
+        "opcional": false,
+        "regla_id": "R-E6-LABORAL",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-CONF-SV",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": [
+          "P-MUN-CONF-CV"
+        ]
+      },
+      {
+        "procedimiento_id": "P-SUN-DECL-EDIF",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-DJ-PREDIAL",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": []
+      }
+    ],
+    "alertas": [
+      {
+        "id": "A-TITULO-BLOQUEA",
+        "nivel": "critica",
+        "mensaje": "Sin predio inscrito a tu nombre no puedes pedir la licencia: la municipalidad exige copia literal de SUNARP."
+      },
+      {
+        "id": "A-PANTANOS",
+        "nivel": "alta",
+        "mensaje": "Necesitas opinion de PROHVILLA antes de la licencia. Suele ser la etapa mas larga: iniciala en paralelo con los documentos previos. Alturas de 2 a 4 pisos y area libre de 30% a 60% segun zona."
+      }
+    ],
+    "programas": []
+  },
+  "unifamiliar-simple": {
+    "modalidad": "A",
+    "pasos": [
+      {
+        "procedimiento_id": "P-SUN-COPIA",
+        "opcional": false,
+        "regla_id": "R-E1-SIEMPRE",
+        "etapa_id": "E1",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-PARAM",
+        "opcional": false,
+        "regla_id": "R-E2-PARAM",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-LIC-A",
+        "opcional": false,
+        "regla_id": "R-E5-A",
+        "etapa_id": "E5",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-INICIO",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-VERIF-TEC",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-CARTEL",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-CONF-SV",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": [
+          "P-MUN-CONF-CV"
+        ]
+      },
+      {
+        "procedimiento_id": "P-SUN-DECL-EDIF",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-DJ-PREDIAL",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": []
+      }
+    ],
+    "alertas": [],
+    "programas": []
+  },
+  "multifamiliar-7-pisos": {
+    "modalidad": "C",
+    "pasos": [
+      {
+        "procedimiento_id": "P-SUN-COPIA",
+        "opcional": false,
+        "regla_id": "R-E1-SIEMPRE",
+        "etapa_id": "E1",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-PARAM",
+        "opcional": false,
+        "regla_id": "R-E2-PARAM",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SED-FACT",
+        "opcional": false,
+        "regla_id": "R-E2-FACT",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-ELE-FACT",
+        "opcional": false,
+        "regla_id": "R-E2-FACT",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-ANTEPROY",
+        "opcional": true,
+        "regla_id": "R-E2-ANTEPROY",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-EIV",
+        "opcional": false,
+        "regla_id": "R-E4-EIV",
+        "etapa_id": "E4",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-CERT-AMB",
+        "opcional": false,
+        "regla_id": "R-E4-EIV",
+        "etapa_id": "E4",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-LIC-C",
+        "opcional": false,
+        "regla_id": "R-E5-C",
+        "etapa_id": "E5",
+        "alternativas": [
+          "P-MUN-LIC-C-RU"
+        ]
+      },
+      {
+        "procedimiento_id": "P-MUN-INICIO",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-VERIF-TEC",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-CARTEL",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SEG-CAR",
+        "opcional": false,
+        "regla_id": "R-E6-CAR",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MTPE-RENOCC",
+        "opcional": false,
+        "regla_id": "R-E6-RENOCC",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MTPE-RETCC",
+        "opcional": false,
+        "regla_id": "R-E6-LABORAL",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SCTR",
+        "opcional": false,
+        "regla_id": "R-E6-LABORAL",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-CONAFOVICER",
+        "opcional": false,
+        "regla_id": "R-E6-LABORAL",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SENCICO",
+        "opcional": false,
+        "regla_id": "R-E6-LABORAL",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-CONF-SV",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": [
+          "P-MUN-CONF-CV"
+        ]
+      },
+      {
+        "procedimiento_id": "P-SUN-DECL-EDIF",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-DJ-PREDIAL",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SUN-RI",
+        "opcional": false,
+        "regla_id": "R-E7-MULTI",
+        "etapa_id": "E7",
+        "alternativas": [
+          "P-MUN-CONF-ANT"
+        ]
+      }
+    ],
+    "alertas": [
+      {
+        "id": "A-EXCAV",
+        "nivel": "media",
+        "mensaje": "Excavaciones de mas de 2 m requieren plano de sostenimiento."
+      }
+    ],
+    "programas": []
+  },
+  "regularizacion-2017": {
+    "modalidad": "A",
+    "pasos": [
+      {
+        "procedimiento_id": "P-SUN-COPIA",
+        "opcional": false,
+        "regla_id": "R-E1-SIEMPRE",
+        "etapa_id": "E1",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-PARAM",
+        "opcional": false,
+        "regla_id": "R-E2-PARAM",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-REGULARIZ",
+        "opcional": false,
+        "regla_id": "R-E3-REGUL",
+        "etapa_id": "E3",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-LIC-A",
+        "opcional": false,
+        "regla_id": "R-E5-A",
+        "etapa_id": "E5",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-INICIO",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-VERIF-TEC",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-CARTEL",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-CONF-SV",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": [
+          "P-MUN-CONF-CV"
+        ]
+      },
+      {
+        "procedimiento_id": "P-SUN-DECL-EDIF",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-DJ-PREDIAL",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": []
+      }
+    ],
+    "alertas": [],
+    "programas": []
+  },
+  "post-2018-techo-propio": {
+    "modalidad": "B",
+    "pasos": [
+      {
+        "procedimiento_id": "P-COF-FORMALIZ",
+        "opcional": false,
+        "regla_id": "R-E1-ESTATAL",
+        "etapa_id": "E1",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SUN-ALERTA",
+        "opcional": false,
+        "regla_id": "R-E1-ESTATAL",
+        "etapa_id": "E1",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SUN-COPIA",
+        "opcional": false,
+        "regla_id": "R-E1-SIEMPRE",
+        "etapa_id": "E1",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-PARAM",
+        "opcional": false,
+        "regla_id": "R-E2-PARAM",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SED-FACT",
+        "opcional": false,
+        "regla_id": "R-E2-FACT",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-ELE-FACT",
+        "opcional": false,
+        "regla_id": "R-E2-FACT",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-ANTEPROY",
+        "opcional": true,
+        "regla_id": "R-E2-ANTEPROY",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-REG-BENEF",
+        "opcional": false,
+        "regla_id": "R-E3-BENEF",
+        "etapa_id": "E3",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-LIC-B",
+        "opcional": false,
+        "regla_id": "R-E5-B",
+        "etapa_id": "E5",
+        "alternativas": [
+          "P-MUN-LIC-B-RU"
+        ]
+      },
+      {
+        "procedimiento_id": "P-MUN-INICIO",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-VERIF-TEC",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-CARTEL",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-CONF-SV",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": [
+          "P-MUN-CONF-CV"
+        ]
+      },
+      {
+        "procedimiento_id": "P-SUN-DECL-EDIF",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-DJ-PREDIAL",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": []
+      }
+    ],
+    "alertas": [
+      {
+        "id": "A-TITULO-BLOQUEA",
+        "nivel": "critica",
+        "mensaje": "Sin predio inscrito a tu nombre no puedes pedir la licencia: la municipalidad exige copia literal de SUNARP."
+      },
+      {
+        "id": "A-REG-SIN-RUTA",
+        "nivel": "critica",
+        "mensaje": "Lo construido despues del 17-09-2018 solo se regulariza si tu distrito tiene una ordenanza de beneficio vigente. Sin ella hay riesgo de multa o demolicion."
+      },
+      {
+        "id": "A-ZONA-NOSE",
+        "nivel": "media",
+        "mensaje": "Pide primero el certificado de parametros: indica si el predio esta en zona especial."
+      },
+      {
+        "id": "A-TECHO-TITULO",
+        "nivel": "alta",
+        "mensaje": "Techo Propio exige terreno inscrito en SUNARP: sin sanear pierdes el bono de S/ 33,000."
+      },
+      {
+        "id": "A-OTRO-DISTRITO",
+        "nivel": "media",
+        "mensaje": "Tu distrito aun no tiene tasas cargadas: la ruta es valida (norma nacional), pero montos y canal deben confirmarse en su TUPA."
+      }
+    ],
+    "programas": [
+      "PR-TP-CSP",
+      "PR-COFOPRI"
+    ]
+  },
+  "comercio-grande": {
+    "modalidad": "D",
+    "pasos": [
+      {
+        "procedimiento_id": "P-SUN-COPIA",
+        "opcional": false,
+        "regla_id": "R-E1-SIEMPRE",
+        "etapa_id": "E1",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-PARAM",
+        "opcional": false,
+        "regla_id": "R-E2-PARAM",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SED-FACT",
+        "opcional": false,
+        "regla_id": "R-E2-FACT",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-ELE-FACT",
+        "opcional": false,
+        "regla_id": "R-E2-FACT",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-ANTEPROY",
+        "opcional": true,
+        "regla_id": "R-E2-ANTEPROY",
+        "etapa_id": "E2",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-EIV",
+        "opcional": false,
+        "regla_id": "R-E4-EIV",
+        "etapa_id": "E4",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-CERT-AMB",
+        "opcional": false,
+        "regla_id": "R-E4-EIV",
+        "etapa_id": "E4",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-LIC-D",
+        "opcional": false,
+        "regla_id": "R-E5-D",
+        "etapa_id": "E5",
+        "alternativas": [
+          "P-MUN-LIC-D-RU"
+        ]
+      },
+      {
+        "procedimiento_id": "P-MUN-INICIO",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-VERIF-TEC",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-CARTEL",
+        "opcional": false,
+        "regla_id": "R-E6-BASE",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-SEG-CAR",
+        "opcional": false,
+        "regla_id": "R-E6-CAR",
+        "etapa_id": "E6",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-CONF-SV",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": [
+          "P-MUN-CONF-CV"
+        ]
+      },
+      {
+        "procedimiento_id": "P-SUN-DECL-EDIF",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": []
+      },
+      {
+        "procedimiento_id": "P-MUN-DJ-PREDIAL",
+        "opcional": false,
+        "regla_id": "R-E7-CONF",
+        "etapa_id": "E7",
+        "alternativas": []
+      }
+    ],
+    "alertas": [],
+    "programas": []
+  }
+}

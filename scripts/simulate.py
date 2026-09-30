@@ -4,6 +4,8 @@ fixtures/casos.json y compara con lo esperado.
 
 Uso:  python scripts/simulate.py            -> corre todos los casos
       python scripts/simulate.py caso-angel  -> imprime la ruta de un caso
+      python scripts/simulate.py --export    -> escribe fixtures/resultados-motor.json
+                                                (salida completa que el test de paridad TS compara)
 """
 import json
 import sys
@@ -70,6 +72,12 @@ def diagnosticar(respuestas: dict) -> dict:
 
 def main():
     casos = json.loads((ROOT / "fixtures" / "casos.json").read_text(encoding="utf-8"))
+    if sys.argv[1:] == ["--export"]:
+        salida = {c["id"]: diagnosticar(c["respuestas"]) for c in casos}
+        destino = ROOT / "fixtures" / "resultados-motor.json"
+        destino.write_text(json.dumps(salida, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+        print(f"{len(salida)} casos exportados a {destino.relative_to(ROOT).as_posix()}")
+        return
     if len(sys.argv) > 1:
         caso = next(c for c in casos if c["id"] == sys.argv[1])
         res = diagnosticar(caso["respuestas"])
