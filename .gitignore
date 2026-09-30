@@ -9,6 +9,7 @@ __pycache__/
 .DS_Store
 coverage/
 playwright-report/
+test-results/
 ~$*.xlsx
 .venv/
 *.tsbuildinfo
