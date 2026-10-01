@@ -1,6 +1,6 @@
 # Kit de validación
 
-Objetivo: saber en 3–4 semanas si hay un negocio que pague, antes de construir el backend.
+Objetivo: saber en 3–4 semanas si hay un negocio que pague, antes de invertir en pagos, más distritos y el agente. Desde la Fase 5 los entrevistados pueden crear su cuenta y cargar casos reales (sus datos quedan en el servidor, no en el navegador); hacer las entrevistas con datos reales solo después de publicar la página de privacidad (PRD, sección 7).
 
 ## 1. A quién entrevistar (8–10 personas)
 
@@ -70,7 +70,7 @@ Los precios son hipótesis para probar, no una recomendación. Ajústalos con lo
 
 | Resultado a las 3–4 semanas | Decisión |
 |---|---|
-| ≥ 3 compromisos pagados o cartas de intención y ≥ 5 de 8 confirman ahorro de ≥ 1 h por caso | **Seguir**: backend, auth, 5 distritos más |
+| ≥ 3 compromisos pagados o cartas de intención y ≥ 5 de 8 confirman ahorro de ≥ 1 h por caso | **Seguir**: pagos y suscripciones, 5 distritos más (extracción asistida de TUPAs), agente de consultas y migración a AWS |
 | Interés alto, pero sin compromiso de pago | **Pivotar el cliente**: probar con consultoras (B2B) o con inmobiliarias; o el modelo SEO + leads para profesionales |
 | Dicen que ya lo resuelven bien con Excel o su asistente, y el dolor es bajo | **Parar** y guardar el caso como pieza de portafolio (PM + Data) |
 

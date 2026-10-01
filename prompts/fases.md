@@ -10,14 +10,22 @@
 | 1 | Dominio, motor de reglas y paridad con Python | Hecha (#2) | — |
 | 2 | Diagnóstico (F1) | Hecha (#3) | — |
 | 3 | Hoja de ruta (F2) y fuentes (F7) | Hecha (#5) | — |
-| 4 | Expedientes, checklist y alertas (F3, F4, F5) | Hecha (#8) | — |
-| 5 | Bitácora de obra (F6) | Pendiente | Siguiente |
-| 6 | Landing, pulido y despliegue | Pendiente | Antes de las entrevistas |
-| 7 | Vigilancia automática de fuentes | Pendiente | Independiente: puede hacerse en cualquier momento; conviene antes de las entrevistas |
-| 8 | Antigüedad visible y "Reportar un dato desactualizado" | Pendiente | Después de 7 |
-| 9 | Extracción asistida por IA de TUPAs | Pendiente | Cuando haya que cargar distritos nuevos o la Fase 7 detecte un TUPA nuevo |
+| 4 | Expedientes, checklist y alertas (F3, F4, F5), guardados en el navegador | Hecha (#8) | — |
+| 5 | Backend, cuentas y persistencia (F8): Neon + Cloudflare R2 + Better Auth | Pendiente | **Siguiente**: antes de la bitácora y de cargar datos reales |
+| 6 | Bitácora de obra (F6), con fotos en R2 | Pendiente | Después de 5 |
+| 7 | Landing, pulido, modo demo y despliegue | Pendiente | Antes de las entrevistas |
+| 8 | Vigilancia automática de fuentes | Pendiente | Independiente: puede hacerse en cualquier momento; conviene antes de las entrevistas |
+| 9 | Antigüedad visible y "Reportar un dato desactualizado" | Pendiente | Después de 8 |
+| 10 | Extracción asistida por IA de TUPAs | Pendiente | Cuando haya que cargar distritos nuevos o la Fase 8 detecte un TUPA nuevo |
+| 11 | Agente de consultas y migración a AWS | Futuro | Después de validar con profesionales (ver PRD, sección 9) |
 
-Las fases 7 a 9 forman el **ciclo de mantenimiento de datos**: la 7 detecta qué cambió, el flujo de actualización con revisión (ver "Prompts de mantenimiento") lo corrige con un PR `data:`, la 8 hace visible la antigüedad y recoge reportes de los usuarios, y la 9 acelera la carga de montos nuevos. Ninguna cambia datos sin revisión humana (ver "Reglas del mantenimiento de datos").
+**Dónde vive cada dato** (detalle en `docs/PRD.md`, sección 6):
+- Base de conocimiento (trámites, tarifas, reglas): JSON en `data/`, versionado en git y revisado por PR. No va a la base de datos.
+- Datos de los usuarios (expedientes, predios, actores, pasos, documentos, bitácora): Postgres en Neon desde la Fase 5.
+- Archivos (fotos de obra, documentos escaneados): Cloudflare R2 desde la Fase 5.
+- Navegador (`localStorage`): solo el modo invitado y el modo demo. Al crear cuenta se ofrece subir lo que haya en el navegador.
+
+Las fases 8 a 10 forman el **ciclo de mantenimiento de datos**: la 8 detecta qué cambió, el flujo de actualización con revisión (ver "Prompts de mantenimiento") lo corrige con un PR `data:`, la 9 hace visible la antigüedad y recoge reportes de los usuarios, y la 10 acelera la carga de montos nuevos. Ninguna cambia datos sin revisión humana (ver "Reglas del mantenimiento de datos").
 
 ---
 
@@ -110,7 +118,7 @@ Crea app/fuentes con fuentes.json, normas.json, fecha de corte y aviso legal.
 - `/diagnostico/hoja-de-ruta`: línea de tiempo E1–E7 con tarjetas plegables.
 - `/fuentes`: fecha de corte, etiquetas, cobertura por distrito, normas y fuentes por tipo, aviso legal.
 - Invariante probada: ningún monto sin fuente en los 6 casos × 4 distritos + sin distrito.
-- Pendiente de datos que la app deja a la vista: montos de Chorrillos y Villa El Salvador (Fase 9 o carga manual). Si se quiere el monto exacto en vez del rango, agregar a `reglas.json` reglas que elijan la variante según las respuestas.
+- Pendiente de datos que la app deja a la vista: montos de Chorrillos y Villa El Salvador (Fase 10 o carga manual). Si se quiere el monto exacto en vez del rango, agregar a `reglas.json` reglas que elijan la variante según las respuestas.
 
 ---
 
@@ -161,28 +169,109 @@ Crea app/fuentes con fuentes.json, normas.json, fecha de corte y aviso legal.
 ```
 **Aceptación:** crear 3 expedientes de prueba, marcar una observación y ver la alerta de 5 días hábiles; recargar la página no pierde nada; con `localStorage` bloqueado la app avisa y no se rompe; cobertura del dominio ≥ 90 %.
 
+**Entregado (#8):**
+- Dominio puro: `expediente.ts` (crear, pasos, documentos, datos, migración por `version_datos`, resumen), `checklist.ts`, `alerts.ts` (vencimientos y plazo de subsanación según `vencimientos.json`) y `analisis.ts`.
+- `ExpedienteRepository` y su implementación con `localStorage` (validación Zod, registros corruptos conservados, almacenamiento bloqueado controlado, exportar e importar respaldos).
+- Tablero con filtros, detalle con pestañas Ruta / Checklist / Alertas / Datos, seguimiento de cada trámite.
+- Limitación conocida, resuelta en la Fase 5: los datos viven solo en el navegador (se pierden al borrarlo, no se comparten entre personas ni equipos).
+
 ---
 
-## Fase 5: Bitácora de obra (F6)
+## Fase 5: Backend, cuentas y persistencia (F8)
+
+Objetivo: que los expedientes vivan en un servidor, con cuentas y estudios de varias personas, sin cambiar las pantallas (la UI solo usa `ExpedienteRepository`). Stack gratuito ahora y fácil de llevar a AWS después (ver PRD, sección 6).
+
+Antes de empezar, la persona dueña del proyecto crea las cuentas y pasa las variables (nunca al repo):
+- Neon: proyecto en la región más cercana disponible (São Paulo si existe; si no, us-east). Una rama `main` para producción y otra `preview` para las vistas previas de Vercel. Variables: `DATABASE_URL` (con pooling) y `DATABASE_URL_UNPOOLED` (para migraciones).
+- Cloudflare R2: bucket privado `rutaobra-archivos` y un token de API con permiso solo sobre ese bucket. Variables: `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`.
+- Google Cloud: cliente OAuth (pantalla de consentimiento con el dominio de Vercel). Variables: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`.
+- Correo para enlaces de acceso: Resend (plan gratuito). Variable: `RESEND_API_KEY` y remitente verificado.
+- `BETTER_AUTH_SECRET` (aleatorio) y `BETTER_AUTH_URL`.
+Las variables se cargan en Vercel (producción y preview) y en `.env.local` para desarrollo; `.env.example` lista los nombres sin valores.
+
+```
+1. Base de datos (Neon Postgres + Drizzle ORM):
+   - src/data/db/schema.ts con Drizzle, mapeado 1:1 a schema/expediente.schema.json:
+     estudios (id, nombre, creado_en), miembros (estudio_id, usuario_id, rol: dueno | miembro),
+     predios, expedientes (estudio_id, predio_id, nombre, respuestas_diagnostico jsonb, modalidad,
+     version_datos, creado_por, creado_en, actualizado_en), pasos, actores, documentos_cargados,
+     entradas_bitacora, archivos (estudio_id, expediente_id, clave_r2, tipo, tamano, creado_por).
+     Claves foráneas con ON DELETE CASCADE desde expediente; índices por estudio_id y expediente_id.
+   - Migraciones versionadas en drizzle/ generadas con drizzle-kit (pnpm db:generate) y aplicadas con
+     pnpm db:migrate usando DATABASE_URL_UNPOOLED. Nunca editar una migración ya aplicada.
+   - src/data/db/client.ts: cliente @neondatabase/serverless + drizzle, solo en servidor
+     (import "server-only").
+2. Cuentas (Better Auth, tablas en el mismo Postgres):
+   - Ingreso con Google y con enlace mágico por correo (Resend). Sin contraseñas.
+   - Al primer ingreso se crea el estudio personal del usuario ("Estudio de <nombre>") y queda como
+     dueño. El dueño puede invitar por correo a otros miembros; todos ven los expedientes del estudio.
+   - app/api/auth/[...all]/route.ts, app/ingresar/page.tsx y menú de cuenta en el encabezado.
+   - Rutas /expedientes protegidas: sin sesión, modo invitado (ver punto 5).
+3. Repositorio en el servidor:
+   - src/data/expediente-repo.db.ts implementa ExpedienteRepository con Drizzle. TODA consulta filtra
+     por el estudio de la sesión; un id de otro estudio se responde como "no existe".
+   - Server Actions (app/expedientes/acciones.ts) que validan la sesión y la entrada con Zod y
+     llaman al repositorio; src/data/expediente-repo.remoto.ts implementa la misma interfaz en el
+     cliente llamando a esas acciones. Las pantallas no cambian: solo el proveedor elige la
+     implementación (remota con sesión, local sin sesión).
+   - Concurrencia: actualizar() recibe actualizado_en y rechaza si otro miembro guardó antes
+     ("Este expediente cambió, recarga para ver la última versión").
+   - Tests de contrato: la misma batería de tests corre contra la versión local y contra la de base
+     de datos (Postgres de prueba en CI con un servicio de GitHub Actions o rama efímera de Neon),
+     incluido "un estudio no ve ni modifica expedientes de otro".
+4. Archivos (Cloudflare R2 con la API de S3, @aws-sdk/client-s3):
+   - src/data/archivos.ts: subir con URL prefirmada (PUT, 5 min, máximo 10 MB, solo imágenes y PDF),
+     descargar con URL prefirmada (GET, 10 min). Claves: <estudio_id>/<expediente_id>/<uuid>.<ext>.
+     Bucket privado: nunca enlaces públicos.
+   - El mismo código funcionará con AWS S3 cambiando solo endpoint y credenciales.
+5. Modo invitado y migración sin pérdida:
+   - Sin sesión, los expedientes siguen en localStorage (como hoy) con un aviso: "Se guardan solo
+     en este navegador. Crea tu cuenta para no perderlos y compartirlos con tu equipo."
+   - Al iniciar sesión, si hay expedientes en el navegador: "Subir N expedientes a tu cuenta". Se
+     suben uno por uno (validados), se informa el resultado y solo entonces se ofrece borrarlos del
+     navegador. El respaldo JSON sigue disponible.
+6. Datos personales (Ley 29733):
+   - Página /privacidad: qué datos se guardan, para qué, dónde (proveedores y país), cuánto tiempo,
+     cómo pedir acceso, corrección o eliminación, y contacto del responsable.
+   - Consentimiento al crear la cuenta y aviso al registrar datos de terceros (propietarios,
+     profesionales): "Registra solo los datos necesarios y con autorización de la persona".
+   - Eliminar la cuenta borra los expedientes y archivos del estudio (si el usuario es el único
+     dueño), con confirmación.
+   - Revisar con un abogado la inscripción del banco de datos ante la Autoridad Nacional de
+     Protección de Datos Personales antes de cargar datos reales de clientes.
+7. Seguridad y operación:
+   - Secretos solo en variables de entorno; nada de claves en el repo ni en el cliente.
+   - La base de datos y R2 solo se usan desde el servidor.
+   - Respaldo: script pnpm db:respaldo (pg_dump a un archivo local) documentado en el README; los
+     planes gratuitos tienen retención corta: antes de cargar datos reales, decidir plan o rutina de
+     respaldo semanal.
+   - CI: job app corre migraciones contra la base de prueba y los tests de contrato.
+```
+**Aceptación:** iniciar sesión con Google o enlace mágico; crear un expediente, cerrar sesión y verlo desde otro navegador al volver a entrar; un segundo miembro invitado al estudio ve y edita el mismo expediente; un usuario de otro estudio no puede verlo ni por URL; los expedientes del modo invitado se suben a la cuenta sin perder pasos, documentos ni fechas; subir y ver una imagen privada desde R2; tests de contrato en verde contra ambas implementaciones; ningún secreto en el repo.
+
+---
+
+## Fase 6: Bitácora de obra (F6)
 
 ```
 1. Pestaña "Bitácora" en el expediente con alta rápida (pensada para usarse en obra, en el celular):
    tipo (avance, compra, pago, visita municipal, reunión, incidencia, cambio de obra, otro), fecha
    (hoy por defecto), descripción, monto, % de avance y responsable elegido entre los actores.
-2. Fotos: archivo local convertido a data URL, máximo 1 MB por foto (se comprime antes si es más
-   grande; si aun así no entra, se avisa). Aviso cuando el almacenamiento del navegador se acerca al
-   límite, con sugerencia de exportar el respaldo.
+2. Fotos en Cloudflare R2 (Fase 5): se comprimen en el navegador antes de subir (lado mayor 1600 px,
+   JPEG ~80 %), se suben con URL prefirmada y la entrada guarda solo la referencia al archivo. Se
+   ven con URL prefirmada temporal. Máximo 10 MB por archivo. En modo invitado (sin cuenta) las
+   fotos no se guardan: se invita a crear la cuenta.
 3. Vista cronológica (más reciente primero), agrupada por mes, con filtros por tipo y por
-   responsable; editar y eliminar entradas.
+   responsable; editar y eliminar entradas (al eliminar, se borran también sus fotos de R2).
 4. Totales (domain/bitacora.ts, puro): gasto por tipo y por mes, gasto total, último % de avance
    registrado. Montos en S/ 1,234.50 y fechas dd/mm/aaaa.
-5. Tests del dominio de totales; la bitácora entra en el respaldo JSON del expediente.
+5. Tests del dominio de totales; la bitácora (sin las fotos) entra en el respaldo JSON del expediente.
 ```
-**Aceptación:** registrar 10 entradas; los totales cuadran; se ve bien en móvil; una foto de más de 1 MB se comprime o se rechaza con aviso.
+**Aceptación:** registrar 10 entradas; los totales cuadran; se ve bien en móvil; una foto tomada con el celular se comprime, se sube a R2 y se ve desde otro equipo del mismo estudio; un usuario de otro estudio no puede abrirla.
 
 ---
 
-## Fase 6: Landing, pulido y despliegue
+## Fase 7: Landing, pulido y despliegue
 
 ```
 1. Landing (app/page.tsx) para profesionales gestores: "Todos tus expedientes de obra, de SUNARP a
@@ -192,18 +281,20 @@ Crea app/fuentes con fuentes.json, normas.json, fecha de corte y aviso legal.
    cerca de Pantanos de Villa: qué se descubrió antes de que la municipalidad observara); aviso
    legal y enlace a "Cómo sabemos esto".
 2. Modo demo: botón "Ver demo" que carga 3 expedientes de ejemplo desde fixtures (uno en cada
-   estado: recién creado, con observación, casi terminado) marcados como demo y fáciles de borrar.
+   estado: recién creado, con observación, casi terminado) en el modo invitado (navegador), marcados
+   como demo y fáciles de borrar. No toca la base de datos ni requiere cuenta.
 3. Accesibilidad: etiquetas en todos los campos, contraste AA, foco visible, navegación por
    teclado, textos alternativos.
 4. SEO y compartir: título y descripción por página, Open Graph e imagen para WhatsApp, sitemap y
    robots.
-5. README: cómo correr el proyecto, comandos, flujo de PR y despliegue en Vercel.
+5. README: cómo correr el proyecto, variables de entorno (.env.example), migraciones, respaldo de
+   la base de datos, comandos, flujo de PR y despliegue en Vercel.
 ```
 **Aceptación:** Lighthouse móvil ≥ 90 en Performance y Accesibilidad; el modo demo carga en 1 clic.
 
 ---
 
-## Fase 7: Vigilancia automática de fuentes
+## Fase 8: Vigilancia automática de fuentes
 
 Objetivo: enterarse cada semana de qué fuentes cambiaron, se cayeron o llevan mucho tiempo sin revisarse, **sin cambiar ningún dato**. Corre en GitHub Actions, fuera de la app (respeta "no scraping desde la app").
 
@@ -249,7 +340,7 @@ Crea scripts/watch_sources.py y .github/workflows/vigilancia-fuentes.yml.
 
 ---
 
-## Fase 8: Antigüedad visible y "Reportar un dato desactualizado"
+## Fase 9: Antigüedad visible y "Reportar un dato desactualizado"
 
 Objetivo: que el usuario vea qué tan reciente es cada dato y pueda avisar cuando la realidad no coincide.
 
@@ -282,7 +373,7 @@ Objetivo: que el usuario vea qué tan reciente es cada dato y pueda avisar cuand
 
 ---
 
-## Fase 9: Extracción asistida por IA de TUPAs
+## Fase 10: Extracción asistida por IA de TUPAs
 
 Objetivo: cargar montos de un TUPA nuevo en minutos, siempre con revisión humana antes de marcarlos como verificados.
 
@@ -309,12 +400,39 @@ Crea scripts/extract_tupa.py (Python, fuera de la app):
    del commit.
 6. Revisión humana: quien revisa compara cada fila con el PDF y cambia a "verificado" en el mismo PR
    solo las que confirmó. Nunca auto-merge.
-7. Disparadores: manual, o desde el issue de la Fase 7 cuando una fuente de TUPA aparece como
+7. Disparadores: manual, o desde el issue de la Fase 8 cuando una fuente de TUPA aparece como
    CAMBIÓ (workflow_dispatch con ubigeo y URL).
 8. Tests: con un PDF pequeño de prueba en scripts/tests/fixtures y la llamada a la API simulada,
    verifica el mapeo, el formato de las filas y que nada sale como "verificado".
 ```
 **Aceptación:** correr el script con el TUPA 2025 de Villa El Salvador genera un PR con sus montos de edificación en `por_verificar`, cada uno con su página del PDF; CI en verde; la hoja de ruta de Villa El Salvador muestra esos montos con la etiqueta "Por confirmar" hasta que se verifiquen.
+
+---
+
+## Fase 11: Agente de consultas y migración a AWS (futuro)
+
+Objetivo: que cualquier usuario consulte en lenguaje natural ("¿qué necesito para ampliar mi casa en Chorrillos?", "¿qué me falta en el expediente Casa Pérez?") con respuestas basadas en los datos y el motor, nunca inventadas. Se hace después de validar con profesionales. Este bloque es un esquema, no un prompt listo.
+
+```
+1. Agente (Claude como modelo) con herramientas que llaman al dominio, no a texto libre:
+   diagnosticar(respuestas), armar_hoja_ruta(respuestas, ubigeo), consultar_tarifa(ubigeo,
+   procedimiento), ver_fuente(id), y con sesión: listar_expedientes(), estado_expediente(id),
+   alertas(id). Cada respuesta cita las fuentes y respeta las etiquetas de verificación: si un dato
+   no está verificado, lo dice; si no hay monto, responde "Consultar TUPA" (regla 5).
+2. Preguntas del diagnóstico que falten: el agente las hace en la conversación con las opciones de
+   diagnostico_preguntas.json, en vez de suponer respuestas.
+3. Opcional: exponer las mismas herramientas como servidor MCP para otros asistentes.
+4. Migración a AWS (cuando el agente lo justifique):
+   - Neon → RDS o Aurora Postgres (pg_dump / pg_restore; Drizzle no cambia).
+   - Cloudflare R2 → S3 (mismo SDK; cambia endpoint y credenciales; copiar objetos con rclone).
+   - Better Auth se queda (sus tablas viajan con la base de datos).
+   - Modelo vía Amazon Bedrock (Claude) o API de Anthropic; herramientas en Lambda o en el mismo
+     servidor de la app.
+   - Hosting: mantener Vercel o pasar a AWS Amplify / ECS según costo y latencia.
+5. Evaluación: batería de preguntas reales con respuesta esperada (casos de fixtures/casos.json en
+   lenguaje natural); el agente no puede dar un monto que no exista en los datos.
+```
+**Aceptación (cuando se haga):** el agente responde los 6 casos de `fixtures/casos.json` planteados en lenguaje natural con la misma modalidad, pasos y alertas que el motor; cada monto que menciona existe en `data/` con su fuente; la migración a AWS no pierde expedientes ni archivos (conteos y sumas de verificación iguales antes y después).
 
 ---
 
@@ -330,7 +448,7 @@ Crea scripts/extract_tupa.py (Python, fuera de la app):
 
 | Cuándo | Qué revisar |
 |---|---|
-| Cada lunes | Issue "Vigilancia de fuentes" (Fase 7): caídas y cambios |
+| Cada lunes | Issue "Vigilancia de fuentes" (Fase 8): caídas y cambios |
 | Cada enero | UIT del año (`meta.uit`) y TUPAs adecuados en el año |
 | Cada convocatoria | Programas (Techo Propio, MiVivienda): montos, requisitos y vigencia |
 | Al publicarse una norma | Ley 29090 y reglamentos en El Peruano: requisitos, plazos y modalidades (puede requerir reglas nuevas) |
@@ -340,7 +458,7 @@ Crea scripts/extract_tupa.py (Python, fuera de la app):
 
 ## Prompts de mantenimiento
 
-**Actualizar un dato que cambió** (flujo de revisión; úsalo con lo que reporte la Fase 7 o un usuario)
+**Actualizar un dato que cambió** (flujo de revisión; úsalo con lo que reporte la Fase 8 o un usuario)
 ```
 Cambió <dato> según <fuente/URL o issue #N>. Actualiza data/ en una rama data/<tema>:
 1. Corrige el valor (monto, requisito, plazo o texto) sin borrar el dato anterior si sigue vigente
@@ -357,7 +475,7 @@ Cambió <dato> según <fuente/URL o issue #N>. Actualiza data/ en una rama data/
 ```
 Agrega el distrito <nombre> (ubigeo <código>) siguiendo docs/modelo-datos.md > "Cómo agregar un
 distrito". Te paso el TUPA en <ruta al PDF>. Extrae SOLO procedimientos de edificación (o usa
-scripts/extract_tupa.py si ya existe la Fase 9). Cada monto entra con estado_verificacion
+scripts/extract_tupa.py si ya existe la Fase 10). Cada monto entra con estado_verificacion
 "por_verificar", su código TUPA, la página del PDF y la fuente; pasa a "verificado" solo después de
 compararlo con el PDF. Corre validate_data.py, simulate.py, simulate.py --export y export_excel.py.
 ```

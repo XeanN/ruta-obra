@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://rutaobra.pe/schema/expediente.schema.json",
   "title": "RutaObra - datos de usuario (expedientes, seguimiento y bitacora)",
-  "description": "Modelo de los datos que genera el usuario en la app. En el prototipo se guarda en el navegador; en produccion se mapea 1:1 a tablas Postgres.",
+  "description": "Modelo de los datos que genera el usuario en la app. Con cuenta se guarda en Postgres (Neon), mapeado 1:1 a tablas; sin cuenta (modo invitado y demo), en el navegador.",
   "$defs": {
     "fecha": { "type": "string", "format": "date" },
     "fechaHora": { "type": "string", "format": "date-time" },
