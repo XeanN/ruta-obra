@@ -53,7 +53,7 @@ export function PasoEstadoForm({
   onGuardar,
 }: {
   paso: Paso;
-  onGuardar: (cambios: CambiosPaso) => Promise<void> | void;
+  onGuardar: (cambios: CambiosPaso) => Promise<unknown> | void;
 }) {
   const id = `paso-${paso.procedimiento_id}`;
   const {

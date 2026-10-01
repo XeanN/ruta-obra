@@ -142,7 +142,7 @@ export function FichaExpediente({
   distrito: string;
   textoGuardar: string;
   generarId: () => string;
-  onGuardar: (datos: DatosFicha) => Promise<void> | void;
+  onGuardar: (datos: DatosFicha) => Promise<unknown> | void;
 }) {
   const {
     register,

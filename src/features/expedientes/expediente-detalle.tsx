@@ -33,6 +33,7 @@ import {
 } from "@/domain/expediente";
 import type { ExpedienteRegistro } from "@/domain/types";
 import { ListaAlertas } from "@/features/alertas/lista-alertas";
+import { Bitacora } from "@/features/bitacora/bitacora";
 import { Checklist } from "@/features/checklist/checklist";
 import { LineaDeTiempo, ResumenTotales } from "@/features/hoja-de-ruta/hoja-de-ruta";
 import { formatSoles } from "@/lib/format";
@@ -110,13 +111,15 @@ function Detalle({
   const e = analisis.registro.expediente;
   const distrito = base.distritos.find((d) => d.ubigeo === analisis.registro.predio.ubigeo)?.nombre ?? "Otro distrito";
 
-  async function guardar(nuevo: ExpedienteRegistro, mensaje?: string) {
+  /** Guarda el registro. Devuelve true si quedó guardado (la bitácora lo usa para borrar fotos). */
+  async function guardar(nuevo: ExpedienteRegistro, mensaje?: string): Promise<boolean> {
     // Versión que se cargó: si otro miembro guardó después, el repositorio lo rechaza.
     const versionBase = registro.expediente.actualizado_en ?? "";
     onCambio(nuevo);
     try {
       await repo.actualizar(nuevo, { versionBase });
       if (mensaje) toast.success(mensaje);
+      return true;
     } catch (err) {
       onCambio(registro);
       if (err instanceof ConflictoVersionError) {
@@ -133,6 +136,7 @@ function Detalle({
       } else {
         toast.error("No se pudo guardar el cambio. Revisa tu conexión e inténtalo de nuevo.");
       }
+      return false;
     }
   }
 
@@ -212,12 +216,14 @@ function Detalle({
       </header>
 
       <Tabs defaultValue="ruta">
-        <TabsList className="w-full">
+        {/* Cinco pestañas: a 375 px la lista se desplaza horizontalmente en vez de desbordar la página. */}
+        <TabsList className="w-full justify-start overflow-x-auto">
           <TabsTrigger value="ruta">Ruta</TabsTrigger>
           <TabsTrigger value="checklist">Checklist</TabsTrigger>
           <TabsTrigger value="alertas">
             Alertas{alertasConPlazo > 0 ? ` (${alertasConPlazo})` : ""}
           </TabsTrigger>
+          <TabsTrigger value="bitacora">Bitácora</TabsTrigger>
           <TabsTrigger value="datos">Datos</TabsTrigger>
         </TabsList>
 
@@ -270,6 +276,17 @@ function Detalle({
 
         <TabsContent value="alertas" className="pt-4">
           <ListaAlertas alertas={analisis.alertas} />
+        </TabsContent>
+
+        <TabsContent value="bitacora" className="pt-4">
+          <Bitacora
+            registro={analisis.registro}
+            hoy={hoy}
+            ahora={ahoraISO}
+            conFotos={modo === "cuenta"}
+            generarId={() => crypto.randomUUID()}
+            onGuardar={guardar}
+          />
         </TabsContent>
 
         <TabsContent value="datos" className="pt-4">
