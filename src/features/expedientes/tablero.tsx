@@ -1,9 +1,10 @@
 "use client";
 
-import { FolderOpen, Plus, Upload } from "lucide-react";
+import { FlaskConical, FolderOpen, Plus, Upload } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 import { buttonVariants, Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -21,6 +22,7 @@ import {
   SesionRequeridaError,
 } from "@/data/expediente-repo";
 import { analizarExpediente, type BaseExpedientes } from "@/domain/analisis";
+import { esDemo } from "@/domain/demo";
 import { ETIQUETA_ESTADO_EXPEDIENTE, type EstadoExpediente } from "@/domain/expediente";
 import { AlertaItem } from "@/features/alertas/lista-alertas";
 import { claseSelect } from "@/features/checklist/checklist";
@@ -132,6 +134,12 @@ export function Tablero({ base }: { base: BaseExpedientes }) {
               documentos y vencimientos.
             </CardDescription>
           </CardHeader>
+          <CardContent>
+            <Link href="/demo" className={buttonVariants({ variant: "outline" })}>
+              <FlaskConical data-icon="inline-start" />
+              Ver demo con 3 expedientes de ejemplo
+            </Link>
+          </CardContent>
         </Card>
       ) : (
         <>
@@ -193,6 +201,7 @@ export function Tablero({ base }: { base: BaseExpedientes }) {
                         </Link>
                       </CardTitle>
                       <EstadoExpedienteBadge estado={resumen.estado} />
+                      {esDemo(registro.expediente.id) && <Badge variant="outline">Ejemplo</Badge>}
                     </div>
                     <CardDescription>
                       {nombreDistrito(registro.predio.ubigeo)}

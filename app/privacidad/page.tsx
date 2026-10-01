@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Privacidad · RutaObra",
+  title: "Privacidad",
   description: "Qué datos guarda RutaObra, para qué, dónde y cómo ejercer tus derechos (Ley 29733).",
 };
 

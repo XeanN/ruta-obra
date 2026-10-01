@@ -21,7 +21,7 @@ test("caso real de referencia: compraventa sin inscribir cerca de Pantanos de Vi
   page,
 }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "Diagnosticar mi predio" }).click();
+  await page.getByRole("link", { name: "Diagnosticar un predio" }).click();
   await expect(page.getByText("Pregunta 1 de")).toBeVisible();
 
   await elegir(page, "Tengo contrato o minuta de compraventa, sin inscribir");

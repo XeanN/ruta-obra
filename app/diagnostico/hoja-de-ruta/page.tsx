@@ -15,7 +15,8 @@ import { DistritoAviso, LineaDeTiempo, ResumenTotales } from "@/features/hoja-de
 import { formatFecha } from "@/lib/format";
 
 export const metadata: Metadata = {
-  title: "Hoja de ruta · RutaObra",
+  title: "Hoja de ruta",
+  robots: { index: false },
 };
 
 export default async function HojaDeRutaPage({

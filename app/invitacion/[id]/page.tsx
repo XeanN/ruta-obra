@@ -4,7 +4,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { AceptarInvitacion } from "@/features/cuenta/aceptar-invitacion";
 import { obtenerSesion } from "@/lib/sesion";
 
-export const metadata: Metadata = { title: "Invitación · RutaObra" };
+export const metadata: Metadata = { title: "Invitación", robots: { index: false } };
 
 export default async function InvitacionPage({ params }: PageProps<"/invitacion/[id]">) {
   const { id } = await params;

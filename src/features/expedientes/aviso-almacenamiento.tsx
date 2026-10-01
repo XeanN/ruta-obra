@@ -7,12 +7,16 @@ import { toast } from "sonner";
 import { buttonVariants, Button } from "@/components/ui/button";
 import { serializarRespaldo } from "@/data/expediente-repo";
 import { crearRepositorioNavegador } from "@/data/expediente-repo.local";
+import { esDemo } from "@/domain/demo";
 import type { ExpedienteRegistro } from "@/domain/types";
-import { ahoraISO, useExpedienteRepo, useModoAlmacenamiento } from "./repo-context";
+import { AvisoDemo } from "./demo";
+import { ahoraISO, useExpedienteRepo, useModoAlmacenamiento, useModoDemo } from "./repo-context";
 
-/** Invitado: aviso de que todo vive en el navegador. Con cuenta: ofrece subir lo que quedó ahí. */
+/** Demo: aviso y salida. Invitado: todo vive en el navegador. Con cuenta: ofrece subir lo que quedó ahí. */
 export function AvisoAlmacenamiento({ onCambio }: { onCambio: () => void }) {
   const modo = useModoAlmacenamiento();
+  const demo = useModoDemo();
+  if (demo) return <AvisoDemo />;
   if (modo === "invitado") {
     return (
       <div className="flex gap-3 rounded-lg border border-amber-500/40 bg-amber-500/5 p-3 text-sm">
@@ -42,7 +46,7 @@ function SubirDesdeNavegador({ onCambio }: { onCambio: () => void }) {
   useEffect(() => {
     crearRepositorioNavegador()
       .listar()
-      .then((r) => setLocales(r.registros), () => setLocales([]));
+      .then((r) => setLocales(r.registros.filter((x) => !esDemo(x.expediente.id))), () => setLocales([]));
   }, []);
 
   if (locales.length === 0) return null;

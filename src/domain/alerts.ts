@@ -2,6 +2,7 @@
 // data/vencimientos.json, más las alertas del diagnóstico. Puro: "hoy" entra como parámetro.
 import { diasHabilesEntre, sumarDiasHabiles } from "./business-days";
 import { diasEntre, fechaVencimiento, vigenciaDeDocumento, type ItemChecklist } from "./checklist";
+import { pasoCerrado } from "./expediente";
 import type { AlertaDiagnostico } from "./rules-engine";
 import type { Alerta, Documento, ExpedienteRegistro, Procedimiento, Vencimiento } from "./types";
 
@@ -81,11 +82,21 @@ export function generarAlertas(
   const docs = new Map(base.documentos.map((d) => [d.id, d]));
   const alertas: AlertaExpediente[] = [];
 
-  // 1. Vencimiento de documentos (solo los que tienen regla en vencimientos.json).
+  // 1. Vencimiento de documentos (solo los que tienen regla en vencimientos.json). Si todos los
+  // pasos que piden el documento ya se cerraron, que venza no importa: no se avisa.
+  const estadoPaso = new Map(registro.expediente.pasos.map((p) => [p.procedimiento_id, p]));
+  const yaNoSeNecesita = (docId: string) => {
+    const item = checklist.find((i) => i.documento.id === docId);
+    if (!item || item.requeridoPor.length === 0) return false;
+    return item.requeridoPor.every((proc) => {
+      const paso = estadoPaso.get(proc.id);
+      return paso !== undefined && pasoCerrado(paso);
+    });
+  };
   for (const [docId, desde] of documentosConFecha(registro, checklist, procs)) {
     const regla = base.vencimientos.find((v) => v.documento_id === docId);
     const documento = docs.get(docId);
-    if (!regla || !documento) continue;
+    if (!regla || !documento || yaNoSeNecesita(docId)) continue;
     const vigencia = vigenciaDeDocumento(documento, base.vencimientos);
     if (vigencia == null) continue;
     const vence = fechaVencimiento(desde, vigencia);

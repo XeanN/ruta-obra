@@ -1,38 +1,133 @@
 # RutaObra
 
 Orquestador de trámites de construcción en Perú: de SUNARP a la conformidad de obra, en un solo lugar.
-Estado: **prototipo de validación** (v0.1.0, datos al 30-09-2026).
+Estado: **prototipo de validación** (datos v0.1.0 al 30/09/2026). Producción: https://ruta-obra.vercel.app
 
-## Qué hay en este repo
+- **Diagnóstico:** preguntas sobre el predio → modalidad de licencia, alertas y programas.
+- **Hoja de ruta:** trámites por etapa, documentos y montos del TUPA por distrito, cada uno con su fuente.
+- **Expedientes:** tablero, checklist de documentos, alertas de vencimiento y plazo de subsanación, bitácora de obra con fotos.
+- **Cuentas:** ingreso con Google o enlace por correo; cada persona tiene un estudio y puede invitar a su equipo.
+- **Modo demo:** `/demo` carga 3 expedientes de ejemplo en el navegador, sin cuenta.
+
+Producto y alcance: [docs/PRD.md](docs/PRD.md). Datos: [docs/modelo-datos.md](docs/modelo-datos.md). Fases: [prompts/fases.md](prompts/fases.md). Reglas para Claude Code: [CLAUDE.md](CLAUDE.md).
+
+## Stack
+
+Next.js 16 (App Router) + TypeScript estricto, Tailwind + shadcn/ui, Zod, react-hook-form, date-fns.
+Datos de usuarios en **Neon Postgres** con **Drizzle ORM**, cuentas con **Better Auth**, archivos en **Cloudflare R2** (API de S3), correos con **Resend**. Despliegue en **Vercel** (región `gru1`, São Paulo).
+La base de conocimiento (trámites, tarifas, reglas) vive en `data/` como JSON versionado en git, no en la base de datos.
 
 | Carpeta | Contenido |
 |---|---|
 | `data/` | Base de conocimiento en JSON (fuente de verdad) + `ruta-obra.xlsx` para revisar |
 | `schema/` | JSON Schema de los datos y del modelo de expedientes |
-| `fixtures/` | Casos de prueba del motor de diagnóstico (incluye el caso real de referencia) |
-| `scripts/` | `validate_data.py`, `export_excel.py`, `simulate.py` (motor de referencia en Python) |
-| `docs/` | `PRD.md`, `modelo-datos.md`, `validacion.md` |
-| `prompts/` | Prompts por fase para construir la app con Claude Code |
-| `CLAUDE.md` | Stack, arquitectura y reglas para Claude Code |
+| `fixtures/` | Casos del motor (`casos.json`), resultados del motor Python y expedientes de la demo (`demo.json`) |
+| `scripts/` | `validate_data.py`, `simulate.py` (motor de referencia), `export_excel.py`, `migrar.mjs` |
+| `src/domain/` | Lógica de negocio pura y probada (motor de reglas, hoja de ruta, alertas, bitácora, demo) |
+| `src/data/` | Repositorios: conocimiento, expedientes (navegador, Postgres, Server Actions), R2 |
+| `src/features/`, `app/` | Pantallas y rutas |
+| `drizzle/` | Migraciones SQL versionadas |
+| `e2e/` | Pruebas de Playwright a 375 px |
 
-## Empezar
+## Correr el proyecto
+
+Requisitos: Node 24, pnpm 12 (`corepack enable`), Python 3.11 para los scripts de datos.
 
 ```bash
-# 1. Verificar los datos (Python 3.10+)
-pip install jsonschema openpyxl
-python scripts/validate_data.py
-python scripts/simulate.py              # 6/6 casos
-python scripts/simulate.py caso-angel   # ver una hoja de ruta completa
-
-# 2. Construir la app
-# Abre el repo en VS Code con Claude Code y sigue prompts/fases.md desde la Fase 0.
+pnpm install
+cp .env.example .env.local      # y completa los valores (ver abajo)
+pnpm db:migrate                 # aplica las migraciones en la base de DATABASE_URL_UNPOOLED
+pnpm dev                        # http://localhost:3000
 ```
+
+Sin `.env.local` funcionan el diagnóstico, la hoja de ruta, las fuentes y los expedientes en modo invitado o demo (todo en el navegador). Las cuentas, la nube y las fotos necesitan las variables.
+
+### Variables de entorno
+
+Los nombres están en [.env.example](.env.example). Los valores nunca se suben a git: van en `.env.local` y en Vercel.
+
+| Variable | Para qué |
+|---|---|
+| `DATABASE_URL` | Neon con pooling, para la app |
+| `DATABASE_URL_UNPOOLED` | Neon sin pooling, para las migraciones |
+| `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`, `R2_ENDPOINT` | Archivos en Cloudflare R2 (token con lectura y escritura solo en el bucket) |
+| `BETTER_AUTH_SECRET` | Secreto de sesiones (`openssl rand -base64 32`) |
+| `BETTER_AUTH_URL` | URL pública de la app (en local, `http://localhost:3000`) |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Ingreso con Google |
+| `RESEND_API_KEY`, `EMAIL_FROM` | Enlaces de acceso e invitaciones por correo (dominio verificado en Resend) |
+| `NEXT_PUBLIC_CORREO_CONTACTO` | Correo público en `/privacidad` (por defecto `info@aliiatech.com`) |
+| `NEXT_PUBLIC_SITE_URL` | Opcional: URL canónica para Open Graph y el sitemap (por defecto, la de producción de Vercel) |
+
+En Vercel cada variable se carga por entorno (Production y Preview; Preview usa la rama `preview` de Neon):
+
+```bash
+vercel env add NOMBRE production
+vercel env add NOMBRE preview
+```
+
+> En Windows no subas valores con una tubería de PowerShell (`"valor" | vercel env add ...`): agrega un BOM invisible y la variable queda rota ("Invalid URL"). Escríbelos cuando el comando los pida o usa un script de Node.
+
+## Comandos
+
+```bash
+pnpm dev                          # desarrollo
+pnpm lint && pnpm typecheck       # ESLint y TypeScript
+pnpm test                         # Vitest: dominio, repositorios (PGlite) y paridad con Python
+pnpm test:coverage                # con cobertura (mínimo 90 % en src/domain)
+pnpm e2e                          # Playwright a 375 px (levanta el servidor solo)
+pnpm build                        # build de producción
+
+python scripts/validate_data.py   # valida data/ contra schema/
+python scripts/simulate.py        # motor de referencia contra fixtures/casos.json
+python scripts/simulate.py --export  # regenera fixtures/resultados-motor.json (paridad TS)
+python scripts/export_excel.py    # regenera data/ruta-obra.xlsx
+
+pnpm db:generate                  # nueva migración desde src/data/db/*.ts
+pnpm db:migrate                   # aplica migraciones pendientes
+pnpm db:studio                    # explorar la base (Drizzle Studio)
+pnpm auth:generate                # regenera el esquema de Better Auth
+```
+
+## Base de datos
+
+### Migraciones
+
+1. Cambia las tablas en `src/data/db/expedientes-schema.ts` (o `auth-schema.ts` con `pnpm auth:generate`).
+2. `pnpm db:generate` crea un SQL nuevo en `drizzle/`. Revísalo y súbelo en el mismo PR.
+3. Se aplican solas al desplegar: Vercel corre `pnpm vercel-build` (`migrar.mjs` y luego `next build`) contra la base de cada entorno.
+
+Nunca edites una migración ya aplicada: crea una nueva.
+
+### Respaldo
+
+El plan gratuito de Neon no protege la rama `production` y solo permite restaurar unas horas hacia atrás. Antes de cargar datos reales, y luego cada semana, saca un respaldo (necesita `pg_dump` de la misma versión mayor de Postgres que tu proyecto en Neon):
+
+```bash
+# Respaldo (formato comprimido de pg_dump); la carpeta respaldos/ está en .gitignore
+pg_dump "$DATABASE_URL_UNPOOLED" -Fc --no-owner -f respaldos/rutaobra-$(date +%F).dump
+
+# Restaurar en una base vacía (por ejemplo, una rama nueva de Neon)
+pg_restore --no-owner --clean --if-exists -d "<URL de la base destino>" respaldos/rutaobra-AAAA-MM-DD.dump
+```
+
+Los archivos de R2 no entran en el respaldo de la base: se pueden copiar con `rclone` o con la API de S3. Los respaldos contienen datos personales (Ley 29733): guárdalos cifrados y fuera del repositorio.
+
+## Flujo de trabajo
+
+- Solo vive `master`, protegido: todo cambio entra por **rama → PR → CI verde → squash merge**. La rama se borra al fusionar y un workflow semanal limpia las que queden.
+- El CI tiene dos checks obligatorios: **data** (validación, simulación y paridad de `resultados-motor.json`) y **app** (lint, typecheck, pruebas con cobertura, build y e2e).
+- Commits en Conventional Commits: `feat:`, `fix:`, `docs:`, `data:` para cambios en `data/`.
+- Cada cambio en `data/` o `fixtures/casos.json` necesita `validate_data.py`, `simulate.py` y `simulate.py --export`. Los montos y requisitos nunca se actualizan sin revisión humana.
+
+## Despliegue
+
+Vercel despliega solo: cada PR genera una vista previa (con la rama `preview` de Neon y sin indexar en buscadores) y cada merge a `master` va a producción. Las migraciones corren en el build. Para revisar un despliegue: `vercel ls` y `vercel inspect <url>`.
 
 ## Cobertura de datos
 
 - **Nacional:** 7 etapas, 50 procedimientos, 42 documentos, 22 instituciones, 3 zonas especiales, 5 programas, 47 reglas.
 - **Distrital:** La Molina (completo, referencia), Surco (parcial), Chorrillos y Villa El Salvador (estructura y códigos; montos por extraer).
-- Cada dato tiene `fuente_id` y `estado_verificacion`. Los pendientes están en `docs/modelo-datos.md`.
+- Cada dato tiene `fuente_id` y `estado_verificacion`. Lo pendiente está en [docs/modelo-datos.md](docs/modelo-datos.md).
 
 ## Aviso
 

@@ -11,7 +11,7 @@ import {
 import { diagnosticar } from "@/domain/rules-engine";
 import { NuevoExpediente } from "@/features/expedientes/nuevo-expediente";
 
-export const metadata: Metadata = { title: "Nuevo expediente · RutaObra" };
+export const metadata: Metadata = { title: "Nuevo expediente", robots: { index: false } };
 
 export default async function NuevoExpedientePage({ searchParams }: PageProps<"/expedientes/nuevo">) {
   const preguntas = knowledgeRepo.getPreguntas();

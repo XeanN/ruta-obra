@@ -4,7 +4,7 @@ import { respuestasDesdeParams } from "@/domain/diagnostico";
 import { DiagnosticoWizard } from "@/features/diagnostico/diagnostico-wizard";
 
 export const metadata: Metadata = {
-  title: "Diagnóstico del predio · RutaObra",
+  title: "Diagnóstico del predio",
   description:
     "Responde unas preguntas sobre tu predio y conoce la modalidad de licencia, las alertas y los programas que aplican.",
 };

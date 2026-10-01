@@ -27,6 +27,7 @@ Prototipo de validación de un orquestador de trámites de construcción en Per�
 data/                 # Base de conocimiento (JSON). Fuente de verdad. NO editar desde la app.
 schema/               # JSON Schema de data/ y del modelo de usuario (expediente)
 fixtures/casos.json   # Casos de prueba del motor (esperados)
+fixtures/demo.json    # Expedientes del modo demo (referencian casos.json)
 scripts/              # Python: validate_data.py, export_excel.py, simulate.py (motor de referencia)
 src/
   domain/             # TypeScript PURO: sin React, sin Next, sin fetch, sin localStorage
@@ -38,6 +39,7 @@ src/
     alerts.ts         # alertas por vencimiento y por reglas
     expediente.ts     # crear, actualizar, migrar y resumir expedientes
     analisis.ts       # todo lo derivado de un expediente (ruta, checklist, alertas, resumen)
+    demo.ts           # expedientes de ejemplo (fixtures/demo.json) con fechas relativas a hoy
     business-days.ts  # días hábiles
   data/               # Capa de datos (patrón Repository)
     knowledge-repo.ts # carga y valida data/*.json (en build: import estático)
@@ -60,6 +62,7 @@ app/                  # Rutas Next.js (App Router)
   expedientes/acciones.ts           # Server Actions (Fase 5)
   api/auth/[...all]/route.ts        # Better Auth (Fase 5)
   ingresar/  privacidad/            # Fase 5
+  demo/page.tsx                     # modo demo: 3 expedientes de ejemplo en el navegador (Fase 7)
   fuentes/page.tsx
 ```
 
