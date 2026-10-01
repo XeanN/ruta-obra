@@ -56,6 +56,17 @@ def test_huella_html_estable_ante_tokens_y_espacios():
     assert ws.huella(a, tipo) != ws.huella(b"<p>TUPA 2026</p>", tipo)
 
 
+def test_texto_principal_ignora_lo_que_rota_alrededor():
+    pagina = """<body><header>Menú</header><nav>Inicio</nav>
+      <main><h1>Requisitos</h1><p>Copia literal</p><aside>Notas relacionadas: {rel}</aside></main>
+      <div class="publicidad">{pub}</div><footer>© 2026</footer></body>"""
+    a = pagina.format(rel="Nota A", pub="Aviso 1")
+    b = pagina.format(rel="Nota B", pub="Aviso 2")
+    assert ws.texto_visible(a) == "Requisitos Copia literal" == ws.texto_visible(b)
+    # Sin <main> ni <article>: todo el cuerpo menos menús, encabezado, pie y barras laterales.
+    assert ws.texto_visible("<body><nav>x</nav><p>Hola <br>mundo</p><footer>y</footer></body>") == "Hola mundo"
+
+
 def test_huella_binaria_usa_los_bytes():
     assert ws.huella(b"%PDF-1", "application/pdf") != ws.huella(b"%PDF-2", "application/pdf")
 
@@ -74,24 +85,41 @@ def test_primera_corrida_guarda_la_huella_sin_alarmar():
     assert r.estado == "OK" and e == {"huella": "h1", "fallas": 0}
 
 
-def test_cambio_se_muestra_hasta_que_se_revisa_la_fuente():
+def test_cambio_se_confirma_si_se_repite_y_se_muestra_hasta_revisar_la_fuente():
+    # Huella distinta: queda como candidata, todavía no se avisa.
     r, e = ws.clasificar(fuente(), ok("h2"), {"huella": "h1", "fallas": 0}, "2026-10-05")
-    assert r.estado == "CAMBIO" and e["cambio_desde"] == "2026-10-05"
-    # La semana siguiente, sin cambios nuevos pero sin revisar: sigue apareciendo.
+    assert r.estado == "OK" and e["candidata"] == "h2" and e["huella"] == "h1"
+    # La semana siguiente se repite: el cambio es real y se fecha cuando se vio por primera vez.
     r, e = ws.clasificar(fuente(), ok("h2"), e, "2026-10-12")
-    assert r.estado == "CAMBIO" and "05/10/2026" in r.detalle
+    assert r.estado == "CAMBIO" and e["cambio_desde"] == "2026-10-05" and "05/10/2026" in r.detalle
+    # Sin revisar: sigue apareciendo.
+    r, e = ws.clasificar(fuente(), ok("h2"), e, "2026-10-19")
+    assert r.estado == "CAMBIO"
     # Alguien la revisó (fecha_consulta actualizada en fuentes.json): deja de aparecer.
-    r, e = ws.clasificar(fuente(consulta="2026-10-14"), ok("h2"), e, "2026-10-19")
+    r, e = ws.clasificar(fuente(consulta="2026-10-20"), ok("h2"), e, "2026-10-26")
     assert r.estado == "OK" and "cambio_desde" not in e
 
 
-def test_caida_solo_a_la_segunda_semana_y_se_recupera():
+def test_pagina_que_varia_en_cada_visita_nunca_confirma_un_cambio():
+    e = {"huella": "h1", "fallas": 0}
+    for dia, h in [("2026-10-05", "x1"), ("2026-10-12", "x2"), ("2026-10-19", "x3")]:
+        r, e = ws.clasificar(fuente(), ok(h), e, dia)
+        assert r.estado == "OK" and e["huella"] == "h1"
+    # Si vuelve a la huella confirmada, se descarta la candidata.
+    r, e = ws.clasificar(fuente(), ok("h1"), e, "2026-10-26")
+    assert r.estado == "OK" and "candidata" not in e
+
+
+def test_caida_exige_una_semana_y_se_recupera():
     r, e = ws.clasificar(fuente(), FALLA, {"huella": "h1", "fallas": 0}, "2026-10-05")
     assert r.estado == "FALLA" and e["fallas"] == 1 and e["huella"] == "h1"
+    # Dos corridas manuales el mismo día no bastan para declarar caída.
+    r, e = ws.clasificar(fuente(), FALLA, e, "2026-10-05")
+    assert r.estado == "FALLA" and e["fallas"] == 2
     r, e = ws.clasificar(fuente(), ws.Respuesta(ok=False, codigo=404, error="HTTP 404"), e, "2026-10-12")
-    assert r.estado == "CAIDA" and "2 semanas" in r.detalle
+    assert r.estado == "CAIDA" and "05/10/2026" in r.detalle
     r, e = ws.clasificar(fuente(), ok("h1"), e, "2026-10-19")
-    assert r.estado == "OK" and e["fallas"] == 0
+    assert r.estado == "OK" and e["fallas"] == 0 and "falla_desde" not in e
 
 
 def test_redirige_tiene_prioridad_sobre_ok():
@@ -170,12 +198,13 @@ def test_vigilar_dos_corridas_solo_avisa_lo_nuevo():
 def test_reintento_evita_falsas_fallas():
     llamadas = []
 
-    def consultar(url):
-        llamadas.append(url)
+    def consultar(url, timeout=ws.TIMEOUT_S):
+        llamadas.append(timeout)
         return FALLA if len(llamadas) == 1 else ok("h1")
 
     c = ws.vigilar(datos_base(), {"fuentes": {}, "novedades": []}, HOY, consultar, pausa=0, reintento=0.001)
-    assert [r.estado for r in c.resultados] == ["OK"] and len(llamadas) == 2
+    assert [r.estado for r in c.resultados] == ["OK"]
+    assert llamadas == [ws.TIMEOUT_S, ws.TIMEOUT_REINTENTO_S]  # el reintento espera más
 
 
 def test_datos_reales_tienen_lo_que_el_script_necesita():
