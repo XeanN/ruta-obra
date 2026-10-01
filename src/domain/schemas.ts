@@ -291,6 +291,8 @@ export const MetaSchema = z.strictObject({
   uit: z.strictObject({ anio: z.int(), valor: z.number(), norma_id: z.string() }),
   alcance: z.string(),
   estados_verificacion: z.record(EstadoVerificacionSchema, z.string()),
+  /** Umbrales de scripts/watch_sources.py (Fase 8). */
+  vigilancia: z.strictObject({ dias_sin_revision: z.int().positive() }).optional(),
   aviso_legal: z.string(),
 });
 
