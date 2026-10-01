@@ -4,8 +4,10 @@
 import { ExpedienteRegistroSchema } from "@/domain/schemas";
 import type { ExpedienteRegistro } from "@/domain/types";
 import {
+  ConflictoVersionError,
   ExpedienteNoEncontradoError,
-  leerRespaldo,
+  ExpedienteYaExisteError,
+  importarRespaldo,
   RepositorioNoDisponibleError,
   serializarRespaldo,
   type ExpedienteRepository,
@@ -75,13 +77,17 @@ export function crearRepositorioLocal(op: OpcionesRepositorioLocal): ExpedienteR
     return { registros, corruptos };
   }
 
-  function guardar(registro: ExpedienteRegistro, debeExistir: boolean): void {
+  function guardar(registro: ExpedienteRegistro, debeExistir: boolean, versionBase?: string): void {
     const valido = ExpedienteRegistroSchema.parse(registro);
     const lista = leerCrudo();
     const i = lista.findIndex((x) => idDe(x) === valido.expediente.id);
     if (debeExistir && i === -1) throw new ExpedienteNoEncontradoError(valido.expediente.id);
-    if (!debeExistir && i !== -1) {
-      throw new Error(`Ya existe un expediente con id ${valido.expediente.id}.`);
+    if (!debeExistir && i !== -1) throw new ExpedienteYaExisteError(valido.expediente.id);
+    if (versionBase !== undefined && i !== -1) {
+      const actual = ExpedienteRegistroSchema.safeParse(lista[i]);
+      if (actual.success && (actual.data.expediente.actualizado_en ?? "") !== versionBase) {
+        throw new ConflictoVersionError(valido.expediente.id);
+      }
     }
     if (i === -1) lista.push(valido);
     else lista[i] = valido;
@@ -101,8 +107,8 @@ export function crearRepositorioLocal(op: OpcionesRepositorioLocal): ExpedienteR
       guardar(registro, false);
     },
 
-    async actualizar(registro) {
-      guardar(registro, true);
+    async actualizar(registro, opciones) {
+      guardar(registro, true, opciones?.versionBase);
     },
 
     async eliminar(id) {
@@ -119,33 +125,7 @@ export function crearRepositorioLocal(op: OpcionesRepositorioLocal): ExpedienteR
     },
 
     async importar(json, modo): Promise<ResultadoImportacion> {
-      const registro = leerRespaldo(json);
-      const existente = await repo.obtener(registro.expediente.id);
-      if (existente && !modo) {
-        return {
-          estado: "conflicto",
-          id: registro.expediente.id,
-          nombreExistente: existente.expediente.nombre,
-        };
-      }
-      if (existente && modo === "duplicar") {
-        const id = op.generarId();
-        const predioId = op.generarId();
-        const copia: ExpedienteRegistro = {
-          predio: { ...registro.predio, id: predioId },
-          expediente: {
-            ...registro.expediente,
-            id,
-            predio_id: predioId,
-            nombre: `${registro.expediente.nombre} (copia)`,
-            actualizado_en: op.ahora(),
-          },
-        };
-        guardar(copia, false);
-        return { estado: "importado", id };
-      }
-      guardar(registro, existente !== null);
-      return { estado: "importado", id: registro.expediente.id };
+      return importarRespaldo(repo, json, modo, op.generarId, op.ahora());
     },
   };
   return repo;

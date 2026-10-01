@@ -1,4 +1,6 @@
 import { HardDriveDownload, LoaderCircle, TriangleAlert } from "lucide-react";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function Cargando({ texto = "Cargando…" }: { texto?: string }) {
@@ -24,6 +26,22 @@ export function AlmacenamientoNoDisponible() {
           El diagnóstico y la hoja de ruta siguen funcionando.
         </CardDescription>
       </CardHeader>
+    </Card>
+  );
+}
+
+export function SesionVencida({ volver }: { volver: string }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Tu sesión venció</CardTitle>
+        <CardDescription>Vuelve a ingresar para ver los expedientes de tu estudio.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Link href={`/ingresar?volver=${encodeURIComponent(volver)}`} className={buttonVariants()}>
+          Ingresar
+        </Link>
+      </CardContent>
     </Card>
   );
 }

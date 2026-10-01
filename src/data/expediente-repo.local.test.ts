@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { contratoRepositorio } from "./expediente-repo.contrato";
 import type { ExpedienteRegistro } from "@/domain/types";
 import {
   ExpedienteNoEncontradoError,
@@ -41,6 +42,8 @@ function repo(almacen = memoria()) {
     }),
   };
 }
+
+contratoRepositorio("navegador (localStorage)", { crear: async () => repo().repo });
 
 describe("repositorio local", () => {
   it("crea, lista, obtiene, actualiza y elimina; persiste entre instancias", async () => {

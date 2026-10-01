@@ -1,17 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { RepositorioNoDisponibleError } from "@/data/expediente-repo";
+import { RepositorioNoDisponibleError, SesionRequeridaError } from "@/data/expediente-repo";
 import type { ExpedienteRegistro } from "@/domain/types";
 import { useExpedienteRepo } from "./repo-context";
 
 export type Carga<T> =
   | { estado: "cargando" }
   | { estado: "no_disponible" }
+  | { estado: "sesion" }
   | { estado: "error"; mensaje: string }
   | ({ estado: "listo" } & T);
 
 function aCargaFallida(e: unknown): Carga<never> {
+  if (e instanceof SesionRequeridaError) return { estado: "sesion" };
   if (e instanceof RepositorioNoDisponibleError) return { estado: "no_disponible" };
   return { estado: "error", mensaje: e instanceof Error ? e.message : String(e) };
 }

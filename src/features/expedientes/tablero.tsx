@@ -15,12 +15,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ImportacionInvalidaError, RepositorioNoDisponibleError } from "@/data/expediente-repo";
+import {
+  ImportacionInvalidaError,
+  RepositorioNoDisponibleError,
+  SesionRequeridaError,
+} from "@/data/expediente-repo";
 import { analizarExpediente, type BaseExpedientes } from "@/domain/analisis";
 import { ETIQUETA_ESTADO_EXPEDIENTE, type EstadoExpediente } from "@/domain/expediente";
 import { AlertaItem } from "@/features/alertas/lista-alertas";
 import { claseSelect } from "@/features/checklist/checklist";
-import { AlmacenamientoNoDisponible, Cargando, ErrorCarga } from "./avisos";
+import { AlmacenamientoNoDisponible, Cargando, ErrorCarga, SesionVencida } from "./avisos";
+import { AvisoAlmacenamiento } from "./aviso-almacenamiento";
 import { ahoraISO, hoyLocal, useExpedienteRepo } from "./repo-context";
 import { AvanceExpediente, EstadoExpedienteBadge } from "./resumen-expediente";
 import { useExpedientes } from "./use-expedientes";
@@ -64,13 +69,15 @@ export function Tablero({ base }: { base: BaseExpedientes }) {
       recargar();
     } catch (e) {
       if (e instanceof ImportacionInvalidaError) toast.error("Ese archivo no es un respaldo de RutaObra.");
-      else if (e instanceof RepositorioNoDisponibleError) toast.error("Este navegador no permite guardar.");
+      else if (e instanceof SesionRequeridaError) toast.error("Tu sesión venció. Vuelve a ingresar.");
+      else if (e instanceof RepositorioNoDisponibleError) toast.error("No se pudo guardar. Revisa tu conexión.");
       else toast.error("No se pudo importar el archivo.");
     }
   }
 
   if (carga.estado === "cargando") return <Cargando texto="Cargando expedientes…" />;
   if (carga.estado === "no_disponible") return <AlmacenamientoNoDisponible />;
+  if (carga.estado === "sesion") return <SesionVencida volver="/expedientes" />;
   if (carga.estado === "error") return <ErrorCarga mensaje={carga.mensaje} />;
 
   const distritos = [...new Set(analizados.map((a) => a.registro.predio.ubigeo))];
@@ -82,6 +89,7 @@ export function Tablero({ base }: { base: BaseExpedientes }) {
 
   return (
     <div className="space-y-6">
+      <AvisoAlmacenamiento onCambio={recargar} />
       <div className="flex flex-wrap gap-2">
         <Link href="/diagnostico" className={buttonVariants({ size: "lg", className: "h-11" })}>
           <Plus data-icon="inline-start" />

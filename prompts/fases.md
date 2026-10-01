@@ -11,8 +11,8 @@
 | 2 | Diagnóstico (F1) | Hecha (#3) | — |
 | 3 | Hoja de ruta (F2) y fuentes (F7) | Hecha (#5) | — |
 | 4 | Expedientes, checklist y alertas (F3, F4, F5), guardados en el navegador | Hecha (#8) | — |
-| 5 | Backend, cuentas y persistencia (F8): Neon + Cloudflare R2 + Better Auth | Pendiente | **Siguiente**: antes de la bitácora y de cargar datos reales |
-| 6 | Bitácora de obra (F6), con fotos en R2 | Pendiente | Después de 5 |
+| 5 | Backend, cuentas y persistencia (F8): Neon + Cloudflare R2 + Better Auth | Hecha (#10); falta la prueba manual de ingreso e invitación en producción | — |
+| 6 | Bitácora de obra (F6), con fotos en R2 | Pendiente | **Siguiente** |
 | 7 | Landing, pulido, modo demo y despliegue | Pendiente | Antes de las entrevistas |
 | 8 | Vigilancia automática de fuentes | Pendiente | Independiente: puede hacerse en cualquier momento; conviene antes de las entrevistas |
 | 9 | Antigüedad visible y "Reportar un dato desactualizado" | Pendiente | Después de 8 |

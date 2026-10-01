@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MenuUsuario } from "./menu-usuario";
 
 const ENLACES = [
   { href: "/diagnostico", texto: "Diagnóstico" },
@@ -14,7 +15,7 @@ export function SiteHeader() {
           RutaObra
         </Link>
         <nav aria-label="Principal">
-          <ul className="flex items-center gap-4 text-sm">
+          <ul className="flex items-center gap-3 text-sm sm:gap-4">
             {ENLACES.map((e) => (
               <li key={e.href}>
                 <Link href={e.href} className="text-muted-foreground hover:text-foreground">
@@ -22,6 +23,9 @@ export function SiteHeader() {
                 </Link>
               </li>
             ))}
+            <li>
+              <MenuUsuario />
+            </li>
           </ul>
         </nav>
       </div>

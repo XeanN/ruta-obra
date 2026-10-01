@@ -32,6 +32,12 @@ jobs:
   app:
     name: app
     runs-on: ubuntu-latest
+    # Valores de prueba: el build y el E2E (modo invitado) no se conectan a ninguna base real.
+    # Los tests de base de datos usan PGlite (Postgres en memoria) con las migraciones de drizzle/.
+    env:
+      DATABASE_URL: postgresql://ci:ci@127.0.0.1:5432/ci
+      BETTER_AUTH_SECRET: ci-solo-pruebas-no-es-un-secreto-real-0000
+      BETTER_AUTH_URL: http://localhost:3100
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

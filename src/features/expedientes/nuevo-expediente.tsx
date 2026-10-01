@@ -3,14 +3,14 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { RepositorioNoDisponibleError } from "@/data/expediente-repo";
+import { RepositorioNoDisponibleError, SesionRequeridaError } from "@/data/expediente-repo";
 import type { BaseExpedientes } from "@/domain/analisis";
 import { crearRegistro } from "@/domain/expediente";
 import { diagnosticar } from "@/domain/rules-engine";
 import type { Respuestas } from "@/domain/types";
 import { AlmacenamientoNoDisponible } from "./avisos";
 import { FichaExpediente } from "./ficha-expediente";
-import { ahoraISO, useExpedienteRepo } from "./repo-context";
+import { ahoraISO, useExpedienteRepo, useModoAlmacenamiento } from "./repo-context";
 
 export function NuevoExpediente({
   respuestas,
@@ -22,6 +22,7 @@ export function NuevoExpediente({
   base: BaseExpedientes;
 }) {
   const repo = useExpedienteRepo();
+  const modo = useModoAlmacenamiento();
   const router = useRouter();
   const [bloqueado, setBloqueado] = useState(false);
 
@@ -50,8 +51,9 @@ export function NuevoExpediente({
           toast.success("Expediente creado");
           router.push(`/expedientes/${id}`);
         } catch (e) {
-          if (e instanceof RepositorioNoDisponibleError) setBloqueado(true);
-          else toast.error("No se pudo crear el expediente.");
+          if (e instanceof SesionRequeridaError) toast.error("Tu sesión venció. Vuelve a ingresar.");
+          else if (e instanceof RepositorioNoDisponibleError && modo === "invitado") setBloqueado(true);
+          else toast.error("No se pudo crear el expediente. Revisa tu conexión e inténtalo de nuevo.");
         }
       }}
     />
