@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 };
 
 const ACTUALIZADA = "01/10/2026";
-/** Correo público para ejercer derechos (se configura en Vercel). */
-const CONTACTO = process.env.NEXT_PUBLIC_CORREO_CONTACTO;
+/** Correo público para ejercer derechos (Ley 29733). Se puede cambiar con NEXT_PUBLIC_CORREO_CONTACTO. */
+const CONTACTO = process.env.NEXT_PUBLIC_CORREO_CONTACTO || "info@aliiatech.com";
 
 export default function PrivacidadPage() {
   return (
