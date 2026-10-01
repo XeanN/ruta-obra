@@ -7,11 +7,15 @@ function Progress({
   className,
   children,
   value,
+  // Idioma fijo: con el del navegador, "es" o "es-ES" escriben "0 %" y el servidor "0%",
+  // y React rehace la página al hidratar.
+  locale = "es-PE",
   ...props
 }: ProgressPrimitive.Root.Props) {
   return (
     <ProgressPrimitive.Root
       value={value}
+      locale={locale}
       data-slot="progress"
       className={cn("flex flex-wrap gap-3", className)}
       {...props}
