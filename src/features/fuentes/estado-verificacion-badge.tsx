@@ -12,11 +12,15 @@ const ESTILO: Record<EstadoVerificacion, string> = {
 
 export function EstadoVerificacionBadge({
   estado,
+  ocultarSiVerificado = false,
   className,
 }: {
   estado: EstadoVerificacion;
+  /** En listas largas solo se marca lo que NO está verificado. */
+  ocultarSiVerificado?: boolean;
   className?: string;
 }) {
+  if (ocultarSiVerificado && estado === "verificado") return null;
   return (
     <Badge variant="outline" className={cn("border-transparent", ESTILO[estado], className)}>
       {ETIQUETA_VERIFICACION[estado]}
