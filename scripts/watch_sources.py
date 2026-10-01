@@ -37,9 +37,11 @@ ROOT = Path(__file__).resolve().parent.parent
 REPO_URL = "https://github.com/XeanN/ruta-obra"
 USER_AGENT = f"RutaObra-vigilancia/1.0 (+{REPO_URL})"
 TIMEOUT_S = 20
+TIMEOUT_REINTENTO_S = 60  # algunos portales del Estado responden muy lento fuera del Perú
 PAUSA_S = 1.0  # máximo 1 petición por segundo
 MAX_BYTES = 60 * 1024 * 1024  # los TUPA en PDF pueden pesar decenas de MB
-FALLAS_PARA_CAIDA = 2  # semanas seguidas sin responder antes de marcar CAÍDA
+FALLAS_PARA_CAIDA = 2  # corridas seguidas sin responder antes de marcar CAÍDA…
+DIAS_PARA_CAIDA = 7  # …y al menos una semana entre la primera falla y la última
 REINTENTO_S = 5.0  # espera antes del único reintento de una URL que falló
 DIAS_SIN_REVISION_DEFECTO = 180
 
@@ -65,32 +67,60 @@ ARCHIVOS_CON_FUENTES = [
 # ---------------------------------------------------------------------------
 
 class _TextoVisible(HTMLParser):
-    OCULTOS = {"script", "style", "noscript", "template", "svg", "head"}
+    OCULTOS = {"script", "style", "noscript", "template", "svg", "head", "iframe"}
+    # Partes de la página que cambian sin que cambie el contenido (menús, notas relacionadas, avisos).
+    ACCESORIOS = {"nav", "header", "footer", "aside", "form"}
+    PRINCIPALES = {"main", "article"}
+    VACIOS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
-        self.partes: list[str] = []
+        self.todo: list[str] = []
+        self.principal: list[str] = []
         self._ocultos = 0
+        self._accesorios = 0
+        self._principal = 0
 
     def handle_starttag(self, tag, attrs):
+        if tag in self.VACIOS:
+            return
         if tag in self.OCULTOS:
             self._ocultos += 1
+        elif tag in self.ACCESORIOS:
+            self._accesorios += 1
+        elif tag in self.PRINCIPALES:
+            self._principal += 1
 
     def handle_endtag(self, tag):
         if tag in self.OCULTOS and self._ocultos > 0:
             self._ocultos -= 1
+        elif tag in self.ACCESORIOS and self._accesorios > 0:
+            self._accesorios -= 1
+        elif tag in self.PRINCIPALES and self._principal > 0:
+            self._principal -= 1
 
     def handle_data(self, data):
-        if self._ocultos == 0:
-            self.partes.append(data)
+        if self._ocultos or self._accesorios:
+            return
+        self.todo.append(data)
+        if self._principal:
+            self.principal.append(data)
+
+
+def _normalizar(partes: list[str]) -> str:
+    return re.sub(r"\s+", " ", " ".join(partes)).strip()
 
 
 def texto_visible(html: str) -> str:
-    """Texto que ve una persona: sin scripts, estilos ni espacios repetidos."""
+    """Texto que ve una persona, sin scripts, estilos, menús, encabezado, pie ni barras laterales.
+
+    Si la página marca su contenido con <main> o <article>, se usa solo eso: así las notas
+    relacionadas o la publicidad que rotan alrededor no cuentan como cambio.
+    """
     p = _TextoVisible()
     p.feed(html)
     p.close()
-    return re.sub(r"\s+", " ", " ".join(p.partes)).strip()
+    return _normalizar(p.principal) or _normalizar(p.todo)
 
 
 def es_html(content_type: str) -> bool:
@@ -127,9 +157,9 @@ class Respuesta:
     tls_invalido: bool = False
 
 
-def _abrir(url: str, contexto: ssl.SSLContext | None) -> Respuesta:
+def _abrir(url: str, contexto: ssl.SSLContext | None, timeout: float) -> Respuesta:
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "*/*"})
-    with urllib.request.urlopen(req, timeout=TIMEOUT_S, context=contexto) as r:
+    with urllib.request.urlopen(req, timeout=timeout, context=contexto) as r:
         contenido = r.read(MAX_BYTES + 1)
         if len(contenido) > MAX_BYTES:
             return Respuesta(ok=False, codigo=r.status, url_final=r.geturl(), error="archivo demasiado grande")
@@ -137,16 +167,16 @@ def _abrir(url: str, contexto: ssl.SSLContext | None) -> Respuesta:
         return Respuesta(ok=True, codigo=r.status, url_final=r.geturl(), content_type=tipo, huella=huella(contenido, tipo))
 
 
-def consultar(url: str) -> Respuesta:
+def consultar(url: str, timeout: float = TIMEOUT_S) -> Respuesta:
     """GET siguiendo redirecciones. Un 4xx/5xx, timeout o error de red cuenta como falla."""
     try:
         try:
-            return _abrir(url, None)
+            return _abrir(url, None, timeout)
         except urllib.error.URLError as e:
             # Muchos portales del Estado tienen la cadena de certificados incompleta: se reintenta sin
             # verificar (solo se lee contenido público, no se envía nada) y se avisa en el reporte.
             if isinstance(getattr(e, "reason", None), ssl.SSLError):
-                r = _abrir(url, ssl._create_unverified_context())  # noqa: S323
+                r = _abrir(url, ssl._create_unverified_context(), timeout)  # noqa: S323
                 r.tls_invalido = True
                 return r
             raise
@@ -177,28 +207,48 @@ class Resultado:
     tls_invalido: bool = False
 
 
+def _dias(desde: str, hasta: str) -> int:
+    return (date.fromisoformat(hasta) - date.fromisoformat(desde)).days
+
+
 def clasificar(fuente: dict, resp: Respuesta, previo: dict | None, hoy: str) -> tuple[Resultado, dict]:
     """Devuelve el resultado de la fuente y su nuevo estado guardado.
 
-    Estado guardado por fuente: huella, fallas (seguidas) y cambio_desde (fecha en que se vio el
-    cambio). Un CAMBIÓ se sigue mostrando hasta que alguien revisa la fuente, es decir, hasta que
-    su fecha_consulta en fuentes.json es igual o posterior a cambio_desde.
+    Estado guardado por fuente:
+    - huella: la última confirmada. Una huella distinta queda como "candidata" y el cambio se
+      confirma solo si la siguiente corrida da la misma: una página que varía en cada visita
+      (publicidad, contadores) nunca se confirma.
+    - cambio_desde: fecha del cambio confirmado. Se sigue mostrando hasta que alguien revisa la
+      fuente, es decir, hasta que su fecha_consulta en fuentes.json es igual o posterior.
+    - fallas y falla_desde: corridas seguidas sin respuesta y desde cuándo. CAÍDA exige
+      FALLAS_PARA_CAIDA corridas y DIAS_PARA_CAIDA días: dos corridas manuales el mismo día no bastan.
     """
     previo = dict(previo or {})
     nuevo = dict(previo)
 
     if not resp.ok:
         nuevo["fallas"] = int(previo.get("fallas", 0)) + 1
+        nuevo.setdefault("falla_desde", hoy)
         motivo = resp.error or (f"HTTP {resp.codigo}" if resp.codigo else "sin respuesta")
-        if nuevo["fallas"] >= FALLAS_PARA_CAIDA:
-            return Resultado(fuente, "CAIDA", f"{motivo} ({nuevo['fallas']} semanas seguidas)"), nuevo
-        return Resultado(fuente, "FALLA", f"{motivo} (se confirma la próxima semana)"), nuevo
+        if nuevo["fallas"] >= FALLAS_PARA_CAIDA and _dias(nuevo["falla_desde"], hoy) >= DIAS_PARA_CAIDA:
+            return Resultado(fuente, "CAIDA", f"{motivo} (sin respuesta desde el {formato_fecha(nuevo['falla_desde'])})"), nuevo
+        return Resultado(fuente, "FALLA", f"{motivo} (se confirma si sigue igual en una semana)"), nuevo
 
     nuevo["fallas"] = 0
-    anterior = previo.get("huella")
-    nuevo["huella"] = resp.huella
-    if anterior and resp.huella != anterior:
-        nuevo["cambio_desde"] = hoy
+    nuevo.pop("falla_desde", None)
+    confirmada = previo.get("huella")
+    if confirmada is None or resp.huella == confirmada:
+        nuevo["huella"] = resp.huella
+        nuevo.pop("candidata", None)
+        nuevo.pop("candidata_desde", None)
+    elif resp.huella == previo.get("candidata"):
+        nuevo["huella"] = resp.huella  # la huella nueva se repitió: el cambio es real
+        nuevo["cambio_desde"] = previo.get("candidata_desde", hoy)
+        nuevo.pop("candidata", None)
+        nuevo.pop("candidata_desde", None)
+    else:
+        nuevo["candidata"] = resp.huella  # distinta: se confirma en la próxima corrida
+        nuevo["candidata_desde"] = hoy
 
     revisada = fuente.get("fecha_consulta") or ""
     cambio = nuevo.get("cambio_desde")
@@ -333,13 +383,18 @@ def armar_reporte(
         "## 🔴 Caídas",
     ]
     if caidas:
+        l.append(
+            "Revisa cada una en el navegador antes de tocar datos: un 403, 418 o timeout puede ser un "
+            "bloqueo a servidores fuera del Perú (la vigilancia corre en GitHub, en EE. UU.) y no una caída real."
+        )
+        l.append("")
         for r in caidas:
             l += [f"- {_linea_fuente(r.fuente)}", f"  - {r.detalle}", _afectados(usos.get(r.fuente["id"], []))]
     else:
         l.append("Ninguna.")
     if fallas:
         l.append("")
-        l.append(f"<details><summary>Sin respuesta esta semana ({len(fallas)}); se marcan como caídas si se repite</summary>\n")
+        l.append(f"<details><summary>Sin respuesta esta semana ({len(fallas)}); se marcan como caídas si siguen así en una semana</summary>\n")
         l += [f"- {_linea_fuente(r.fuente)}: {r.detalle}" for r in fallas]
         l.append("\n</details>")
 
@@ -458,7 +513,7 @@ def vigilar(
     datos: dict,
     estado_previo: dict,
     hoy: date,
-    consultar_url: Callable[[str], Respuesta] = consultar,
+    consultar_url: Callable[..., Respuesta] = consultar,
     pausa: float = PAUSA_S,
     reintento: float = REINTENTO_S,
 ) -> Corrida:
@@ -474,7 +529,7 @@ def vigilar(
         resp = consultar_url(f["url"])
         if not resp.ok and reintento:
             time.sleep(reintento)  # una falla puntual (límite anti-bots, timeout) no cuenta si el reintento responde
-            resp = consultar_url(f["url"])
+            resp = consultar_url(f["url"], TIMEOUT_REINTENTO_S)
         r, e = clasificar(f, resp, previos.get(f["id"]), hoy.isoformat())
         resultados.append(r)
         nuevos[f["id"]] = e

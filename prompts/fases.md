@@ -340,11 +340,13 @@ Crea scripts/watch_sources.py y .github/workflows/vigilancia-fuentes.yml.
 
 **Entregado (#16):**
 - `scripts/watch_sources.py` (solo biblioteca estándar) y `.github/workflows/vigilancia-fuentes.yml` (lunes 07:00 de Lima y manual con `dry_run`).
-- Estados OK, CAMBIÓ, CAÍDA (2 semanas seguidas; antes, "sin respuesta esta semana") y REDIRIGE; un reintento a los 5 s evita falsas fallas por límites anti-bots.
+- Estados OK, CAMBIÓ, CAÍDA y REDIRIGE. CAÍDA exige 2 corridas seguidas sin respuesta y al menos 7 días entre la primera y la última (antes se muestra como "sin respuesta esta semana"); un reintento a los 5 s, con timeout de 60 s, evita falsas fallas por límites anti-bots o portales lentos.
+- Huella de HTML: solo el contenido principal (`<main>`/`<article>`, o el cuerpo sin menú, encabezado, pie ni barras laterales). Un cambio se confirma solo si la huella nueva se repite en la corrida siguiente: las páginas que varían en cada visita (publicidad, horas con zona horaria) no dan falsas alarmas.
+- En el reporte, las caídas llevan el aviso de que un 403, 418 o timeout puede ser un bloqueo a servidores fuera del Perú (la vigilancia corre en GitHub, en EE. UU.).
 - Un CAMBIÓ se sigue mostrando hasta que se actualiza la `fecha_consulta` de la fuente en `fuentes.json`, así no se pierde si nadie lo revisó esa semana.
 - Los portales con certificado HTTPS inválido se leen igual y se listan aparte.
 - Umbral en `meta.json` → `vigilancia.dias_sin_revision`. `python scripts/watch_sources.py --dry-run --estado-local estado.json` simula semanas seguidas en local.
-- 18 pruebas con pytest en el job `data` del CI.
+- 20 pruebas con pytest en el job `data` del CI.
 - Primera revisión (01/10/2026): MiVivienda (`F-MIVIVIENDA-CSP`) redirige a la portada; `F-DATOS-CONF-MML` apunta a `datosabiertos.gob.pe` sin `www` (no resuelve); `F-DATOS-MML` responde 418 de forma intermitente (límite anti-bots del portal).
 
 ---
