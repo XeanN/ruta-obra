@@ -5,6 +5,13 @@ async function elegir(page: Page, opcion: string) {
   await page.getByRole("button", { name: /Siguiente|Ver resultado/ }).click();
 }
 
+async function sinScrollHorizontal(page: Page) {
+  const anchoExtra = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  );
+  expect(anchoExtra).toBeLessThanOrEqual(0);
+}
+
 async function escribir(page: Page, valor: string) {
   await page.getByRole("spinbutton").fill(valor);
   await page.getByRole("button", { name: /Siguiente|Ver resultado/ }).click();
@@ -43,11 +50,32 @@ test("caso real de referencia: compraventa sin inscribir cerca de Pantanos de Vi
   await page.reload();
   await expect(page.getByText("Modalidad B", { exact: true })).toBeVisible();
 
-  // Sin scroll horizontal a 375 px.
-  const anchoExtra = await page.evaluate(
-    () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-  );
-  expect(anchoExtra).toBeLessThanOrEqual(0);
+  await sinScrollHorizontal(page);
+
+  // Hoja de ruta: etapas en orden, licencia en Chorrillos con código TUPA y monto por confirmar.
+  await page.getByRole("link", { name: "Ver mi hoja de ruta" }).click();
+  await expect(page.getByRole("heading", { name: "Tus trámites, en orden" })).toBeVisible();
+  await expect(page.getByText("Costo estatal estimado")).toBeVisible();
+  const etapas = page.getByRole("list", { name: "Etapas del trámite" }).getByRole("heading", { level: 2 });
+  await expect(etapas.first()).toHaveText("Saneamiento físico-legal y titularidad");
+  const licencia = page.locator("details", { hasText: "Modalidad B (evaluación municipal)" }).first();
+  await licencia.locator("summary").click();
+  await expect(licencia.getByText("Municipalidad Distrital de Chorrillos")).toBeVisible();
+  await expect(licencia.getByText("TUPA n.° 89")).toBeVisible();
+  await expect(licencia.getByText("Por confirmar").first()).toBeVisible();
+  await expect(licencia.getByText("Licencia de edificación - Modalidad B (revisores urbanos)")).toBeVisible();
+  await sinScrollHorizontal(page);
+});
+
+test("la página de fuentes muestra fecha de corte, etiquetas y aviso legal", async ({ page }) => {
+  await page.goto("/fuentes");
+  await expect(page.getByRole("heading", { name: "Cómo sabemos esto" })).toBeVisible();
+  await expect(page.getByText("30/09/2026").first()).toBeVisible();
+  await expect(page.getByText("Aviso legal")).toBeVisible();
+  for (const etiqueta of ["Verificado", "Referencial", "Versión anterior", "Por confirmar"]) {
+    await expect(page.getByText(etiqueta, { exact: true }).first()).toBeVisible();
+  }
+  await sinScrollHorizontal(page);
 });
 
 test("valida la respuesta, conserva el avance al recargar y permite editar desde el resultado", async ({

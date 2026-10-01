@@ -74,17 +74,20 @@ export default async function ResultadoPage({
       <ProgramasCard programas={resumen.programas} repo={knowledgeRepo} />
 
       <div className="flex flex-col gap-3 sm:flex-row">
-        <Button size="lg" className="h-11 flex-1" disabled>
+        <Link
+          href={`/diagnostico/hoja-de-ruta?${params}`}
+          className={buttonVariants({ size: "lg", className: "h-11 flex-1" })}
+        >
           <MapIcon data-icon="inline-start" />
           Ver mi hoja de ruta
-        </Button>
+        </Link>
         <Button size="lg" variant="outline" className="h-11 flex-1" disabled>
           <FolderPlus data-icon="inline-start" />
           Guardar como expediente
         </Button>
       </div>
       <p className="text-muted-foreground -mt-3 text-center text-xs">
-        La hoja de ruta y los expedientes estarán disponibles pronto.
+        Los expedientes estarán disponibles pronto.
       </p>
 
       <RespuestasCard preguntas={preguntas} respuestas={respuestas} />

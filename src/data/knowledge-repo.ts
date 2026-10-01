@@ -31,6 +31,7 @@ import {
   VencimientoSchema,
   ZonaEspecialSchema,
 } from "@/domain/schemas";
+import type { BaseHojaDeRuta } from "@/domain/roadmap";
 import type { BaseReglas } from "@/domain/rules-engine";
 
 export const KnowledgeSchema = z.object({
@@ -98,10 +99,23 @@ export function createKnowledgeRepo(raw: unknown) {
     procedimientos: k.procedimientos,
     etapas: k.etapas,
   };
+  const baseHojaDeRuta: BaseHojaDeRuta = {
+    procedimientos: k.procedimientos,
+    etapas: k.etapas,
+    instituciones: k.instituciones,
+    documentos: k.documentos,
+    normas: k.normas,
+    fuentes: k.fuentes,
+    tarifas: k.tarifas,
+    distritos: k.distritos,
+  };
 
   return {
     meta: k.meta,
     baseReglas,
+    baseHojaDeRuta,
+    getFuentes: () => k.fuentes,
+    getNormas: () => k.normas,
     getEtapas: () => etapasOrdenadas,
     getEtapa: (id: string) => etapas.get(id),
     getProcedimientos: () => k.procedimientos,
