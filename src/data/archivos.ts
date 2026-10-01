@@ -3,7 +3,7 @@ import "server-only";
 // R2_ENDPOINT y las credenciales). El bucket es privado: solo enlaces firmados y temporales.
 import { DeleteObjectsCommand, GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { validarArchivo, type ArchivoPermitido } from "./archivos-reglas";
+import { tipoPorClave, validarArchivo, type ArchivoPermitido } from "./archivos-reglas";
 
 let cliente: S3Client | null = null;
 function s3(): S3Client {
@@ -19,19 +19,35 @@ function s3(): S3Client {
 }
 const bucket = () => process.env.R2_BUCKET ?? "";
 
-/** URL para que el navegador suba el archivo directo a R2 (PUT, 5 minutos). */
+/**
+ * URL para que el navegador suba el archivo directo a R2 (PUT, 5 minutos). El tamaño y el tipo
+ * van firmados: con otro tamaño u otro Content-Type, R2 rechaza la subida (probado contra R2).
+ */
 export async function urlDeSubida(clave: string, archivo: ArchivoPermitido): Promise<string> {
   validarArchivo(archivo);
   return getSignedUrl(
     s3(),
     new PutObjectCommand({ Bucket: bucket(), Key: clave, ContentType: archivo.tipo, ContentLength: archivo.tamano }),
-    { expiresIn: 5 * 60 },
+    // Sin esto el presigner no firma content-type y aceptaría, por ejemplo, text/html.
+    { expiresIn: 5 * 60, signableHeaders: new Set(["content-type"]) },
   );
 }
 
-/** URL temporal para ver o descargar un archivo (GET, 10 minutos). */
+/**
+ * URL temporal para ver o descargar un archivo (GET, 10 minutos). El tipo de la respuesta se
+ * fuerza según la extensión de la clave: aunque se hubiera subido otra cosa, nunca se sirve como HTML.
+ */
 export async function urlDeDescarga(clave: string): Promise<string> {
-  return getSignedUrl(s3(), new GetObjectCommand({ Bucket: bucket(), Key: clave }), { expiresIn: 10 * 60 });
+  return getSignedUrl(
+    s3(),
+    new GetObjectCommand({
+      Bucket: bucket(),
+      Key: clave,
+      ResponseContentType: tipoPorClave(clave),
+      ResponseContentDisposition: "inline",
+    }),
+    { expiresIn: 10 * 60 },
+  );
 }
 
 export async function eliminarObjetos(claves: readonly string[]): Promise<void> {

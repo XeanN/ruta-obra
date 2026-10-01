@@ -28,6 +28,13 @@ export function validarArchivo(a: ArchivoPermitido): void {
   if (a.tamano > TAMANO_MAXIMO) throw new ArchivoNoPermitidoError("El archivo supera los 10 MB.");
 }
 
+/** Tipo con el que se sirve un archivo según la extensión de su clave; desconocido → descarga binaria. */
+export function tipoPorClave(clave: string): string {
+  const ext = clave.split(".").at(-1)?.toLowerCase();
+  const tipo = Object.entries(TIPOS_PERMITIDOS).find(([, e]) => e === ext)?.[0];
+  return tipo ?? "application/octet-stream";
+}
+
 /** <estudio>/<expediente>/<uuid>.<ext>: el estudio va primero para poder borrar todo lo suyo. */
 export function claveDeArchivo(estudioId: string, expedienteId: string, archivoId: string, tipo: string): string {
   const ext = TIPOS_PERMITIDOS[tipo];

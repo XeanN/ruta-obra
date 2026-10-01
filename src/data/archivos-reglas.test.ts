@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ArchivoNoPermitidoError, claveDeArchivo, TAMANO_MAXIMO, validarArchivo } from "./archivos-reglas";
+import { ArchivoNoPermitidoError, claveDeArchivo, TAMANO_MAXIMO, tipoPorClave, validarArchivo } from "./archivos-reglas";
 
 describe("reglas de archivos", () => {
   it("acepta fotos y PDF hasta 10 MB", () => {
@@ -11,6 +11,13 @@ describe("reglas de archivos", () => {
     expect(() => validarArchivo({ tipo: "text/html", tamano: 10 })).toThrow(ArchivoNoPermitidoError);
     expect(() => validarArchivo({ tipo: "image/png", tamano: 0 })).toThrow(/vacío/);
     expect(() => validarArchivo({ tipo: "image/png", tamano: TAMANO_MAXIMO + 1 })).toThrow(/10 MB/);
+  });
+
+  it("el tipo para servir sale de la extensión; lo desconocido nunca se sirve como HTML", () => {
+    expect(tipoPorClave("e/x/a.jpg")).toBe("image/jpeg");
+    expect(tipoPorClave("e/x/a.PDF")).toBe("application/pdf");
+    expect(tipoPorClave("e/x/a.html")).toBe("application/octet-stream");
+    expect(tipoPorClave("sin-extension")).toBe("application/octet-stream");
   });
 
   it("arma la clave con estudio, expediente e id, sin caracteres peligrosos", () => {
