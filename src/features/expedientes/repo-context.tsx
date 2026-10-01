@@ -10,12 +10,21 @@ import { crearRepositorioRemoto } from "@/data/expediente-repo.remoto";
 /** "cuenta": datos en el servidor (estudio de la sesión). "invitado": solo en este navegador. */
 export type ModoAlmacenamiento = "cuenta" | "invitado";
 
-const RepoContext = createContext<{ repo: ExpedienteRepository; modo: ModoAlmacenamiento } | null>(null);
+const RepoContext = createContext<{ repo: ExpedienteRepository; modo: ModoAlmacenamiento; demo: boolean } | null>(null);
 
 /** Única elección de implementación de la UI: con sesión, servidor; sin sesión, navegador. */
-export function ExpedienteRepoProvider({ modo, children }: { modo: ModoAlmacenamiento; children: ReactNode }) {
+export function ExpedienteRepoProvider({
+  modo,
+  demo = false,
+  children,
+}: {
+  modo: ModoAlmacenamiento;
+  /** Modo demo: expedientes de ejemplo en el navegador (siempre con modo "invitado"). */
+  demo?: boolean;
+  children: ReactNode;
+}) {
   const [repo] = useState(() => (modo === "cuenta" ? crearRepositorioRemoto(acciones) : crearRepositorioNavegador()));
-  return <RepoContext.Provider value={{ repo, modo }}>{children}</RepoContext.Provider>;
+  return <RepoContext.Provider value={{ repo, modo, demo }}>{children}</RepoContext.Provider>;
 }
 
 function useContexto() {
@@ -26,6 +35,7 @@ function useContexto() {
 
 export const useExpedienteRepo = (): ExpedienteRepository => useContexto().repo;
 export const useModoAlmacenamiento = (): ModoAlmacenamiento => useContexto().modo;
+export const useModoDemo = (): boolean => useContexto().demo;
 
 /** Fecha local de hoy (yyyy-mm-dd) y fecha-hora ISO para los cambios. */
 export const hoyLocal = () => format(new Date(), "yyyy-MM-dd");

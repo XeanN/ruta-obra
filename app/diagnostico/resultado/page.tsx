@@ -19,7 +19,8 @@ import {
 import { formatFecha } from "@/lib/format";
 
 export const metadata: Metadata = {
-  title: "Resultado del diagnóstico · RutaObra",
+  title: "Resultado del diagnóstico",
+  robots: { index: false },
 };
 
 export default async function ResultadoPage({

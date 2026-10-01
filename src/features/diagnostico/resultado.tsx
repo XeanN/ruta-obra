@@ -175,18 +175,19 @@ export function RespuestasCard({
       <CardContent>
         <dl className="divide-y">
           {respondidas.map((p) => (
-            <div key={p.id} className="flex items-start justify-between gap-3 py-2.5 first:pt-0">
-              <div className="min-w-0 text-sm">
-                <dt className="text-muted-foreground">{p.texto}</dt>
-                <dd className="font-medium">{textoRespuesta(p, respuestas[p.id])}</dd>
-              </div>
-              <Link
-                href={editar(p.id)}
-                className="text-muted-foreground hover:text-foreground shrink-0 rounded-md p-2"
-              >
-                <Pencil aria-hidden className="size-4" />
-                <span className="sr-only">Cambiar: {p.texto}</span>
-              </Link>
+            <div key={p.id} className="py-2.5 text-sm first:pt-0">
+              <dt className="text-muted-foreground">{p.texto}</dt>
+              {/* El enlace va dentro del dd: un dl solo admite dt y dd (accesibilidad). */}
+              <dd className="flex items-start justify-between gap-3">
+                <span className="min-w-0 font-medium">{textoRespuesta(p, respuestas[p.id])}</span>
+                <Link
+                  href={editar(p.id)}
+                  className="text-muted-foreground hover:text-foreground -my-2 shrink-0 rounded-md p-2"
+                >
+                  <Pencil aria-hidden className="size-4" />
+                  <span className="sr-only">Cambiar: {p.texto}</span>
+                </Link>
+              </dd>
             </div>
           ))}
         </dl>

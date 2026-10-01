@@ -3,7 +3,8 @@ import { knowledgeRepo } from "@/data/knowledge-repo";
 import { Tablero } from "@/features/expedientes/tablero";
 
 export const metadata: Metadata = {
-  title: "Mis expedientes · RutaObra",
+  title: "Mis expedientes",
+  robots: { index: false },
   description: "Sigue tus expedientes de obra: etapa actual, avance, próximo paso y vencimientos.",
 };
 
@@ -13,7 +14,7 @@ export default function ExpedientesPage() {
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">Mis expedientes</h1>
         <p className="text-muted-foreground text-sm">
-          Se guardan en este navegador. Exporta un respaldo para pasarlos a otro equipo.
+          Etapa, avance, próximo paso y vencimientos de cada expediente.
         </p>
       </div>
       <Tablero base={knowledgeRepo.baseExpedientes} />

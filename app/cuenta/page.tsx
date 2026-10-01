@@ -7,7 +7,7 @@ import { auth } from "@/lib/auth";
 import { obtenerSesion } from "@/lib/sesion";
 import { formatFecha } from "@/lib/format";
 
-export const metadata: Metadata = { title: "Mi cuenta · RutaObra" };
+export const metadata: Metadata = { title: "Mi cuenta", robots: { index: false } };
 
 const ROL: Record<string, string> = { owner: "Dueño", admin: "Administrador", member: "Miembro" };
 

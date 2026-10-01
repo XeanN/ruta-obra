@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { FormularioIngreso } from "@/features/cuenta/formulario-ingreso";
 import { obtenerSesion } from "@/lib/sesion";
 
-export const metadata: Metadata = { title: "Ingresar · RutaObra" };
+export const metadata: Metadata = { title: "Ingresar", robots: { index: false } };
 
 /** Solo rutas internas (evita redirecciones abiertas a otros sitios). */
 function destinoSeguro(v: unknown): string {

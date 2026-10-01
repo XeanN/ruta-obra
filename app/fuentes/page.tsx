@@ -7,7 +7,7 @@ import { EstadoVerificacionBadge } from "@/features/fuentes/estado-verificacion-
 import { formatFecha } from "@/lib/format";
 
 export const metadata: Metadata = {
-  title: "Cómo sabemos esto · RutaObra",
+  title: "Cómo sabemos esto",
   description: "Fuentes, normas, fecha de corte y estado de verificación de los datos de RutaObra.",
 };
 

@@ -1,0 +1,97 @@
+{
+  "descripcion": "Expedientes de ejemplo del modo demo. Las fechas son relativas al día en que se carga la demo (hace_dias). Cada caso sale de fixtures/casos.json; nombres y direcciones son ficticios.",
+  "expedientes": [
+    {
+      "clave": "recien-creado",
+      "caso": "regularizacion-2017",
+      "nombre": "Regularización casa Pachacámac (demo)",
+      "creado_hace_dias": 26,
+      "predio": {
+        "direccion": "Sector 2, Grupo 15, Mz. D, Lote 8, Villa El Salvador",
+        "partida_registral": "P03000000",
+        "area_terreno_m2": 120
+      },
+      "actores": [
+        { "id": "demo-a1", "rol": "propietario", "nombre": "Rosa Quispe (ejemplo)", "telefono": "999 000 001" },
+        { "id": "demo-a2", "rol": "arquitecto", "nombre": "Arq. Luis Ramos (ejemplo)", "colegiatura": "CAP 00000" }
+      ],
+      "pasos": [
+        { "procedimiento_id": "P-SUN-COPIA", "estado": "aprobado", "presentado_hace_dias": 26, "resultado_hace_dias": 25, "monto_pagado": 10 },
+        { "procedimiento_id": "P-MUN-PARAM", "estado": "en_preparacion", "notas": "Falta la copia del recibo de autovalúo." }
+      ],
+      "bitacora": []
+    },
+    {
+      "clave": "con-observacion",
+      "caso": "caso-angel",
+      "nombre": "Ampliación Los Cedros, Chorrillos (demo)",
+      "creado_hace_dias": 150,
+      "predio": {
+        "direccion": "Calle Los Cedros 000, Chorrillos (cerca de Pantanos de Villa)",
+        "area_terreno_m2": 160
+      },
+      "actores": [
+        { "id": "demo-b1", "rol": "propietario", "nombre": "Familia Torres (ejemplo)" },
+        { "id": "demo-b2", "rol": "arquitecto", "nombre": "Arq. Carmen Díaz (ejemplo)", "colegiatura": "CAP 00000" },
+        { "id": "demo-b3", "rol": "notario", "nombre": "Notaría de ejemplo" }
+      ],
+      "pasos": [
+        { "procedimiento_id": "P-SUN-CRI", "estado": "aprobado", "presentado_hace_dias": 148, "resultado_hace_dias": 144 },
+        { "procedimiento_id": "P-NOT-ESCRITURA", "estado": "aprobado", "presentado_hace_dias": 140, "resultado_hace_dias": 120 },
+        { "procedimiento_id": "P-SUN-INSC-CV", "estado": "aprobado", "presentado_hace_dias": 118, "resultado_hace_dias": 95, "numero_expediente_entidad": "2026-0000000" },
+        { "procedimiento_id": "P-SUN-ALERTA", "estado": "aprobado", "presentado_hace_dias": 94, "resultado_hace_dias": 94 },
+        { "procedimiento_id": "P-SUN-COPIA", "estado": "aprobado", "presentado_hace_dias": 20, "resultado_hace_dias": 19 },
+        { "procedimiento_id": "P-MUN-PARAM", "estado": "aprobado", "presentado_hace_dias": 80, "resultado_hace_dias": 66 },
+        { "procedimiento_id": "P-SED-FACT", "estado": "aprobado", "presentado_hace_dias": 60, "resultado_hace_dias": 45 },
+        { "procedimiento_id": "P-ELE-FACT", "estado": "aprobado", "presentado_hace_dias": 60, "resultado_hace_dias": 40 },
+        {
+          "procedimiento_id": "P-MUN-ANTEPROY",
+          "estado": "observado",
+          "presentado_hace_dias": 25,
+          "observado_hace_dias": 3,
+          "numero_expediente_entidad": "EXP-0000-2026",
+          "notas": "Observan el retiro frontal y piden adjuntar la opinión de PROHVILLA por la cercanía a Pantanos de Villa."
+        },
+        { "procedimiento_id": "P-SUN-FAB27157", "estado": "en_preparacion", "notas": "Declarar el primer piso construido antes de 2016." }
+      ],
+      "bitacora": [
+        { "hace_dias": 95, "tipo": "otro", "descripcion": "Compraventa inscrita en SUNARP. El título ya está a nombre de la familia." },
+        { "hace_dias": 25, "tipo": "pago", "descripcion": "Pago del derecho de revisión del anteproyecto.", "monto": 350 },
+        { "hace_dias": 3, "tipo": "visita_municipal", "descripcion": "La municipalidad notificó observaciones al anteproyecto." }
+      ]
+    },
+    {
+      "clave": "casi-terminado",
+      "caso": "unifamiliar-simple",
+      "nombre": "Casa nueva Las Gardenias, Surco (demo)",
+      "creado_hace_dias": 420,
+      "predio": {
+        "direccion": "Jr. Las Gardenias 000, Santiago de Surco",
+        "partida_registral": "P11000000",
+        "area_terreno_m2": 90
+      },
+      "actores": [
+        { "id": "demo-c1", "rol": "propietario", "nombre": "Jorge Mendoza (ejemplo)" },
+        { "id": "demo-c2", "rol": "ingeniero_estructural", "nombre": "Ing. Ana Flores (ejemplo)", "colegiatura": "CIP 000000" },
+        { "id": "demo-c3", "rol": "maestro_obra", "nombre": "Maestro Pedro (ejemplo)", "telefono": "999 000 003" }
+      ],
+      "pasos": [
+        { "procedimiento_id": "P-SUN-COPIA", "estado": "aprobado", "presentado_hace_dias": 418, "resultado_hace_dias": 417 },
+        { "procedimiento_id": "P-MUN-PARAM", "estado": "aprobado", "presentado_hace_dias": 415, "resultado_hace_dias": 400 },
+        { "procedimiento_id": "P-MUN-LIC-A", "estado": "aprobado", "presentado_hace_dias": 380, "resultado_hace_dias": 380, "numero_expediente_entidad": "LIC-0000-2025" },
+        { "procedimiento_id": "P-MUN-INICIO", "estado": "aprobado", "presentado_hace_dias": 360, "resultado_hace_dias": 360 },
+        { "procedimiento_id": "P-MUN-VERIF-TEC", "estado": "aprobado", "presentado_hace_dias": 360, "resultado_hace_dias": 300 },
+        { "procedimiento_id": "P-CARTEL", "estado": "aprobado", "presentado_hace_dias": 360, "resultado_hace_dias": 359 },
+        { "procedimiento_id": "P-MUN-CONF-SV", "estado": "aprobado", "presentado_hace_dias": 40, "resultado_hace_dias": 12 },
+        { "procedimiento_id": "P-SUN-DECL-EDIF", "estado": "presentado", "presentado_hace_dias": 6, "numero_expediente_entidad": "2026-0000000" }
+      ],
+      "bitacora": [
+        { "hace_dias": 355, "tipo": "avance", "descripcion": "Inicio de obra: excavación de cimientos.", "avance_pct": 5 },
+        { "hace_dias": 300, "tipo": "compra", "descripcion": "Fierro y cemento para el techo del primer piso.", "monto": 8500 },
+        { "hace_dias": 240, "tipo": "avance", "descripcion": "Techo del primer piso vaciado.", "avance_pct": 40 },
+        { "hace_dias": 120, "tipo": "avance", "descripcion": "Casco del segundo piso terminado.", "avance_pct": 80 },
+        { "hace_dias": 45, "tipo": "avance", "descripcion": "Acabados terminados. Se pide la conformidad de obra.", "avance_pct": 100 }
+      ]
+    }
+  ]
+}

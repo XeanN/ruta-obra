@@ -122,6 +122,17 @@ describe("vencimiento de documentos", () => {
     r = conInscripcion;
     expect(alertas(r, "2026-10-20").find((x) => x.origen_id === "V-COPIA-LITERAL")?.fecha).toBe("2026-10-25");
   });
+
+  it("no avisa si todos los pasos que piden el documento ya se cerraron", () => {
+    let r = actualizarDocumento(registro(), "D-COPIA-LITERAL", { estado: "obtenido", fecha_emision: "2026-09-01" }, AHORA);
+    const pideCopia = armarChecklist(r, new Set(), base, "2026-10-03").find((i) => i.documento.id === "D-COPIA-LITERAL");
+    expect(pideCopia?.requeridoPor.length).toBeGreaterThan(0);
+    for (const proc of pideCopia?.requeridoPor ?? []) {
+      expect(alertas(r, "2026-10-03").some((x) => x.origen_id === "V-COPIA-LITERAL")).toBe(true);
+      r = actualizarPaso(r, proc.id, { estado: "aprobado", fecha_resultado: "2026-09-20" }, "2026-09-20", AHORA);
+    }
+    expect(alertas(r, "2026-10-03").some((x) => x.origen_id === "V-COPIA-LITERAL")).toBe(false);
+  });
 });
 
 describe("alertas del diagnóstico y orden", () => {

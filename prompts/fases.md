@@ -13,8 +13,8 @@
 | 4 | Expedientes, checklist y alertas (F3, F4, F5), guardados en el navegador | Hecha (#8) | — |
 | 5 | Backend, cuentas y persistencia (F8): Neon + Cloudflare R2 + Better Auth | Hecha (#10); ingreso probado en producción | — |
 | 6 | Bitácora de obra (F6), con fotos en R2 | Hecha (#11) | — |
-| 7 | Landing, pulido, modo demo y despliegue | Pendiente | **Siguiente** (antes de las entrevistas) |
-| 8 | Vigilancia automática de fuentes | Pendiente | Independiente: puede hacerse en cualquier momento; conviene antes de las entrevistas |
+| 7 | Landing, pulido, modo demo y despliegue | Hecha (#13) | — |
+| 8 | Vigilancia automática de fuentes | Pendiente | **Siguiente** (conviene antes de las entrevistas) |
 | 9 | Antigüedad visible y "Reportar un dato desactualizado" | Pendiente | Después de 8 |
 | 10 | Extracción asistida por IA de TUPAs | Pendiente | Cuando haya que cargar distritos nuevos o la Fase 8 detecte un TUPA nuevo |
 | 11 | Agente de consultas y migración a AWS | Futuro | Después de validar con profesionales (ver PRD, sección 9) |
