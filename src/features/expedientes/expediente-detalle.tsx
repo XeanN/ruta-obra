@@ -17,7 +17,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RepositorioNoDisponibleError } from "@/data/expediente-repo";
+import {
+  ConflictoVersionError,
+  RepositorioNoDisponibleError,
+  SesionRequeridaError,
+} from "@/data/expediente-repo";
 import { esAlertaConPlazo } from "@/domain/alerts";
 import { analizarExpediente, type BaseExpedientes } from "@/domain/analisis";
 import {
@@ -32,10 +36,10 @@ import { ListaAlertas } from "@/features/alertas/lista-alertas";
 import { Checklist } from "@/features/checklist/checklist";
 import { LineaDeTiempo, ResumenTotales } from "@/features/hoja-de-ruta/hoja-de-ruta";
 import { formatSoles } from "@/lib/format";
-import { AlmacenamientoNoDisponible, Cargando, ErrorCarga } from "./avisos";
+import { AlmacenamientoNoDisponible, Cargando, ErrorCarga, SesionVencida } from "./avisos";
 import { FichaExpediente } from "./ficha-expediente";
 import { EstadoPasoBadge, PasoEstadoForm } from "./paso-estado";
-import { ahoraISO, hoyLocal, useExpedienteRepo } from "./repo-context";
+import { ahoraISO, hoyLocal, useExpedienteRepo, useModoAlmacenamiento } from "./repo-context";
 import { AvanceExpediente, EstadoExpedienteBadge } from "./resumen-expediente";
 import { useExpediente } from "./use-expedientes";
 
@@ -60,6 +64,7 @@ export function ExpedienteDetalle({ id, base }: { id: string; base: BaseExpedien
   const { carga, setCarga } = useExpediente(id);
   if (carga.estado === "cargando") return <Cargando texto="Cargando expediente…" />;
   if (carga.estado === "no_disponible") return <AlmacenamientoNoDisponible />;
+  if (carga.estado === "sesion") return <SesionVencida volver={`/expedientes/${id}`} />;
   if (carga.estado === "error") return <ErrorCarga mensaje={carga.mensaje} />;
   if (!carga.registro) {
     return (
@@ -95,6 +100,7 @@ function Detalle({
   onNoDisponible: () => void;
 }) {
   const repo = useExpedienteRepo();
+  const modo = useModoAlmacenamiento();
   const router = useRouter();
   const [hoy] = useState(hoyLocal);
   const [confirmarEliminar, setConfirmarEliminar] = useState(false);
@@ -105,13 +111,28 @@ function Detalle({
   const distrito = base.distritos.find((d) => d.ubigeo === analisis.registro.predio.ubigeo)?.nombre ?? "Otro distrito";
 
   async function guardar(nuevo: ExpedienteRegistro, mensaje?: string) {
+    // Versión que se cargó: si otro miembro guardó después, el repositorio lo rechaza.
+    const versionBase = registro.expediente.actualizado_en ?? "";
     onCambio(nuevo);
     try {
-      await repo.actualizar(nuevo);
+      await repo.actualizar(nuevo, { versionBase });
       if (mensaje) toast.success(mensaje);
     } catch (err) {
-      if (err instanceof RepositorioNoDisponibleError) onNoDisponible();
-      else toast.error("No se pudo guardar el cambio.");
+      onCambio(registro);
+      if (err instanceof ConflictoVersionError) {
+        toast.error("Otra persona de tu estudio cambió este expediente. Recarga para ver la última versión.", {
+          action: { label: "Recargar", onClick: () => window.location.reload() },
+          duration: 15_000,
+        });
+      } else if (err instanceof SesionRequeridaError) {
+        toast.error("Tu sesión venció. Vuelve a ingresar.", {
+          action: { label: "Ingresar", onClick: () => router.push(`/ingresar?volver=/expedientes/${registro.expediente.id}`) },
+        });
+      } else if (err instanceof RepositorioNoDisponibleError && modo === "invitado") {
+        onNoDisponible();
+      } else {
+        toast.error("No se pudo guardar el cambio. Revisa tu conexión e inténtalo de nuevo.");
+      }
     }
   }
 
@@ -119,14 +140,14 @@ function Detalle({
   const { migrado, registro: migradoRegistro } = analisis;
   useEffect(() => {
     if (!migrado) return;
-    repo.actualizar(migradoRegistro).then(
+    repo.actualizar(migradoRegistro, { versionBase: registro.expediente.actualizado_en ?? "" }).then(
       () => {
         onCambio(migradoRegistro);
         toast.info("Actualizamos la ruta con la nueva versión de los datos.");
       },
       () => undefined,
     );
-  }, [migrado, migradoRegistro, repo, onCambio]);
+  }, [migrado, migradoRegistro, repo, onCambio, registro.expediente.actualizado_en]);
 
   const pasosPorId = new Map(e.pasos.map((p) => [p.procedimiento_id, p]));
   const enRuta = new Set(analisis.hoja.etapas.flatMap((et) => et.pasos.map((p) => p.procedimiento.id)));
