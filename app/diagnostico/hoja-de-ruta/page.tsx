@@ -2,7 +2,7 @@ import { ArrowLeft, FolderPlus } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { knowledgeRepo } from "@/data/knowledge-repo";
 import {
   preguntasFaltantes,
@@ -59,12 +59,17 @@ export default async function HojaDeRutaPage({
 
       <LineaDeTiempo hoja={hoja} />
 
-      <div>
-        <Button size="lg" variant="outline" className="h-11 w-full sm:w-auto" disabled>
+      <div className="space-y-2">
+        <Link
+          href={`/expedientes/nuevo?${params}`}
+          className={buttonVariants({ size: "lg", className: "h-11 w-full sm:w-auto" })}
+        >
           <FolderPlus data-icon="inline-start" />
           Guardar como expediente
-        </Button>
-        <p className="text-muted-foreground mt-2 text-xs">Los expedientes estarán disponibles pronto.</p>
+        </Link>
+        <p className="text-muted-foreground text-xs">
+          Para seguir el estado de cada trámite, tus documentos y sus vencimientos.
+        </p>
       </div>
 
       <footer className="text-muted-foreground space-y-1 border-t pt-4 text-xs">

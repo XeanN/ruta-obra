@@ -114,7 +114,13 @@ function Fila({ titulo, children }: { titulo: string; children: ReactNode }) {
   );
 }
 
-function PasoCard({ paso }: { paso: PasoRuta }) {
+/** Lo que agrega el expediente a cada paso: su estado en el resumen y el formulario al abrirlo. */
+export interface ExtraPaso {
+  encabezado?: ReactNode;
+  contenido?: ReactNode;
+}
+
+function PasoCard({ paso, extra }: { paso: PasoRuta; extra?: ExtraPaso }) {
   const { procedimiento: p, entidad, costo, plazo } = paso;
   const plazoCorto =
     plazo.dias === null
@@ -131,6 +137,7 @@ function PasoCard({ paso }: { paso: PasoRuta }) {
             {[entidad?.siglas, textoCosto(costo), plazoCorto].filter(Boolean).join(" · ")}
           </p>
           <div className="flex flex-wrap gap-1.5 empty:hidden">
+            {extra?.encabezado}
             {paso.opcional && <Badge variant="secondary">Opcional</Badge>}
             <CostoBadge costo={costo} />
             {paso.alternativas.length > 0 && <Badge variant="outline">Tiene alternativa</Badge>}
@@ -141,6 +148,7 @@ function PasoCard({ paso }: { paso: PasoRuta }) {
           className="text-muted-foreground mt-0.5 size-5 shrink-0 transition-transform group-open:rotate-180"
         />
       </summary>
+      {extra?.contenido && <div className="border-t p-3">{extra.contenido}</div>}
       <dl className="space-y-4 border-t p-3 text-sm">
         <div className="flex flex-wrap items-start gap-2">
           <p className="flex-1">{p.descripcion}</p>
@@ -202,7 +210,15 @@ function PasoCard({ paso }: { paso: PasoRuta }) {
   );
 }
 
-function EtapaSeccion({ etapa, ultima }: { etapa: EtapaRuta; ultima: boolean }) {
+function EtapaSeccion({
+  etapa,
+  ultima,
+  extras,
+}: {
+  etapa: EtapaRuta;
+  ultima: boolean;
+  extras?: (paso: PasoRuta) => ExtraPaso;
+}) {
   return (
     <li className="relative flex gap-3">
       <div className="flex flex-col items-center">
@@ -221,7 +237,7 @@ function EtapaSeccion({ etapa, ultima }: { etapa: EtapaRuta; ultima: boolean }) 
         <ul className="space-y-2">
           {etapa.pasos.map((p) => (
             <li key={p.procedimiento.id}>
-              <PasoCard paso={p} />
+              <PasoCard paso={p} extra={extras?.(p)} />
             </li>
           ))}
         </ul>
@@ -230,11 +246,18 @@ function EtapaSeccion({ etapa, ultima }: { etapa: EtapaRuta; ultima: boolean }) 
   );
 }
 
-export function LineaDeTiempo({ hoja }: { hoja: HojaDeRuta }) {
+export function LineaDeTiempo({
+  hoja,
+  extras,
+}: {
+  hoja: HojaDeRuta;
+  /** Contenido adicional por paso (lo usa el expediente para el estado de cada trámite). */
+  extras?: (paso: PasoRuta) => ExtraPaso;
+}) {
   return (
     <ol aria-label="Etapas del trámite">
       {hoja.etapas.map((e, i) => (
-        <EtapaSeccion key={e.etapa.id} etapa={e} ultima={i === hoja.etapas.length - 1} />
+        <EtapaSeccion key={e.etapa.id} etapa={e} ultima={i === hoja.etapas.length - 1} extras={extras} />
       ))}
     </ol>
   );

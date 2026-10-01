@@ -31,6 +31,7 @@ import {
   VencimientoSchema,
   ZonaEspecialSchema,
 } from "@/domain/schemas";
+import type { BaseExpedientes } from "@/domain/analisis";
 import type { BaseHojaDeRuta } from "@/domain/roadmap";
 import type { BaseReglas } from "@/domain/rules-engine";
 
@@ -110,10 +111,18 @@ export function createKnowledgeRepo(raw: unknown) {
     distritos: k.distritos,
   };
 
+  const baseExpedientes: BaseExpedientes = {
+    ...baseReglas,
+    ...baseHojaDeRuta,
+    vencimientos: k.vencimientos,
+    versionDatos: k.meta.version_datos,
+  };
+
   return {
     meta: k.meta,
     baseReglas,
     baseHojaDeRuta,
+    baseExpedientes,
     getFuentes: () => k.fuentes,
     getNormas: () => k.normas,
     getEtapas: () => etapasOrdenadas,

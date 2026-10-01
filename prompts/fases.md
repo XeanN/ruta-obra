@@ -10,8 +10,8 @@
 | 1 | Dominio, motor de reglas y paridad con Python | Hecha (#2) | — |
 | 2 | Diagnóstico (F1) | Hecha (#3) | — |
 | 3 | Hoja de ruta (F2) y fuentes (F7) | Hecha (#5) | — |
-| 4 | Expedientes, checklist y alertas (F3, F4, F5) | Pendiente | Siguiente |
-| 5 | Bitácora de obra (F6) | Pendiente | Después de 4 |
+| 4 | Expedientes, checklist y alertas (F3, F4, F5) | Hecha (#8) | — |
+| 5 | Bitácora de obra (F6) | Pendiente | Siguiente |
 | 6 | Landing, pulido y despliegue | Pendiente | Antes de las entrevistas |
 | 7 | Vigilancia automática de fuentes | Pendiente | Independiente: puede hacerse en cualquier momento; conviene antes de las entrevistas |
 | 8 | Antigüedad visible y "Reportar un dato desactualizado" | Pendiente | Después de 7 |

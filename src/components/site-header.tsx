@@ -2,6 +2,7 @@ import Link from "next/link";
 
 const ENLACES = [
   { href: "/diagnostico", texto: "Diagnóstico" },
+  { href: "/expedientes", texto: "Expedientes" },
   { href: "/fuentes", texto: "Fuentes" },
 ];
 
