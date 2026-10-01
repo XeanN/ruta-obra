@@ -1,0 +1,41 @@
+name: Vigilancia de fuentes
+
+# Cada lunes revisa las URLs de data/fuentes.json y actualiza el issue "Vigilancia de fuentes".
+# No cambia datos ni commitea: el estado entre corridas vive en un bloque oculto del issue.
+on:
+  schedule:
+    - cron: "0 12 * * 1" # lunes 07:00 en Lima (UTC-5)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Solo imprimir el reporte en el log (no tocar el issue)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: vigilancia-fuentes
+  cancel-in-progress: false
+
+jobs:
+  vigilar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Revisar fuentes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            python scripts/watch_sources.py --dry-run
+          else
+            python scripts/watch_sources.py
+          fi

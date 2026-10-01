@@ -81,6 +81,8 @@ python scripts/validate_data.py   # valida data/ contra schema/
 python scripts/simulate.py        # motor de referencia contra fixtures/casos.json
 python scripts/simulate.py --export  # regenera fixtures/resultados-motor.json (paridad TS)
 python scripts/export_excel.py    # regenera data/ruta-obra.xlsx
+python scripts/watch_sources.py --dry-run   # vigilancia de fuentes: imprime el reporte sin tocar GitHub
+python -m pytest scripts/tests    # pruebas de los scripts de Python
 
 pnpm db:generate                  # nueva migración desde src/data/db/*.ts
 pnpm db:migrate                   # aplica migraciones pendientes
@@ -118,6 +120,10 @@ Los archivos de R2 no entran en el respaldo de la base: se pueden copiar con `rc
 - El CI tiene dos checks obligatorios: **data** (validación, simulación y paridad de `resultados-motor.json`) y **app** (lint, typecheck, pruebas con cobertura, build y e2e).
 - Commits en Conventional Commits: `feat:`, `fix:`, `docs:`, `data:` para cambios en `data/`.
 - Cada cambio en `data/` o `fixtures/casos.json` necesita `validate_data.py`, `simulate.py` y `simulate.py --export`. Los montos y requisitos nunca se actualizan sin revisión humana.
+
+## Vigilancia de fuentes
+
+Cada lunes a las 07:00 (Lima) el workflow **Vigilancia de fuentes** revisa las URLs de `data/fuentes.json` y actualiza el issue "Vigilancia de fuentes" (etiqueta `vigilancia-datos`): caídas, cambios con los datos afectados, fuentes sin revisar hace más de 180 días y recordatorios (UIT, TUPAs y programas antiguos). No cambia datos: cada novedad se corrige con un PR `data:` y, al revisar la fuente, se actualiza su `fecha_consulta`. Se puede correr a mano desde Actions; con la opción `dry_run` solo imprime el reporte.
 
 ## Despliegue
 

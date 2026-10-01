@@ -14,8 +14,8 @@
 | 5 | Backend, cuentas y persistencia (F8): Neon + Cloudflare R2 + Better Auth | Hecha (#10); ingreso probado en producción | — |
 | 6 | Bitácora de obra (F6), con fotos en R2 | Hecha (#11) | — |
 | 7 | Landing, pulido, modo demo y despliegue | Hecha (#13) | — |
-| 8 | Vigilancia automática de fuentes | Pendiente | **Siguiente** (conviene antes de las entrevistas) |
-| 9 | Antigüedad visible y "Reportar un dato desactualizado" | Pendiente | Después de 8 |
+| 8 | Vigilancia automática de fuentes | Hecha (#16) | — |
+| 9 | Antigüedad visible y "Reportar un dato desactualizado" | Pendiente | **Siguiente** |
 | 10 | Extracción asistida por IA de TUPAs | Pendiente | Cuando haya que cargar distritos nuevos o la Fase 8 detecte un TUPA nuevo |
 | 11 | Agente de consultas y migración a AWS | Futuro | Después de validar con profesionales (ver PRD, sección 9) |
 
@@ -337,6 +337,15 @@ Crea scripts/watch_sources.py y .github/workflows/vigilancia-fuentes.yml.
    "data" del CI.
 ```
 **Aceptación:** `--dry-run` local imprime el reporte; la primera corrida en Actions crea el issue y la segunda sin cambios lo actualiza sin duplicarlo ni comentar; una fuente con la URL alterada a propósito aparece como CAÍDA a la segunda semana; ningún archivo de `data/` cambia; CI en verde.
+
+**Entregado (#16):**
+- `scripts/watch_sources.py` (solo biblioteca estándar) y `.github/workflows/vigilancia-fuentes.yml` (lunes 07:00 de Lima y manual con `dry_run`).
+- Estados OK, CAMBIÓ, CAÍDA (2 semanas seguidas; antes, "sin respuesta esta semana") y REDIRIGE; un reintento a los 5 s evita falsas fallas por límites anti-bots.
+- Un CAMBIÓ se sigue mostrando hasta que se actualiza la `fecha_consulta` de la fuente en `fuentes.json`, así no se pierde si nadie lo revisó esa semana.
+- Los portales con certificado HTTPS inválido se leen igual y se listan aparte.
+- Umbral en `meta.json` → `vigilancia.dias_sin_revision`. `python scripts/watch_sources.py --dry-run --estado-local estado.json` simula semanas seguidas en local.
+- 18 pruebas con pytest en el job `data` del CI.
+- Primera revisión (01/10/2026): MiVivienda (`F-MIVIVIENDA-CSP`) redirige a la portada; `F-DATOS-CONF-MML` apunta a `datosabiertos.gob.pe` sin `www` (no resuelve); `F-DATOS-MML` responde 418 de forma intermitente (límite anti-bots del portal).
 
 ---
 

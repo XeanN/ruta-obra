@@ -15,5 +15,8 @@
     "desactualizado": "Dato oficial de una versión anterior del TUPA o norma; confirmar vigencia.",
     "por_verificar": "Campo previsto pero sin dato confirmado. No mostrar como cierto al usuario."
   },
+  "vigilancia": {
+    "dias_sin_revision": 180
+  },
   "aviso_legal": "Información referencial. No es asesoría legal. Montos y plazos deben confirmarse en el TUPA vigente de cada entidad antes de presentar un trámite."
 }

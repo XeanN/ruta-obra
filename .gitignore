@@ -18,3 +18,4 @@ next-env.d.ts
 
 # Respaldos de la base de datos (contienen datos personales)
 respaldos/
+.pytest_cache/

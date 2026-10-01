@@ -86,6 +86,8 @@ python scripts/validate_data.py   # antes de commitear cambios en data/
 python scripts/simulate.py        # motor de referencia contra fixtures
 python scripts/simulate.py --export  # regenerar fixtures/resultados-motor.json (paridad TS)
 pnpm test:coverage                # tests + cobertura del dominio (mínimo 90 %)
+python scripts/watch_sources.py --dry-run  # vigilancia de fuentes (Fase 8), sin tocar GitHub
+python -m pytest scripts/tests    # pruebas de los scripts de Python
 python scripts/export_excel.py    # regenerar data/ruta-obra.xlsx
 pnpm e2e                          # Playwright a 375 px
 pnpm db:generate                  # (Fase 5) generar migración desde src/data/db/schema.ts
