@@ -34,6 +34,13 @@ Scripts package.json: dev, build, test, lint, typecheck.
 ```
 **Aceptación:** `pnpm dev` levanta; `pnpm typecheck` y `pnpm test` pasan (aunque todavía no haya tests).
 
+**Entregado (#1):**
+- Next.js 16 (App Router, Turbopack), TypeScript estricto (`noUncheckedIndexedAccess`), Tailwind v4, ESLint, pnpm; alias `@/*` → `src/*` y `@data/*` → `data/*`.
+- shadcn/ui sobre Base UI (`toast` reemplazado por `sonner`), lucide-react, zod, react-hook-form, date-fns, Vitest.
+- CI (`.github/workflows/ci.yml`): job `data` (validate_data.py, simulate.py, resultados-motor.json al día) y job `app` (lint, typecheck, tests con cobertura, build, Playwright). Ambos obligatorios en el ruleset de `master`, sin bypass.
+- Flujo: rama → PR → CI verde → squash merge; la rama se borra al fusionar y `cleanup-branches.yml` borra cada lunes las ramas sin PR abierto.
+- Vercel: producción en cada merge a `master` y vista previa por PR.
+
 ---
 
 ## Fase 1: Dominio y paridad con el motor Python
@@ -52,6 +59,13 @@ Implementa src/domain:
 ```
 **Aceptación:** 6/6 casos de `fixtures/casos.json` pasan en Vitest; cobertura del dominio ≥ 90 %.
 
+**Entregado (#2):**
+- `schemas.ts` y `types.ts`: los 14 archivos de `data/` y el modelo de expedientes; si un JSON no cumple, el build falla con un mensaje claro.
+- `knowledge-repo.ts`: carga validada y getters tipados.
+- `rules-engine.ts`: réplica de `simulate.py`, incluidas sus particularidades (bool como 0/1, el primer operador presente gana).
+- Paridad **completa**: `python scripts/simulate.py --export` escribe `fixtures/resultados-motor.json` y el test compara la salida entera (pasos, orden, opcionales, alternativas, alertas, programas). CI falla si el archivo no está al día.
+- `business-days.ts`: sumar y contar días hábiles, con feriados opcionales.
+
 ---
 
 ## Fase 2: Diagnóstico (F1)
@@ -64,6 +78,14 @@ Al terminar llama a diagnosticar() y muestra: modalidad con explicación, alerta
 Las respuestas se guardan en el estado de la URL o en sessionStorage para no perderlas al recargar.
 ```
 **Aceptación:** el caso `caso-angel` ingresado a mano da modalidad B y las alertas A-TITULO-BLOQUEA y A-PANTANOS. Se ve bien a 375 px.
+
+**Entregado (#3, #4):**
+- `domain/diagnostico.ts`: preguntas visibles, limpieza de respuestas ocultas, validación con Zod, respuestas en la URL y resumen del resultado.
+- `/diagnostico`: una pregunta por pantalla con progreso, Atrás, Omitir y Siguiente; el avance vive en la URL (recargar o compartir no pierde nada).
+- `/diagnostico/resultado`: modalidad explicada con su licencia (alcance, plazo, etiqueta, fuentes), alertas por prioridad, programas y respuestas editables una por una.
+- Componentes reutilizables: etiqueta de estado de verificación y enlaces a fuentes.
+- Playwright a 375 px con el caso real de referencia.
+- PR `data:` (#4): tildes y signos de apertura en todos los textos visibles, sin tocar ids ni valores.
 
 ---
 
@@ -82,43 +104,100 @@ Crea app/fuentes con fuentes.json, normas.json, fecha de corte y aviso legal.
 ```
 **Aceptación:** ningún monto aparece sin fuente; los datos `por_verificar` nunca se muestran como ciertos; los tests de roadmap pasan.
 
+**Entregado (#5):**
+- `domain/roadmap.ts`: pasos por etapa con entidad (la municipalidad concreta si es distrital), plazo, costo, requisitos, resultados, normas, fuentes y alternativas; totales de costo (rango), montos faltantes, montos no verificados, días hábiles y plazos faltantes.
+- Costo: si el TUPA tiene varias variantes se muestra el rango (no se elige una variante en código). Un monto sin fuente no se muestra como monto.
+- `/diagnostico/hoja-de-ruta`: línea de tiempo E1–E7 con tarjetas plegables.
+- `/fuentes`: fecha de corte, etiquetas, cobertura por distrito, normas y fuentes por tipo, aviso legal.
+- Invariante probada: ningún monto sin fuente en los 6 casos × 4 distritos + sin distrito.
+- Pendiente de datos que la app deja a la vista: montos de Chorrillos y Villa El Salvador (Fase 9 o carga manual). Si se quiere el monto exacto en vez del rango, agregar a `reglas.json` reglas que elijan la variante según las respuestas.
+
 ---
 
 ## Fase 4: Expedientes, checklist y alertas (F3, F4, F5)
 
 ```
-Implementa ExpedienteRepository (interfaz) y su versión localStorage (con try/catch y migración
-por version_datos). Crear expediente desde el diagnóstico: nombre, dirección, ubigeo, partida y actores.
-app/expedientes: tablero con tarjetas (etapa actual, % avance = pasos aprobados/no_aplica sobre
-total, próximo paso, próximas 3 alertas). Filtros por distrito y estado.
-app/expedientes/[id] con tabs: Ruta (cambiar estado de cada paso, número de trámite, fechas, monto
-pagado), Checklist (domain/checklist.ts: requisitos únicos, estado, fecha de emisión -> vencimiento),
-Alertas (domain/alerts.ts: vencimientos.json + observación recibida -> 5 días hábiles para subsanar).
-Exportar e importar un expediente como JSON (respaldo).
+1. Repositorio (patrón Repository; la UI solo conoce la interfaz):
+   - src/data/expediente-repo.ts: interfaz ExpedienteRepository con listar, obtener(id), crear,
+     actualizar, eliminar, exportar(id) -> JSON e importar(JSON).
+   - src/data/expediente-repo.local.ts: implementación con localStorage.
+     * Todo acceso en try/catch (modo incógnito, almacenamiento lleno o bloqueado): la UI muestra un
+       aviso y no se rompe.
+     * Valida con ExpedienteSchema (Zod) al leer; un expediente corrupto se separa y se avisa, no
+       tumba el tablero.
+     * Migración por version_datos: si el expediente se creó con datos anteriores, se recalculan los
+       pasos con el motor actual conservando estado, fechas, n.° de trámite y montos pagados de los
+       pasos que siguen existiendo; los que ya no aplican se marcan, no se borran.
+   - Pasar a Supabase después debe ser solo otra implementación de la misma interfaz.
+2. Crear un expediente:
+   - Se activan los botones "Guardar como expediente" del resultado y de la hoja de ruta; llevan las
+     respuestas por URL a /expedientes/nuevo.
+   - Ficha con react-hook-form + Zod: nombre del expediente, dirección, distrito (prellenado desde el
+     diagnóstico), partida registral y actores (rol, nombre, teléfono, correo, colegiatura CAP/CIP).
+   - Guarda respuestas, modalidad, version_datos y los pasos del motor en estado "pendiente".
+3. Tablero /expedientes (domain/expediente.ts calcula todo, la UI solo muestra):
+   - Tarjeta por expediente: nombre, distrito, modalidad, etapa actual (la primera con pasos sin
+     cerrar), % de avance (pasos aprobados o "no aplica" sobre el total, sin opcionales), próximo
+     paso y próximas 3 alertas.
+   - Filtros por distrito y por estado (en curso, con alertas, terminado). Estado vacío con botón al
+     diagnóstico.
+4. Detalle /expedientes/[id] con pestañas:
+   - Ruta: la hoja de ruta de la Fase 3 más el estado de cada paso (pendiente, en preparación,
+     presentado, observado, subsanado, aprobado, denegado, no aplica), n.° de trámite en la
+     entidad, fecha de presentación, de observación y de resultado, monto pagado y notas.
+   - Checklist (domain/checklist.ts): requisitos de todos los pasos sin duplicados, con quién lo
+     emite y su vigencia; estado falta / en trámite / obtenido / vencido; con la fecha de emisión
+     calcula el vencimiento (vigencia_dias de documentos.json, p. ej. copia literal 30 días) y pasa
+     a "vencido" solo.
+   - Alertas (domain/alerts.ts, puro, "hoy" como parámetro): vencimientos de vencimientos.json con
+     aviso en los días de alertar_dias_antes; paso "observado" -> 5 días hábiles para subsanar
+     desde la fecha de observación (business-days.ts); alertas del diagnóstico. Ordenadas por fecha
+     y nivel.
+   - Datos: predio y actores editables.
+5. Respaldo: exportar un expediente como archivo JSON e importarlo (validado con Zod; si el id
+   existe, preguntar si reemplazar o duplicar).
+6. Tests de dominio (expediente, checklist, alerts) con fechas fijas; Playwright: crear desde el
+   diagnóstico, marcar una observación y ver la alerta, recargar y que siga.
 ```
-**Aceptación:** crear 3 expedientes de prueba, marcar una observación y ver la alerta de 5 días hábiles; recargar la página no pierde nada.
+**Aceptación:** crear 3 expedientes de prueba, marcar una observación y ver la alerta de 5 días hábiles; recargar la página no pierde nada; con `localStorage` bloqueado la app avisa y no se rompe; cobertura del dominio ≥ 90 %.
 
 ---
 
 ## Fase 5: Bitácora de obra (F6)
 
 ```
-Tab "Bitácora" en el expediente: alta rápida de entradas (tipo, fecha, descripción, monto, % avance,
-responsable de los actores, foto como archivo local convertido a data URL con límite de 1 MB).
-Vista cronológica con filtros por tipo y totales de gasto por tipo y por mes.
+1. Pestaña "Bitácora" en el expediente con alta rápida (pensada para usarse en obra, en el celular):
+   tipo (avance, compra, pago, visita municipal, reunión, incidencia, cambio de obra, otro), fecha
+   (hoy por defecto), descripción, monto, % de avance y responsable elegido entre los actores.
+2. Fotos: archivo local convertido a data URL, máximo 1 MB por foto (se comprime antes si es más
+   grande; si aun así no entra, se avisa). Aviso cuando el almacenamiento del navegador se acerca al
+   límite, con sugerencia de exportar el respaldo.
+3. Vista cronológica (más reciente primero), agrupada por mes, con filtros por tipo y por
+   responsable; editar y eliminar entradas.
+4. Totales (domain/bitacora.ts, puro): gasto por tipo y por mes, gasto total, último % de avance
+   registrado. Montos en S/ 1,234.50 y fechas dd/mm/aaaa.
+5. Tests del dominio de totales; la bitácora entra en el respaldo JSON del expediente.
 ```
-**Aceptación:** registrar 10 entradas; los totales cuadran; se ve bien en móvil.
+**Aceptación:** registrar 10 entradas; los totales cuadran; se ve bien en móvil; una foto de más de 1 MB se comprime o se rechaza con aviso.
 
 ---
 
 ## Fase 6: Landing, pulido y despliegue
 
 ```
-app/page.tsx: propuesta de valor para profesionales ("Todos tus expedientes de obra, de SUNARP a la
-conformidad, en un solo lugar"), CTA al diagnóstico, 3 beneficios y un caso real anonimizado.
-Revisa accesibilidad (labels, contraste, foco), metadatos SEO y Open Graph.
-Agrega un modo demo con 3 expedientes precargados (desde fixtures) para mostrar en entrevistas.
-Prepara el despliegue en Vercel (README con pasos).
+1. Landing (app/page.tsx) para profesionales gestores: "Todos tus expedientes de obra, de SUNARP a
+   la conformidad, en un solo lugar"; CTA al diagnóstico y al tablero; 3 beneficios (saber qué
+   sigue y cuánto cuesta por distrito; no perder documentos por vencimiento; seguir varios
+   expedientes y la obra en un solo lugar); un caso real anonimizado (compraventa sin inscribir
+   cerca de Pantanos de Villa: qué se descubrió antes de que la municipalidad observara); aviso
+   legal y enlace a "Cómo sabemos esto".
+2. Modo demo: botón "Ver demo" que carga 3 expedientes de ejemplo desde fixtures (uno en cada
+   estado: recién creado, con observación, casi terminado) marcados como demo y fáciles de borrar.
+3. Accesibilidad: etiquetas en todos los campos, contraste AA, foco visible, navegación por
+   teclado, textos alternativos.
+4. SEO y compartir: título y descripción por página, Open Graph e imagen para WhatsApp, sitemap y
+   robots.
+5. README: cómo correr el proyecto, comandos, flujo de PR y despliegue en Vercel.
 ```
 **Aceptación:** Lighthouse móvil ≥ 90 en Performance y Accesibilidad; el modo demo carga en 1 clic.
 
