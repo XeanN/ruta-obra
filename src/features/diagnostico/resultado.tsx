@@ -1,4 +1,4 @@
-import { CircleAlert, Info, OctagonAlert, Pencil, TriangleAlert, type LucideIcon } from "lucide-react";
+import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { KnowledgeRepo } from "@/data/knowledge-repo";
@@ -6,9 +6,9 @@ import {
   ETIQUETA_NIVEL,
   respuestasAParams,
   textoRespuesta,
-  type NivelAlerta,
   type ResumenDiagnostico,
 } from "@/domain/diagnostico";
+import { ESTILO_NIVEL } from "@/features/alertas/estilos";
 import type { Fuente, Pregunta, Respuestas } from "@/domain/types";
 import { EstadoVerificacionBadge } from "@/features/fuentes/estado-verificacion-badge";
 import { FuentesLinks } from "@/features/fuentes/fuentes-links";
@@ -77,22 +77,6 @@ export function ModalidadCard({
     </Card>
   );
 }
-
-const ESTILO_NIVEL: Record<NivelAlerta, { icono: LucideIcon; clase: string }> = {
-  critica: {
-    icono: OctagonAlert,
-    clase: "border-red-500/40 bg-red-500/10 [&_svg]:text-red-700 dark:[&_svg]:text-red-400",
-  },
-  alta: {
-    icono: TriangleAlert,
-    clase: "border-orange-500/40 bg-orange-500/10 [&_svg]:text-orange-700 dark:[&_svg]:text-orange-400",
-  },
-  media: {
-    icono: CircleAlert,
-    clase: "border-amber-500/40 bg-amber-500/10 [&_svg]:text-amber-700 dark:[&_svg]:text-amber-400",
-  },
-  baja: { icono: Info, clase: "border-border bg-muted/50 [&_svg]:text-muted-foreground" },
-};
 
 export function AlertasCard({ grupos }: { grupos: ResumenDiagnostico["alertasPorNivel"] }) {
   const total = grupos.reduce((n, g) => n + g.alertas.length, 0);

@@ -405,6 +405,15 @@ export const ExpedienteSchema = z.object({
   actualizado_en: FechaHoraSchema.optional(),
 });
 
+/**
+ * Unidad que guarda el repositorio y que se exporta como respaldo: el expediente con su predio.
+ * En Postgres serían dos tablas (expedientes.predio_id → predios.id).
+ */
+export const ExpedienteRegistroSchema = z.object({
+  expediente: ExpedienteSchema,
+  predio: PredioSchema,
+});
+
 export const AlertaSchema = z.object({
   id: z.string(),
   expediente_id: z.string(),

@@ -78,6 +78,13 @@
         "fecha": { "$ref": "#/$defs/fecha" }, "mensaje": { "type": "string" },
         "nivel": { "enum": ["critica", "alta", "media", "baja"] }, "leida": { "type": "boolean" }
       }
+    },
+    "ExpedienteRegistro": {
+      "description": "Unidad que guarda el repositorio y formato del respaldo JSON: el expediente con su predio.",
+      "type": "object", "required": ["expediente", "predio"],
+      "properties": {
+        "expediente": { "$ref": "#/$defs/Expediente" }, "predio": { "$ref": "#/$defs/Predio" }
+      }
     }
   }
 }

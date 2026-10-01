@@ -1,7 +1,7 @@
 import { ArrowRight, FolderPlus, Map as MapIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { knowledgeRepo } from "@/data/knowledge-repo";
 import {
@@ -81,14 +81,14 @@ export default async function ResultadoPage({
           <MapIcon data-icon="inline-start" />
           Ver mi hoja de ruta
         </Link>
-        <Button size="lg" variant="outline" className="h-11 flex-1" disabled>
+        <Link
+          href={`/expedientes/nuevo?${params}`}
+          className={buttonVariants({ size: "lg", variant: "outline", className: "h-11 flex-1" })}
+        >
           <FolderPlus data-icon="inline-start" />
           Guardar como expediente
-        </Button>
+        </Link>
       </div>
-      <p className="text-muted-foreground -mt-3 text-center text-xs">
-        Los expedientes estarán disponibles pronto.
-      </p>
 
       <RespuestasCard preguntas={preguntas} respuestas={respuestas} />
 

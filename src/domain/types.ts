@@ -10,6 +10,7 @@ import type {
   EstadoPasoSchema,
   EstadoVerificacionSchema,
   EtapaSchema,
+  ExpedienteRegistroSchema,
   ExpedienteSchema,
   FuenteSchema,
   InstitucionSchema,
@@ -56,6 +57,7 @@ export type Paso = z.infer<typeof PasoSchema>;
 export type DocumentoCargado = z.infer<typeof DocumentoCargadoSchema>;
 export type EntradaBitacora = z.infer<typeof EntradaBitacoraSchema>;
 export type Expediente = z.infer<typeof ExpedienteSchema>;
+export type ExpedienteRegistro = z.infer<typeof ExpedienteRegistroSchema>;
 export type Alerta = z.infer<typeof AlertaSchema>;
 
 export type Modalidad = "A" | "B" | "C" | "D";
