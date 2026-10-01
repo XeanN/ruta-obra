@@ -86,6 +86,7 @@ python scripts/export_excel.py    # regenerar data/ruta-obra.xlsx
 - No llamar APIs del Estado ni hacer scraping desde la app.
 - No mover lógica de negocio a componentes.
 - No borrar `estado_verificacion` ni `fuente_id` de ningún dato.
+- No actualizar montos ni requisitos automáticamente sin revisión humana: lo extraído o reportado entra como `por_verificar` por PR `data:` (ver "Reglas del mantenimiento de datos" en `prompts/fases.md`).
 
 ## Si algún día migras a Angular
 
