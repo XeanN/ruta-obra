@@ -2,6 +2,23 @@
 
 Úsalos en orden, uno por sesión o por rama. Cada uno termina con criterios de aceptación: no pases a la siguiente fase sin cumplirlos. Antes de empezar, Claude Code debe leer `CLAUDE.md`.
 
+## Estado y orden
+
+| Fase | Qué entrega | Estado | Orden sugerido |
+|---|---|---|---|
+| 0 | Setup del proyecto + CI | Hecha (#1) | — |
+| 1 | Dominio, motor de reglas y paridad con Python | Hecha (#2) | — |
+| 2 | Diagnóstico (F1) | Hecha (#3) | — |
+| 3 | Hoja de ruta (F2) y fuentes (F7) | Hecha (#5) | — |
+| 4 | Expedientes, checklist y alertas (F3, F4, F5) | Pendiente | Siguiente |
+| 5 | Bitácora de obra (F6) | Pendiente | Después de 4 |
+| 6 | Landing, pulido y despliegue | Pendiente | Antes de las entrevistas |
+| 7 | Vigilancia automática de fuentes | Pendiente | Independiente: puede hacerse en cualquier momento; conviene antes de las entrevistas |
+| 8 | Antigüedad visible y "Reportar un dato desactualizado" | Pendiente | Después de 7 |
+| 9 | Extracción asistida por IA de TUPAs | Pendiente | Cuando haya que cargar distritos nuevos o la Fase 7 detecte un TUPA nuevo |
+
+Las fases 7 a 9 forman el **ciclo de mantenimiento de datos**: la 7 detecta qué cambió, el flujo de actualización con revisión (ver "Prompts de mantenimiento") lo corrige con un PR `data:`, la 8 hace visible la antigüedad y recoge reportes de los usuarios, y la 9 acelera la carga de montos nuevos. Ninguna cambia datos sin revisión humana (ver "Reglas del mantenimiento de datos").
+
 ---
 
 ## Fase 0: Setup del proyecto
@@ -107,13 +124,163 @@ Prepara el despliegue en Vercel (README con pasos).
 
 ---
 
+## Fase 7: Vigilancia automática de fuentes
+
+Objetivo: enterarse cada semana de qué fuentes cambiaron, se cayeron o llevan mucho tiempo sin revisarse, **sin cambiar ningún dato**. Corre en GitHub Actions, fuera de la app (respeta "no scraping desde la app").
+
+```
+Crea scripts/watch_sources.py y .github/workflows/vigilancia-fuentes.yml.
+
+1. Revisión de URLs (data/fuentes.json):
+   - GET a cada url con timeout de 20 s, siguiendo redirecciones, máximo 1 petición por segundo y
+     User-Agent que identifique el proyecto (RutaObra-vigilancia + URL del repo).
+   - Registra: código HTTP, URL final (si redirige), content-type y una huella sha256 del contenido.
+     PDF/binarios: huella de los bytes. HTML: huella del texto visible normalizado (sin scripts,
+     estilos ni espacios repetidos), para no dar falsos cambios por tokens o fechas de la página.
+   - Clasifica cada fuente en: OK, CAMBIÓ (huella distinta a la anterior), CAÍDA (4xx/5xx, timeout,
+     error de red; 2 semanas seguidas para no alarmar por caídas puntuales), REDIRIGE (la URL final
+     cambió de dominio o ruta).
+2. Impacto: por cada fuente con novedad, lista qué datos dependen de ella (procedimientos.fuentes,
+   tarifas_distritales.fuente_id, distritos.tupa.fuente_id, normas.fuente_id, reglas.fuentes,
+   programas.fuentes, zonas_especiales.fuentes, vencimientos.fuente_id) con sus ids, para saber
+   exactamente qué revisar.
+3. Antigüedad: marca las fuentes con fecha_consulta de más de 180 días (umbral en
+   meta.json -> "vigilancia": {"dias_sin_revision": 180}), agrupadas por archivo de data/.
+4. Recordatorios de calendario (sin red):
+   - En enero, si meta.uit.anio < año actual: "Actualizar la UIT del año".
+   - Distritos cuyo tupa.anio tenga 2 o más años de antigüedad.
+   - Programas con anio < año actual (Techo Propio y otros cambian por convocatoria).
+5. Estado entre corridas: NO se commitea nada (master está protegido). El estado (huellas y
+   contador de caídas por fuente) se guarda en un bloque oculto
+   <!-- estado-vigilancia {...json...} --> dentro del cuerpo del issue de vigilancia; el script lo
+   lee al empezar y lo reescribe al terminar.
+6. Reporte: UN solo issue abierto con la etiqueta "vigilancia-datos" y título
+   "Vigilancia de fuentes". Si ya existe, se actualiza su cuerpo (no se crean duplicados) y se
+   agrega un comentario corto solo cuando hay novedades nuevas respecto de la corrida anterior.
+   Secciones: 🔴 Caídas, 🟠 Cambiaron (con los datos afectados), 🟡 Sin revisar hace más de 180 días,
+   📅 Recordatorios. Cada fuente con su título, URL e id.
+7. Workflow: cron semanal (lunes 07:00 hora de Lima) + workflow_dispatch con opción dry_run que
+   solo imprime el reporte en el log. Permisos mínimos: contents: read, issues: write.
+8. Modo local: python scripts/watch_sources.py --dry-run imprime el reporte sin tocar GitHub.
+9. Tests (pytest en scripts/tests/): normalización de HTML, clasificación de estados con respuestas
+   simuladas, cálculo de impacto y lectura/escritura del bloque de estado. Agrega pytest al job
+   "data" del CI.
+```
+**Aceptación:** `--dry-run` local imprime el reporte; la primera corrida en Actions crea el issue y la segunda sin cambios lo actualiza sin duplicarlo ni comentar; una fuente con la URL alterada a propósito aparece como CAÍDA a la segunda semana; ningún archivo de `data/` cambia; CI en verde.
+
+---
+
+## Fase 8: Antigüedad visible y "Reportar un dato desactualizado"
+
+Objetivo: que el usuario vea qué tan reciente es cada dato y pueda avisar cuando la realidad no coincide.
+
+```
+1. Antigüedad en el dominio (puro, sin Date.now(): "hoy" entra como parámetro):
+   - meta.json -> "vigencia_verificacion_meses": 12 (dato, no constante en el código).
+   - src/domain/freshness.ts: estadoEfectivo(estado, fechaConsulta, hoy, meses) devuelve
+     "desactualizado" si el dato estaba "verificado" pero su fuente se consultó hace más de N
+     meses; en otro caso, el estado original. Nunca mejora un estado, solo lo degrada.
+   - Úsalo en roadmap.ts (costos, variantes de tarifa) y en el diagnóstico (licencia de la
+     modalidad, programas), tomando la fecha_consulta de la fuente del dato.
+   - Tests con fechas fijas: justo en el umbral, un día después, dato ya no verificado, fuente
+     sin fecha.
+2. UI:
+   - Junto a cada enlace de fuente: "Revisado el dd/mm/aaaa".
+   - Si el estado se degradó por antigüedad, la etiqueta "Versión anterior" lleva un texto de
+     ayuda: "Sin revisar desde hace más de 12 meses".
+   - En /fuentes: cuántos datos están vencidos por antigüedad, por archivo.
+3. Reportar un dato:
+   - En cada tarjeta de la hoja de ruta (y en cada monto), enlace "¿Este dato cambió? Repórtalo".
+   - Destino configurable con NEXT_PUBLIC_REPORTE_URL (formulario externo, p. ej. Google Forms
+     con campos prellenados por query string) y alternativa mailto: con asunto y cuerpo
+     prellenados. Datos que se envían: id del procedimiento, ubigeo, variante, monto mostrado,
+     URL de la página y un campo libre "¿Qué viste?". Sin datos personales obligatorios.
+   - Sin backend: la app solo arma el enlace.
+   - .github/ISSUE_TEMPLATE/dato-desactualizado.yml para pasar cada reporte a un issue con la
+     etiqueta "vigilancia-datos" y luego a un PR data:.
+```
+**Aceptación:** un dato `verificado` con fuente consultada hace 13 meses se muestra como "Versión anterior" y uno de 11 meses no; el umbral se cambia solo en `meta.json`; el enlace de reporte abre el formulario o el correo con los datos prellenados; tests del dominio en verde y cobertura ≥ 90 %.
+
+---
+
+## Fase 9: Extracción asistida por IA de TUPAs
+
+Objetivo: cargar montos de un TUPA nuevo en minutos, siempre con revisión humana antes de marcarlos como verificados.
+
+```
+Crea scripts/extract_tupa.py (Python, fuera de la app):
+
+1. Entrada: --ubigeo <código> --pdf <ruta o URL> [--fuente-id F-...].
+2. Lectura del PDF: texto con pdfplumber página por página. Si una página no tiene texto (PDF
+   escaneado), OCR con Tesseract (idioma spa) y marca esas filas con "origen": "ocr" para revisarlas
+   con más cuidado.
+3. Extracción con la API de Claude (modelo vigente; clave en el secreto ANTHROPIC_API_KEY, nunca en
+   el repo) con salida estructurada validada contra el $def "tarifa" de schema/data.schema.json:
+   - Solo procedimientos de edificación que existan en procedimientos.json (se le pasa la lista de
+     ids y nombres para que mapee; lo que no mapea va a una sección "no reconocidos" del reporte,
+     no a los datos).
+   - Por fila: procedimiento_id, variante, codigo_tupa, derecho_soles, y la página del PDF donde se
+     leyó (se guarda en "nota": "TUPA <año>, pág. N").
+   - TODAS las filas con estado_verificacion "por_verificar" y la fuente indicada.
+4. Comparación: contra tarifas_distritales.json del ubigeo, clasifica cada fila en NUEVA, CAMBIÓ
+   (monto distinto: muestra antes → después) o IGUAL; nunca borra filas existentes.
+5. Salida: rama data/tupa-<ubigeo>-<fecha>, commit "data: montos TUPA <distrito> <año> (por
+   verificar)" y PR con una tabla por fila (código, procedimiento, variante, monto, página, origen)
+   para revisarla contra el PDF. Corre validate_data.py, simulate.py --export y export_excel.py antes
+   del commit.
+6. Revisión humana: quien revisa compara cada fila con el PDF y cambia a "verificado" en el mismo PR
+   solo las que confirmó. Nunca auto-merge.
+7. Disparadores: manual, o desde el issue de la Fase 7 cuando una fuente de TUPA aparece como
+   CAMBIÓ (workflow_dispatch con ubigeo y URL).
+8. Tests: con un PDF pequeño de prueba en scripts/tests/fixtures y la llamada a la API simulada,
+   verifica el mapeo, el formato de las filas y que nada sale como "verificado".
+```
+**Aceptación:** correr el script con el TUPA 2025 de Villa El Salvador genera un PR con sus montos de edificación en `por_verificar`, cada uno con su página del PDF; CI en verde; la hoja de ruta de Villa El Salvador muestra esos montos con la etiqueta "Por confirmar" hasta que se verifiquen.
+
+---
+
+## Reglas del mantenimiento de datos
+
+- **Nunca actualizar montos ni requisitos automáticamente sin revisión humana.** Una tasa mal extraída se mostraría como cierta. Todo cambio entra por PR `data:` y lo aprueba una persona.
+- **Un dato solo pasa a `verificado` cuando alguien lo leyó en la fuente oficial citada.** Lo que viene de extracción automática, OCR o reportes de usuarios entra como `por_verificar`.
+- **Nunca consultar las webs del Estado desde la app ni en cada visita.** Es lento, frágil y va contra el diseño del prototipo. La vigilancia corre aparte, una vez por semana.
+- **No borrar datos viejos al actualizar:** se corrige el monto, se actualiza `fecha_consulta` de la fuente y, si cambió el documento, se agrega la fuente nueva.
+- **Cada cambio en `data/`:** `validate_data.py`, `simulate.py`, `simulate.py --export` y `export_excel.py`.
+
+## Calendario de revisión
+
+| Cuándo | Qué revisar |
+|---|---|
+| Cada lunes | Issue "Vigilancia de fuentes" (Fase 7): caídas y cambios |
+| Cada enero | UIT del año (`meta.uit`) y TUPAs adecuados en el año |
+| Cada convocatoria | Programas (Techo Propio, MiVivienda): montos, requisitos y vigencia |
+| Al publicarse una norma | Ley 29090 y reglamentos en El Peruano: requisitos, plazos y modalidades (puede requerir reglas nuevas) |
+| Cada 6 meses | Fuentes sin revisar marcadas por la vigilancia |
+
+---
+
 ## Prompts de mantenimiento
+
+**Actualizar un dato que cambió** (flujo de revisión; úsalo con lo que reporte la Fase 7 o un usuario)
+```
+Cambió <dato> según <fuente/URL o issue #N>. Actualiza data/ en una rama data/<tema>:
+1. Corrige el valor (monto, requisito, plazo o texto) sin borrar el dato anterior si sigue vigente
+   para otra variante o distrito.
+2. Si cambió el documento fuente, agrega la fuente nueva a fuentes.json y apunta el dato a ella;
+   si es el mismo documento, actualiza su fecha_consulta.
+3. Estado: "verificado" solo si lo leíste en la fuente oficial; si viene de otra parte,
+   "fuente_secundaria" o "por_verificar".
+4. Corre validate_data.py, simulate.py, simulate.py --export y export_excel.py.
+5. Abre un PR data: que explique qué cambió (antes → después) y enlace la fuente. Cierra el issue.
+```
 
 **Agregar un distrito**
 ```
 Agrega el distrito <nombre> (ubigeo <código>) siguiendo docs/modelo-datos.md > "Cómo agregar un
-distrito". Te paso el TUPA en <ruta al PDF>. Extrae SOLO procedimientos de edificación, marca cada
-monto con estado_verificacion "verificado" y la fuente. Corre validate_data.py y simulate.py.
+distrito". Te paso el TUPA en <ruta al PDF>. Extrae SOLO procedimientos de edificación (o usa
+scripts/extract_tupa.py si ya existe la Fase 9). Cada monto entra con estado_verificacion
+"por_verificar", su código TUPA, la página del PDF y la fuente; pasa a "verificado" solo después de
+compararlo con el PDF. Corre validate_data.py, simulate.py, simulate.py --export y export_excel.py.
 ```
 
 **Nueva regla**
