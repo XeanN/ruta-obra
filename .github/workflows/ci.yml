@@ -5,14 +5,16 @@ on:
   push:
     branches: [master]
 
+# En los PR un push nuevo cancela la corrida anterior; en master cada merge se verifica completo.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   data:
     name: data
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -32,6 +34,12 @@ jobs:
   app:
     name: app
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Imagen oficial de Playwright: trae Chromium y sus paquetes de sistema. Instalarlos con
+    # --with-deps tardaba 4-5 min (apt lento) y a veces se colgaba. Mantener la versión igual
+    # a @playwright/test; si no coincide, el paso "Navegador de Playwright" baja el que falte.
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
     # Valores de prueba: el build y el E2E (modo invitado) no se conectan a ninguna base real.
     # Los tests de base de datos usan PGlite (Postgres en memoria) con las migraciones de drizzle/.
     env:
@@ -50,7 +58,9 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test:coverage
       - run: pnpm build
-      - run: pnpm exec playwright install --with-deps chromium
+      - name: Navegador de Playwright (ya viene en la imagen; solo baja si cambió la versión)
+        run: pnpm exec playwright install chromium
+        timeout-minutes: 3
       - run: pnpm e2e
       - uses: actions/upload-artifact@v4
         if: failure()
