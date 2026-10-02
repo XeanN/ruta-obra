@@ -52,7 +52,7 @@ test("caso real de referencia: compraventa sin inscribir cerca de Pantanos de Vi
 
   await sinScrollHorizontal(page);
 
-  // Hoja de ruta: etapas en orden, licencia en Chorrillos con código TUPA y monto por confirmar.
+  // Hoja de ruta: etapas en orden, licencia en Chorrillos con código del TUPA 2024 y monto por confirmar.
   await page.getByRole("link", { name: "Ver mi hoja de ruta" }).click();
   await expect(page.getByRole("heading", { name: "Tus trámites, en orden" })).toBeVisible();
   await expect(page.getByText("Costo estatal estimado")).toBeVisible();
@@ -61,7 +61,7 @@ test("caso real de referencia: compraventa sin inscribir cerca de Pantanos de Vi
   const licencia = page.locator("details", { hasText: "Modalidad B (evaluación municipal)" }).first();
   await licencia.locator("summary").click();
   await expect(licencia.getByText("Municipalidad Distrital de Chorrillos")).toBeVisible();
-  await expect(licencia.getByText("TUPA n.° 89")).toBeVisible();
+  await expect(licencia.getByText("TUPA n.° PE1726971063")).toBeVisible();
   await expect(licencia.getByText("Por confirmar").first()).toBeVisible();
   await expect(licencia.getByText("Licencia de edificación - Modalidad B (revisores urbanos)")).toBeVisible();
   await sinScrollHorizontal(page);

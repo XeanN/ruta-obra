@@ -14,7 +14,7 @@ import {
 } from "./roadmap";
 import { diagnosticar, type Diagnostico } from "./rules-engine";
 import { RespuestasSchema } from "./schemas";
-import type { Procedimiento, Tarifa } from "./types";
+import type { EstadoVerificacion, Procedimiento, Tarifa } from "./types";
 
 const base = knowledgeRepo.baseHojaDeRuta;
 /** Fecha fija: las fuentes de data/ se consultaron en 2026-09, dentro del umbral de 12 meses. */
@@ -115,24 +115,34 @@ describe("costos por distrito (regla 5)", () => {
     expect(rangoDeCosto(costo)).toEqual({ minimo: 1463.4, maximo: 2509.8 });
   });
 
-  it("Surco: montos de un TUPA anterior se marcan como no verificados", () => {
+  it("Surco: montos extraídos del TUPA 2024 entran por confirmar; los ya verificados se conservan", () => {
     const h = ruta("unifamiliar-simple");
     const lic = paso(h, "P-MUN-LIC-A").costo;
     expect(lic.tipo === "tarifa_distrital" && lic.incluyeNoVerificados).toBe(true);
-    expect(rangoDeCosto(lic)).toEqual({ minimo: 56.1, maximo: 122.2 });
+    expect(rangoDeCosto(lic)).toEqual({ minimo: 117.6, maximo: 117.6 });
+    expect(estadoDeCosto(lic)).toBe("por_verificar");
     const param = paso(h, "P-MUN-PARAM").costo;
     expect(param.tipo === "tarifa_distrital" && param.incluyeNoVerificados).toBe(false);
     expect(h.totales.montosNoVerificados).toBeGreaterThanOrEqual(1);
   });
 
-  it("Chorrillos: código TUPA sin monto no suma y cuenta como faltante", () => {
-    const h = ruta("caso-angel");
+  it("Villa El Salvador: fila sin monto no suma y cuenta como faltante", () => {
+    const h = ruta("caso-angel", "150142");
     const costo = paso(h, "P-MUN-LIC-B").costo;
     expect(costo.tipo).toBe("tarifa_distrital");
     if (costo.tipo !== "tarifa_distrital") return;
     expect(costo.rango).toBeNull();
-    expect(costo.variantes.map((v) => v.codigo_tupa)).toEqual(["89", "91"]);
+    expect(costo.variantes.map((v) => v.variante)).toEqual(["general"]);
     expect(costo.variantes.every((v) => v.estado_verificacion === "por_verificar")).toBe(true);
+    expect(h.totales.montosFaltantes).toBeGreaterThanOrEqual(1);
+  });
+
+  it("Chorrillos: TUPA 2024 con montos por variante, también para revisores urbanos", () => {
+    const h = ruta("caso-angel");
+    const costo = paso(h, "P-MUN-LIC-B").costo;
+    expect(rangoDeCosto(costo)).toEqual({ minimo: 1059.2, maximo: 1815.6 });
+    expect(estadoDeCosto(costo)).toBe("por_verificar");
+    expect(rangoDeCosto(paso(h, "P-MUN-LIC-B").alternativas[0]!.costo)).toEqual({ minimo: 59.5, maximo: 59.5 });
   });
 
   it("sin tarifa del distrito usa el costo referencial; si tampoco hay, Consultar TUPA", () => {
@@ -142,8 +152,9 @@ describe("costos por distrito (regla 5)", () => {
     expect(paso(h, "P-NOT-ESCRITURA").costo.tipo).toBe("honorarios_libres");
     expect(paso(h, "P-SUN-FAB27157").costo.tipo).toBe("formula");
     expect(paso(h, "P-PROH-OPINION").costo.tipo).toBe("consultar_tupa");
-    // La alternativa por revisores urbanos no tiene tarifa en Chorrillos.
-    expect(paso(h, "P-MUN-LIC-B").alternativas[0]?.costo).toEqual({ tipo: "consultar_tupa", nota: null });
+    // La alternativa por revisores urbanos no tiene tarifa en Villa El Salvador.
+    const ves = ruta("caso-angel", "150142");
+    expect(paso(ves, "P-MUN-LIC-B").alternativas[0]?.costo).toEqual({ tipo: "consultar_tupa", nota: null });
   });
 
   it("distrito 'otro': nunca usa tarifas distritales", () => {
@@ -221,8 +232,19 @@ describe("costoDePaso: casos borde", () => {
 describe("estadoDeCosto", () => {
   it("toma el estado más débil de los montos que componen el costo", () => {
     expect(estadoDeCosto(paso(ruta("comercio-grande"), "P-MUN-LIC-D").costo)).toBe("verificado");
-    expect(estadoDeCosto(paso(ruta("unifamiliar-simple"), "P-MUN-LIC-A").costo)).toBe("desactualizado");
     expect(estadoDeCosto(paso(ruta("caso-angel"), "P-MUN-LIC-B").costo)).toBe("por_verificar");
+    const fuente = base.fuentes[0]!;
+    const variante = (estado: EstadoVerificacion, monto: number | null) => ({
+      variante: estado, codigo_tupa: null, monto, estado_verificacion: estado, antiguedad_meses: null, fuente, nota: null,
+    });
+    const mezcla: CostoPaso = {
+      tipo: "tarifa_distrital",
+      variantes: [variante("verificado", 10), variante("desactualizado", 20), variante("por_verificar", null)],
+      rango: { minimo: 10, maximo: 20 },
+      incluyeNoVerificados: true,
+    };
+    // Solo cuentan las variantes con monto: la más débil es "desactualizado".
+    expect(estadoDeCosto(mezcla)).toBe("desactualizado");
   });
 
   it("referencial y fórmula usan el estado del procedimiento; el resto no tiene estado", () => {

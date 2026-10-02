@@ -66,9 +66,10 @@ La base de conocimiento está en `data/` (JSON = fuente de verdad) y se exporta 
 
 ## Pendientes de datos (prioridad)
 
-1. Montos de Chorrillos y Villa El Salvador desde sus TUPAs vigentes (SAT / gob.pe / mesa de partes).
-2. Montos 2024+ de licencias en Surco (anexo de la Ordenanza 704-MSS).
-3. Plazos estandarizados exactos del D.S. 146-2023-PCM para cada procedimiento.
-4. Tasas de PROHVILLA, SERNANP, Ministerio de Cultura, Sedapal, Luz del Sur y Enel.
-5. Porcentajes de CONAFOVICER y SENCICO, y si aplican a la autoconstrucción familiar.
-6. Polígonos (GeoJSON) de zonas especiales para detección por mapa.
+1. Revisar contra el PDF y pasar a `verificado` los montos extraídos (todos `por_verificar`): Chorrillos y Surco 2024, Lurín, Villa María del Triunfo, Mala y San Vicente de Cañete (este último leído por OCR).
+2. Montos de Villa El Salvador (primera corrida de `scripts/extract_tupa.py`) y de San Juan de Miraflores (anexo de la Ord. 565/MDSJM, publicado en el portal del SAT).
+3. Villa María del Triunfo: confirmar los montos 2022 contra las modificaciones de 2023 y 2024 (D.A. 01-2024-MDVMT). Lurín: confirmar si hay un TUPA posterior a la Ord. 399-2020/ML.
+4. Plazos estandarizados exactos del D.S. 146-2023-PCM para cada procedimiento.
+5. Tasas de PROHVILLA, SERNANP, Ministerio de Cultura, Sedapal, Luz del Sur y Enel.
+6. Porcentajes de CONAFOVICER y SENCICO, y si aplican a la autoconstrucción familiar.
+7. Polígonos (GeoJSON) de zonas especiales para detección por mapa.

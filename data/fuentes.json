@@ -264,5 +264,61 @@
     "url": "https://www.datosabiertos.gob.pe/dataset/conformidad-de-obra-y-declaratoria-de-edificaci%C3%B3n-municipalidad-metropolitana-de-lima-0",
     "tipo": "oficial",
     "fecha_consulta": "2026-10-02"
+  },
+  {
+    "id": "F-CHORR-TUPA24",
+    "titulo": "TUPA Chorrillos 2024 (Ord. 488-2024-MDCH)",
+    "url": "https://cdn.www.gob.pe/uploads/document/file/4965986/4509538-tupa-ordenanza-488-2024-mdch.pdf",
+    "tipo": "oficial",
+    "fecha_consulta": "2026-10-02"
+  },
+  {
+    "id": "F-SURCO-TUPA24-PDF",
+    "titulo": "TUPA Santiago de Surco 2024 (Ord. 704-MSS, PDF)",
+    "url": "https://www.munisurco.gob.pe/wp-content/uploads/2020/07/TUPA-MSS-27-09-2024.pdf",
+    "tipo": "oficial",
+    "fecha_consulta": "2026-10-02"
+  },
+  {
+    "id": "F-LURIN-TUPA20",
+    "titulo": "TUPA Lurín: edificaciones (Ord. 399-2020/ML)",
+    "url": "https://cdn.www.gob.pe/uploads/document/file/4208173/Tupa-Aprobado.pdf",
+    "tipo": "oficial",
+    "fecha_consulta": "2026-10-02"
+  },
+  {
+    "id": "F-VMT-TUPA22",
+    "titulo": "TUPA Villa María del Triunfo (Ord. 336-MVMT, El Peruano 17-11-2022)",
+    "url": "https://cdn.www.gob.pe/uploads/document/file/4793177/TUPA%20PUBLICADO%20EL%2012%20NOV%202022.pdf",
+    "tipo": "oficial",
+    "fecha_consulta": "2026-10-02"
+  },
+  {
+    "id": "F-VMT-TUPA-MOD",
+    "titulo": "Villa María del Triunfo: TUPA y modificatorias (gob.pe)",
+    "url": "https://www.gob.pe/institucion/munivillamariadeltriunfo/informes-publicaciones/4332186",
+    "tipo": "oficial",
+    "fecha_consulta": "2026-10-02"
+  },
+  {
+    "id": "F-SJM-TUPA26",
+    "titulo": "El Peruano: Ord. 565/MDSJM, derechos del TUPA de San Juan de Miraflores (17-01-2026)",
+    "url": "https://busquedas.elperuano.pe/dispositivo/NL/2477101-1",
+    "tipo": "oficial",
+    "fecha_consulta": "2026-10-02"
+  },
+  {
+    "id": "F-CANETE-TUPA24",
+    "titulo": "TUPA Municipalidad Provincial de Cañete (Ord. 09-2024-MPC, gob.pe)",
+    "url": "https://www.gob.pe/institucion/municanete/informes-publicaciones/2439273-texto-unico-de-procedimientos-administrativos-de-la-municipalidad-provincial-de-canete",
+    "tipo": "oficial",
+    "fecha_consulta": "2026-10-02"
+  },
+  {
+    "id": "F-MALA-TUPA23",
+    "titulo": "TUPA Municipalidad Distrital de Mala (gob.pe, 2023)",
+    "url": "https://cdn.www.gob.pe/uploads/document/file/4685973/TUPA-OFICIAL-MALA.pdf",
+    "tipo": "oficial",
+    "fecha_consulta": "2026-10-02"
   }
 ]

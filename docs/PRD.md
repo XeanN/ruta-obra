@@ -1,7 +1,8 @@
 # PRD — RutaObra (prototipo de validación)
 
-> Nombre de trabajo. Versión 0.2 · 01-10-2026 · Autor: Angel Ponce
-> Cambios respecto de 0.1: el backend (cuentas, base de datos y archivos) entra al prototipo; se agregan el mantenimiento de datos, el agente de consultas como fase futura, la arquitectura de datos, privacidad, riesgos y el registro de decisiones.
+> Nombre de trabajo. Versión 0.3 · 02-10-2026 · Autor: Angel Ponce
+> Cambios respecto de 0.2: el prototipo está completo (Fases 0 a 10 entregadas; solo falta la corrida real de la extracción con IA); la cobertura pasa de 4 a 9 distritos, incluida la provincia de Cañete; se agrega el formulario para reportar datos desactualizados.
+> Cambios de 0.2 respecto de 0.1: el backend (cuentas, base de datos y archivos) entra al prototipo; se agregan el mantenimiento de datos, el agente de consultas como fase futura, la arquitectura de datos, privacidad, riesgos y el registro de decisiones.
 
 ## 1. Problema
 
@@ -24,7 +25,7 @@ No existe una API pública del Estado para presentar trámites ni consultar su e
 
 ## 3. Objetivo del prototipo
 
-Validar con 5–10 profesionales de Lima Sur si:
+Validar con 5–10 profesionales de Lima Sur y Cañete si:
 
 1. el diagnóstico y la hoja de ruta les ahorran tiempo real;
 2. el seguimiento multi-expediente reemplaza su método actual;
@@ -40,10 +41,26 @@ Producción: https://ruta-obra.vercel.app. Detalle por fase en `prompts/fases.md
 | Funcionalidad | Estado |
 |---|---|
 | F1 Diagnóstico, F2 Hoja de ruta, F7 Fuentes | Hecho |
-| F3 Checklist, F4 Alertas, F5 Seguimiento multi-expediente | Hecho, con datos guardados en el navegador |
-| F8 Cuentas y persistencia en servidor | Siguiente (Fase 5) |
-| F6 Bitácora de obra | Después de F8 (las fotos necesitan almacenamiento real) |
-| F9 Mantenimiento de datos | Planificado (Fases 8–10) |
+| F3 Checklist, F4 Alertas, F5 Seguimiento multi-expediente | Hecho, con datos en el servidor (cuentas) o en el navegador (modo invitado) |
+| F8 Cuentas y persistencia en servidor | Hecho: Neon + Cloudflare R2 + Better Auth, ingreso probado en producción |
+| F6 Bitácora de obra | Hecho, con fotos en R2 |
+| Landing, modo demo, accesibilidad y SEO | Hecho |
+| F9 Mantenimiento de datos | Hecho: vigilancia semanal de fuentes, antigüedad visible, reporte de datos (formulario de Google con respaldo por correo) y extracción de TUPAs con IA. La extracción espera la corrida real con Villa El Salvador (requiere saldo en la API). |
+| F10 Agente de consultas y migración a AWS | Futuro, después de la validación |
+
+**Cobertura de datos** (02-10-2026). Tasas por distrito, todas `por_verificar` salvo La Molina:
+
+| Distrito | TUPA | Montos de edificación |
+|---|---|---|
+| La Molina (referencia) | 2025 | Verificados |
+| Chorrillos | 2024 (Ord. 488-2024-MDCH) | Extraídos del PDF, por confirmar |
+| Santiago de Surco | 2024 (Ord. 704-MSS) | Extraídos del PDF, por confirmar (parámetros y numeración ya verificados) |
+| Villa María del Triunfo | 2022 (Ord. 336-MVMT); modificado en 2023 y 2024 | Extraídos del PDF 2022, por confirmar contra las modificaciones |
+| Lurín | Ord. 399-2020/ML (anterior al D.S. 146-2023-PCM) | Extraídos del PDF, por confirmar |
+| Mala (Cañete) | 2023 | Extraídos del PDF, por confirmar |
+| San Vicente de Cañete | 2024 (Ord. 09-2024-MPC), PDF escaneado | Leídos por OCR, revisar con cuidado |
+| Villa El Salvador | 2025 | Pendiente: primera corrida de la extracción con IA |
+| San Juan de Miraflores | 2026 (Ord. 565/MDSJM) | Pendiente: el anexo solo está en el portal del SAT |
 
 ## 5. Alcance funcional
 
@@ -159,18 +176,19 @@ Detalle en `docs/validacion.md`.
 | Fase | Qué | Estado |
 |---|---|---|
 | 0–4 | Setup, dominio y motor, diagnóstico, hoja de ruta y fuentes, expedientes | Hechas |
-| 5 | Backend, cuentas y persistencia (F8) | Siguiente |
-| 6 | Bitácora de obra (F6) | Pendiente |
-| 7 | Landing, pulido, modo demo | Pendiente (antes de las entrevistas) |
-| 8–10 | Mantenimiento de datos (F9) | Pendiente |
-| 11 | Agente de consultas y migración a AWS | Futuro |
+| 5 | Backend, cuentas y persistencia (F8) | Hecha |
+| 6 | Bitácora de obra (F6) | Hecha |
+| 7 | Landing, pulido, modo demo | Hecha |
+| 8–10 | Mantenimiento de datos (F9) | Hechas (la 10 espera su corrida real con la API) |
+| — | Validación con profesionales (sección 9) | **Siguiente** |
+| 11 | Agente de consultas y migración a AWS | Futuro, después de la validación |
 
 Después del prototipo:
 1. **Agente de consultas** (Fase 11): Claude con herramientas que llaman al motor y a los datos (diagnóstico, hoja de ruta, tarifas, fuentes, estado de expedientes), siempre citando fuentes y sin inventar montos; opcionalmente como servidor MCP.
 2. **Migración a AWS** junto con el agente (ver tabla del stack).
 3. Mapa: cruce de coordenadas del predio con polígonos de zonas especiales.
 4. Páginas SEO por distrito × trámite, generadas desde el JSON.
-5. Más distritos (con la extracción asistida de TUPAs); convenio municipal (vía PIDE) a largo plazo.
+5. Más distritos (con la extracción asistida de TUPAs) y verificación de los montos extraídos; convenio municipal (vía PIDE) a largo plazo.
 6. Pagos y suscripciones, cuando la validación confirme el precio.
 
 ## 11. Riesgos
@@ -194,3 +212,6 @@ Después del prototipo:
 | 01-10-2026 | El backend entra al prototipo (antes era "fase posterior") | Sin datos en servidor no se puede validar con expedientes reales, compartir con el equipo ni guardar fotos |
 | 01-10-2026 | Neon + Cloudflare R2 + Better Auth + Drizzle | Gratis ahora y portable a AWS cuando se construya el agente |
 | 01-10-2026 | La base de conocimiento sigue en JSON en el repo | Revisión humana por PR y CI; nunca actualización automática sin revisión |
+| 02-10-2026 | Reportes de usuarios por Google Form con datos prellenados; correo como respaldo | Sin backend ni datos personales obligatorios; el formulario ordena los reportes |
+| 02-10-2026 | La cobertura se amplía a Lurín, San Juan de Miraflores, Villa María del Triunfo, San Vicente de Cañete y Mala | Mercado de Lima Sur y Cañete donde se hará la validación |
+| 02-10-2026 | Montos de TUPA extraídos con scripts (texto, tabla, columnas u OCR) mientras no hay saldo para la API, siempre `por_verificar` | Avanzar la cobertura sin esperar; la regla de revisión humana no cambia |

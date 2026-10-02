@@ -145,7 +145,7 @@ Vercel despliega solo: cada PR genera una vista previa (con la rama `preview` de
 ## Cobertura de datos
 
 - **Nacional:** 7 etapas, 50 procedimientos, 42 documentos, 22 instituciones, 3 zonas especiales, 5 programas, 47 reglas.
-- **Distrital:** La Molina (completo, referencia), Surco (parcial), Chorrillos y Villa El Salvador (estructura y códigos; montos por extraer).
+- **Distrital:** La Molina (completo y verificado, referencia); Chorrillos y Santiago de Surco (TUPA 2024), Lurín, Villa María del Triunfo, Mala y San Vicente de Cañete (montos extraídos de sus TUPA, por confirmar); Villa El Salvador y San Juan de Miraflores (estructura; montos por extraer).
 - Cada dato tiene `fuente_id` y `estado_verificacion`. Lo pendiente está en [docs/modelo-datos.md](docs/modelo-datos.md).
 
 ## Aviso
