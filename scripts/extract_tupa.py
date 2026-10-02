@@ -301,10 +301,10 @@ Reglas:
 
 
 def crear_cliente():
-    import anthropic  # solo hace falta para la corrida real
-
     if not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
         raise ErrorExtraccion("Falta ANTHROPIC_API_KEY (en Actions: el secreto del repositorio). Prueba antes con --dry-run.")
+    import anthropic  # solo hace falta para la corrida real
+
     return anthropic.Anthropic()
 
 
