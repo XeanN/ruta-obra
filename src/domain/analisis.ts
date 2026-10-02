@@ -34,7 +34,7 @@ export function analizarExpediente(
   const diagnostico = diagnosticar(respuestas, base);
   const registro = migrarRegistro(original, diagnostico, base.versionDatos, ahora);
   const opcionales = new Set(diagnostico.pasos.filter((p) => p.opcional).map((p) => p.procedimiento_id));
-  const hoja = armarHojaDeRuta(diagnostico, ubigeoDeRespuestas(respuestas.distrito), base);
+  const hoja = armarHojaDeRuta(diagnostico, ubigeoDeRespuestas(respuestas.distrito), base, hoy);
   const checklist = armarChecklist(registro, opcionales, base, hoy);
   const alertas = generarAlertas(registro, checklist, diagnostico.alertas, base, hoy);
   const resumen = resumirExpediente(registro, opcionales, base.etapas, alertas);

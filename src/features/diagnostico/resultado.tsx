@@ -50,7 +50,10 @@ export function ModalidadCard({
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
               <p className="font-medium">{licencia.nombre}</p>
-              <EstadoVerificacionBadge estado={licencia.estado_verificacion} />
+              <EstadoVerificacionBadge
+                estado={licencia.estado_verificacion}
+                antiguedadMeses={licencia.antiguedad_meses}
+              />
             </div>
             <dl className="grid gap-3 text-sm">
               <div>
@@ -135,7 +138,7 @@ export function ProgramasCard({
             <li key={p.id} className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
                 <p className="font-medium">{p.nombre}</p>
-                <EstadoVerificacionBadge estado={p.estado_verificacion} />
+                <EstadoVerificacionBadge estado={p.estado_verificacion} antiguedadMeses={p.antiguedad_meses} />
               </div>
               <p className="text-sm">{p.beneficio}</p>
               {p.requisitos.length > 0 && (

@@ -9,10 +9,14 @@ import {
   respuestasAParams,
   respuestasDesdeParams,
 } from "@/domain/diagnostico";
+import { conEstadoEfectivo } from "@/domain/freshness";
+import { urlHojaDeRuta } from "@/domain/reporte";
 import { armarHojaDeRuta, ubigeoDeRespuestas } from "@/domain/roadmap";
 import { diagnosticar } from "@/domain/rules-engine";
 import { DistritoAviso, LineaDeTiempo, ResumenTotales } from "@/features/hoja-de-ruta/hoja-de-ruta";
+import { hoyEnLima } from "@/lib/fecha";
 import { formatFecha } from "@/lib/format";
+import { urlSitio } from "@/lib/sitio";
 
 export const metadata: Metadata = {
   title: "Hoja de ruta",
@@ -29,15 +33,18 @@ export default async function HojaDeRutaPage({
     redirect(`/diagnostico/resultado?${params}`);
   }
 
+  const { meta } = knowledgeRepo;
+  const hoy = hoyEnLima();
   const ubigeo = ubigeoDeRespuestas(respuestas.distrito);
   const hoja = armarHojaDeRuta(
     diagnosticar(respuestas, knowledgeRepo.baseReglas),
     ubigeo,
     knowledgeRepo.baseHojaDeRuta,
+    hoy,
   );
   const distrito = ubigeo ? knowledgeRepo.getDistrito(ubigeo) : undefined;
   const fuenteTupa = distrito?.tupa.fuente_id ? knowledgeRepo.getFuente(distrito.tupa.fuente_id) : undefined;
-  const { meta } = knowledgeRepo;
+  const vigencia = { hoy, meses: meta.vigencia_verificacion_meses };
 
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 space-y-6 px-4 py-8 sm:py-12">
@@ -53,12 +60,15 @@ export default async function HojaDeRutaPage({
           Hoja de ruta{hoja.modalidad ? ` · Modalidad ${hoja.modalidad}` : ""}
         </p>
         <h1 className="text-2xl font-semibold tracking-tight">Tus trámites, en orden</h1>
-        <DistritoAviso distrito={distrito} fuente={fuenteTupa} />
+        <DistritoAviso
+          distrito={distrito && conEstadoEfectivo(distrito, fuenteTupa ? [fuenteTupa] : [], vigencia)}
+          fuente={fuenteTupa}
+        />
       </div>
 
       <ResumenTotales totales={hoja.totales} />
 
-      <LineaDeTiempo hoja={hoja} />
+      <LineaDeTiempo hoja={hoja} paginaReporte={urlHojaDeRuta(urlSitio().origin, respuestas)} />
 
       <div className="space-y-2">
         <Link

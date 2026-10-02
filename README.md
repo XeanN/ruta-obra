@@ -125,6 +125,11 @@ Los archivos de R2 no entran en el respaldo de la base: se pueden copiar con `rc
 
 Cada lunes a las 07:00 (Lima) el workflow **Vigilancia de fuentes** revisa las URLs de `data/fuentes.json` y actualiza el issue "Vigilancia de fuentes" (etiqueta `vigilancia-datos`): caídas, cambios con los datos afectados, fuentes sin revisar hace más de 180 días y recordatorios (UIT, TUPAs y programas antiguos). No cambia datos: cada novedad se corrige con un PR `data:` y, al revisar la fuente, se actualiza su `fecha_consulta`. Se puede correr a mano desde Actions; con la opción `dry_run` solo imprime el reporte.
 
+### Antigüedad y reportes de usuarios
+
+- Cada fuente muestra "Revisado el dd/mm/aaaa". Un dato `verificado` cuya fuente lleva más de 12 meses sin revisarse se muestra como "Versión anterior" con el aviso "Sin revisar desde hace más de 12 meses". El umbral está en `data/meta.json` (`vigencia_verificacion_meses`); `/fuentes` cuenta los datos vencidos por archivo.
+- Cada paso de la hoja de ruta y cada monto del distrito tienen el enlace "¿Este dato cambió? Repórtalo". Abre el Google Form de RutaObra con los datos prellenados (se cambia con `NEXT_PUBLIC_REPORTE_URL`, ver `.env.example`); si se quita el formulario, un correo prellenado a `NEXT_PUBLIC_CORREO_REPORTE` (por defecto, angel.xp.pb@gmail.com). Las respuestas se ven en la pestaña "Respuestas" del formulario. Cada reporte se pasa a un issue con la plantilla "Dato desactualizado" (etiqueta `vigilancia-datos`) y luego a un PR `data:`.
+
 ## Despliegue
 
 Vercel despliega solo: cada PR genera una vista previa (con la rama `preview` de Neon y sin indexar en buscadores) y cada merge a `master` va a producción. Las migraciones corren en el build. Para revisar un despliegue: `vercel ls` y `vercel inspect <url>`.

@@ -13,7 +13,7 @@ La base de conocimiento está en `data/` (JSON = fuente de verdad) y se exporta 
 
 | Archivo | Qué contiene | Clave |
 |---|---|---|
-| `meta.json` | Versión, fecha de corte, UIT 2026 (S/ 5,500), significado de los estados, aviso legal | — |
+| `meta.json` | Versión, fecha de corte, UIT 2026 (S/ 5,500), significado de los estados, aviso legal, umbrales de antigüedad (`vigencia_verificacion_meses`: un dato verificado pasa a "Versión anterior" pasado ese plazo sin revisar su fuente) y de vigilancia (`vigilancia.dias_sin_revision`) | — |
 | `etapas.json` | Las 7 etapas (E1–E7) y si son condicionales | `id` |
 | `procedimientos.json` | Catálogo nacional: entidad, calificación, plazo, costo referencial, requisitos, resultados, profesionales, normas, fuentes | `id` (`P-…`) |
 | `documentos.json` | Todo documento que se pide o se obtiene, con emisor y vigencia en días | `id` (`D-…`) |

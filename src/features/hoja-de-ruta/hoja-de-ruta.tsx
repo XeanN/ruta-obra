@@ -3,15 +3,24 @@ import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Distrito, Documento, Fuente } from "@/domain/types";
+import type { Antiguedad } from "@/domain/freshness";
 import type { EtapaRuta, HojaDeRuta, PasoRuta, TotalesRuta } from "@/domain/roadmap";
 import { EstadoVerificacionBadge } from "@/features/fuentes/estado-verificacion-badge";
 import { FuentesLinks } from "@/features/fuentes/fuentes-links";
+import { ReportarDato, type ContextoReporte } from "@/features/fuentes/reportar-dato";
 import { textoProfesional } from "@/lib/format";
 import { CostoBadge, CostoDetalle, textoCosto, textoRango } from "./costo";
 
 const plural = (n: number, uno: string, varios: string) => `${n} ${n === 1 ? uno : varios}`;
 
-export function DistritoAviso({ distrito, fuente }: { distrito: Distrito | undefined; fuente: Fuente | undefined }) {
+export function DistritoAviso({
+  distrito,
+  fuente,
+}: {
+  /** Distrito con su estado efectivo según la antigüedad de su TUPA. */
+  distrito: (Distrito & Antiguedad) | undefined;
+  fuente: Fuente | undefined;
+}) {
   if (!distrito) {
     return (
       <p className="text-muted-foreground flex gap-2 text-sm">
@@ -28,7 +37,11 @@ export function DistritoAviso({ distrito, fuente }: { distrito: Distrito | undef
           Tasas de <span className="font-medium">{distrito.nombre}</span>
           {distrito.tupa.anio ? ` (TUPA ${distrito.tupa.anio})` : ""}
         </span>
-        <EstadoVerificacionBadge estado={distrito.estado_verificacion} ocultarSiVerificado />
+        <EstadoVerificacionBadge
+          estado={distrito.estado_verificacion}
+          antiguedadMeses={distrito.antiguedad_meses}
+          ocultarSiVerificado
+        />
       </p>
       {distrito.tupa.nota && <p className="text-muted-foreground">{distrito.tupa.nota}</p>}
       {fuente && <FuentesLinks fuentes={[fuente]} />}
@@ -120,7 +133,7 @@ export interface ExtraPaso {
   contenido?: ReactNode;
 }
 
-function PasoCard({ paso, extra }: { paso: PasoRuta; extra?: ExtraPaso }) {
+function PasoCard({ paso, extra, reporte }: { paso: PasoRuta; extra?: ExtraPaso; reporte?: ContextoReporte }) {
   const { procedimiento: p, entidad, costo, plazo } = paso;
   const plazoCorto =
     plazo.dias === null
@@ -152,7 +165,11 @@ function PasoCard({ paso, extra }: { paso: PasoRuta; extra?: ExtraPaso }) {
       <dl className="space-y-4 border-t p-3 text-sm">
         <div className="flex flex-wrap items-start gap-2">
           <p className="flex-1">{p.descripcion}</p>
-          <EstadoVerificacionBadge estado={p.estado_verificacion} ocultarSiVerificado />
+          <EstadoVerificacionBadge
+            estado={p.estado_verificacion}
+            antiguedadMeses={p.antiguedad_meses}
+            ocultarSiVerificado
+          />
         </div>
         {entidad && (
           <Fila titulo="Dónde">
@@ -162,7 +179,7 @@ function PasoCard({ paso, extra }: { paso: PasoRuta; extra?: ExtraPaso }) {
         )}
         <Fila titulo="Plazo">{plazo.nota ?? plazoCorto}</Fila>
         <Fila titulo="Costo">
-          <CostoDetalle costo={costo} />
+          <CostoDetalle costo={costo} procedimientoId={p.id} reporte={reporte} />
         </Fila>
         {paso.requisitos.length > 0 && (
           <Fila titulo="Requisitos">
@@ -205,6 +222,17 @@ function PasoCard({ paso, extra }: { paso: PasoRuta; extra?: ExtraPaso }) {
           </Fila>
         )}
         <FuentesLinks fuentes={paso.fuentes} />
+        {reporte && (
+          <ReportarDato
+            dato={{
+              procedimientoId: p.id,
+              ubigeo: reporte.ubigeo,
+              variante: null,
+              montoMostrado: textoCosto(costo),
+              pagina: reporte.pagina,
+            }}
+          />
+        )}
       </dl>
     </details>
   );
@@ -214,10 +242,12 @@ function EtapaSeccion({
   etapa,
   ultima,
   extras,
+  reporte,
 }: {
   etapa: EtapaRuta;
   ultima: boolean;
   extras?: (paso: PasoRuta) => ExtraPaso;
+  reporte?: ContextoReporte;
 }) {
   return (
     <li className="relative flex gap-3">
@@ -237,7 +267,7 @@ function EtapaSeccion({
         <ul className="space-y-2">
           {etapa.pasos.map((p) => (
             <li key={p.procedimiento.id}>
-              <PasoCard paso={p} extra={extras?.(p)} />
+              <PasoCard paso={p} extra={extras?.(p)} reporte={reporte} />
             </li>
           ))}
         </ul>
@@ -249,15 +279,25 @@ function EtapaSeccion({
 export function LineaDeTiempo({
   hoja,
   extras,
+  paginaReporte,
 }: {
   hoja: HojaDeRuta;
   /** Contenido adicional por paso (lo usa el expediente para el estado de cada trámite). */
   extras?: (paso: PasoRuta) => ExtraPaso;
+  /** URL pública de esta hoja de ruta: activa "¿Este dato cambió? Repórtalo" en cada paso. */
+  paginaReporte?: string;
 }) {
+  const reporte = paginaReporte ? { pagina: paginaReporte, ubigeo: hoja.ubigeo } : undefined;
   return (
     <ol aria-label="Etapas del trámite">
       {hoja.etapas.map((e, i) => (
-        <EtapaSeccion key={e.etapa.id} etapa={e} ultima={i === hoja.etapas.length - 1} extras={extras} />
+        <EtapaSeccion
+          key={e.etapa.id}
+          etapa={e}
+          ultima={i === hoja.etapas.length - 1}
+          extras={extras}
+          reporte={reporte}
+        />
       ))}
     </ol>
   );

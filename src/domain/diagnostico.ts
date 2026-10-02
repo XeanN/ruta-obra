@@ -1,6 +1,7 @@
 // Lógica del asistente de diagnóstico (F1): qué preguntas se muestran, cómo se validan
 // las respuestas, cómo viajan en la URL y cómo se resume el resultado del motor.
 import { z } from "zod";
+import { conEstadoEfectivo, type Antiguedad, type Vigencia } from "./freshness";
 import {
   cumple,
   diagnosticar,
@@ -11,6 +12,7 @@ import {
 } from "./rules-engine";
 import type {
   EstadoVerificacion,
+  Fuente,
   Modalidad,
   Pregunta,
   Procedimiento,
@@ -166,14 +168,17 @@ export const ETIQUETA_VERIFICACION: Record<EstadoVerificacion, string> = {
 
 export interface BaseResumen extends BaseReglas {
   programas: readonly Programa[];
+  fuentes: readonly Fuente[];
+  /** meta.vigencia_verificacion_meses (antigüedad máxima de un dato verificado). */
+  vigenciaMeses: number;
 }
 
 export interface ModalidadExplicada {
   modalidad: Modalidad;
   /** Regla de reglas.json que decidió la modalidad. */
   regla: Extract<Regla, { tipo: "modalidad" }>;
-  /** Procedimiento de licencia de esa modalidad (alcance, plazo, fuentes). */
-  licencia: Procedimiento | undefined;
+  /** Procedimiento de licencia de esa modalidad (alcance, plazo, fuentes), con su estado efectivo. */
+  licencia: (Procedimiento & Antiguedad) | undefined;
   /** Fuentes de la regla y de la licencia, sin duplicados. */
   fuentes: string[];
 }
@@ -182,7 +187,8 @@ export interface ResumenDiagnostico {
   diagnostico: Diagnostico;
   modalidad: ModalidadExplicada | null;
   alertasPorNivel: { nivel: NivelAlerta; alertas: AlertaDiagnostico[] }[];
-  programas: Programa[];
+  /** Programas que aplican, con su estado efectivo según la antigüedad de sus fuentes. */
+  programas: (Programa & Antiguedad)[];
 }
 
 function reglaDeModalidad(
@@ -198,8 +204,14 @@ function reglaDeModalidad(
 export function resumirDiagnostico(
   respuestas: RespuestasDiagnostico,
   base: BaseResumen,
+  hoy: string,
 ): ResumenDiagnostico {
   const diagnostico = diagnosticar(respuestas, base);
+  const vigencia: Vigencia = { hoy, meses: base.vigenciaMeses };
+  const fuentesDe = (ids: readonly string[]) =>
+    ids.map((id) => base.fuentes.find((f) => f.id === id)).filter((f): f is Fuente => f !== undefined);
+  const conEstado = <T extends Procedimiento | Programa>(dato: T) =>
+    conEstadoEfectivo(dato, fuentesDe(dato.fuentes), vigencia);
 
   let modalidad: ModalidadExplicada | null = null;
   const regla = reglaDeModalidad(base.reglas, respuestas);
@@ -210,7 +222,7 @@ export function resumirDiagnostico(
     modalidad = {
       modalidad: diagnostico.modalidad,
       regla,
-      licencia,
+      licencia: licencia && conEstado(licencia),
       fuentes: [...new Set([...(regla.fuentes ?? []), ...(licencia?.fuentes ?? [])])],
     };
   }
@@ -222,7 +234,8 @@ export function resumirDiagnostico(
 
   const programas = diagnostico.programas
     .map((id) => base.programas.find((p) => p.id === id))
-    .filter((p): p is Programa => p !== undefined);
+    .filter((p): p is Programa => p !== undefined)
+    .map(conEstado);
 
   return { diagnostico, modalidad, alertasPorNivel, programas };
 }

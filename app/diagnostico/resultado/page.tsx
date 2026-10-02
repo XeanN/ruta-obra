@@ -16,6 +16,7 @@ import {
   ProgramasCard,
   RespuestasCard,
 } from "@/features/diagnostico/resultado";
+import { hoyEnLima } from "@/lib/fecha";
 import { formatFecha } from "@/lib/format";
 
 export const metadata: Metadata = {
@@ -55,10 +56,7 @@ export default async function ResultadoPage({
     );
   }
 
-  const resumen = resumirDiagnostico(respuestas, {
-    ...knowledgeRepo.baseReglas,
-    programas: knowledgeRepo.getProgramas(),
-  });
+  const resumen = resumirDiagnostico(respuestas, knowledgeRepo.baseResumen, hoyEnLima());
   const { meta } = knowledgeRepo;
 
   return (

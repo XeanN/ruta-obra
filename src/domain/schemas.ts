@@ -291,6 +291,8 @@ export const MetaSchema = z.strictObject({
   uit: z.strictObject({ anio: z.int(), valor: z.number(), norma_id: z.string() }),
   alcance: z.string(),
   estados_verificacion: z.record(EstadoVerificacionSchema, z.string()),
+  /** Fase 9: un dato verificado cuya fuente se consultó hace más de N meses se muestra como desactualizado. */
+  vigencia_verificacion_meses: z.int().positive(),
   /** Umbrales de scripts/watch_sources.py (Fase 8). */
   vigilancia: z.strictObject({ dias_sin_revision: z.int().positive() }).optional(),
   aviso_legal: z.string(),

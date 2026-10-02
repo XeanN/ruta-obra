@@ -15,8 +15,8 @@
 | 6 | Bitácora de obra (F6), con fotos en R2 | Hecha (#11) | — |
 | 7 | Landing, pulido, modo demo y despliegue | Hecha (#13) | — |
 | 8 | Vigilancia automática de fuentes | Hecha (#16) | — |
-| 9 | Antigüedad visible y "Reportar un dato desactualizado" | Pendiente | **Siguiente** |
-| 10 | Extracción asistida por IA de TUPAs | Pendiente | Cuando haya que cargar distritos nuevos o la Fase 8 detecte un TUPA nuevo |
+| 9 | Antigüedad visible y "Reportar un dato desactualizado" | Hecha (#20) | — |
+| 10 | Extracción asistida por IA de TUPAs | Pendiente | **Siguiente**, cuando haya que cargar distritos nuevos o la Fase 8 detecte un TUPA nuevo |
 | 11 | Agente de consultas y migración a AWS | Futuro | Después de validar con profesionales (ver PRD, sección 9) |
 
 **Dónde vive cada dato** (detalle en `docs/PRD.md`, sección 6):
@@ -381,6 +381,15 @@ Objetivo: que el usuario vea qué tan reciente es cada dato y pueda avisar cuand
      etiqueta "vigilancia-datos" y luego a un PR data:.
 ```
 **Aceptación:** un dato `verificado` con fuente consultada hace 13 meses se muestra como "Versión anterior" y uno de 11 meses no; el umbral se cambia solo en `meta.json`; el enlace de reporte abre el formulario o el correo con los datos prellenados; tests del dominio en verde y cobertura ≥ 90 %.
+
+**Entregado (#20):**
+- `src/domain/freshness.ts`: `estadoEfectivo()` (el día exacto del umbral todavía vale), `conEstadoEfectivo()` (copia del dato con su estado efectivo y `antiguedad_meses` para explicar la degradación) y `vencidosPorArchivo()` para `/fuentes`. Con varias fuentes, la fecha de revisión es la consulta **más antigua** (criterio conservador).
+- La antigüedad se aplica a las tarifas, los costos referenciales y por fórmula, el procedimiento de cada paso y sus alternativas, la licencia de la modalidad, los programas y el TUPA del distrito. `armarHojaDeRuta()` y `resumirDiagnostico()` reciben `hoy`; en el servidor es la fecha de Lima (`src/lib/fecha.ts`) y en los expedientes, la del navegador.
+- `meta.json` → `vigencia_verificacion_meses: 12` (obligatorio en `MetaSchema`).
+- UI: "Revisado el dd/mm/aaaa" en cada fuente; "Versión anterior" con "Sin revisar desde hace más de 12 meses"; en `/fuentes`, tabla de verificados y vencidos por archivo (la página se regenera cada día).
+- `src/domain/reporte.ts`: el enlace se arma sin backend. `NEXT_PUBLIC_REPORTE_URL` admite marcadores `{procedimiento}`, `{ubigeo}`, `{variante}`, `{monto}` y `{pagina}` para los campos prellenados de Google Forms; sin marcadores, los datos van como parámetros; el Google Form de RutaObra es el destino por defecto (`src/features/fuentes/reportar-dato.tsx`); sin formulario, un `mailto:` prellenado a `NEXT_PUBLIC_CORREO_REPORTE` (por defecto, angel.xp.pb@gmail.com). La página citada es siempre la hoja de ruta pública con las respuestas (también desde un expediente, que es privado).
+- Enlace en cada paso de la hoja de ruta (pública y del expediente) y en cada monto del distrito.
+- `.github/ISSUE_TEMPLATE/dato-desactualizado.yml` con la etiqueta `vigilancia-datos`.
 
 ---
 

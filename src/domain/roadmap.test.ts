@@ -17,6 +17,8 @@ import { RespuestasSchema } from "./schemas";
 import type { Procedimiento, Tarifa } from "./types";
 
 const base = knowledgeRepo.baseHojaDeRuta;
+/** Fecha fija: las fuentes de data/ se consultaron en 2026-09, dentro del umbral de 12 meses. */
+const HOY = "2026-10-01";
 const caso = (id: string) => {
   const c = casos.find((x) => x.id === id);
   if (!c) throw new Error(id);
@@ -25,7 +27,7 @@ const caso = (id: string) => {
 const ruta = (id: string, ubigeo?: string | null): HojaDeRuta => {
   const r = caso(id);
   const u = ubigeo === undefined ? ubigeoDeRespuestas(r.distrito) : ubigeo;
-  return armarHojaDeRuta(diagnosticar(r, knowledgeRepo.baseReglas), u, base);
+  return armarHojaDeRuta(diagnosticar(r, knowledgeRepo.baseReglas), u, base, HOY);
 };
 const paso = (h: HojaDeRuta, pid: string): PasoRuta => {
   const p = h.etapas.flatMap((e) => e.pasos).find((x) => x.procedimiento.id === pid);
@@ -46,7 +48,7 @@ describe("armarHojaDeRuta: estructura", () => {
   it.each(casos.map((c) => c.id))("%s: conserva todos los pasos, agrupados y ordenados por etapa", (id) => {
     const r = caso(id);
     const diag = diagnosticar(r, knowledgeRepo.baseReglas);
-    const h = armarHojaDeRuta(diag, ubigeoDeRespuestas(r.distrito), base);
+    const h = armarHojaDeRuta(diag, ubigeoDeRespuestas(r.distrito), base, HOY);
     expect(h.modalidad).toBe(diag.modalidad);
     expect(h.etapas.flatMap((e) => e.pasos.map((p) => p.procedimiento.id))).toEqual(
       diag.pasos.map((p) => p.procedimiento_id),
@@ -92,7 +94,7 @@ describe("armarHojaDeRuta: estructura", () => {
       alertas: [],
       programas: [],
     };
-    expect(() => armarHojaDeRuta(diag, null, base)).toThrow(/Procedimiento inexistente/);
+    expect(() => armarHojaDeRuta(diag, null, base, HOY)).toThrow(/Procedimiento inexistente/);
   });
 });
 
@@ -184,16 +186,20 @@ describe("costoDePaso: casos borde", () => {
     fuentes,
     estado_verificacion: "por_verificar",
   });
-  const b: Pick<BaseHojaDeRuta, "tarifas" | "fuentes"> = { tarifas: [], fuentes: base.fuentes };
+  const b: Pick<BaseHojaDeRuta, "tarifas" | "fuentes" | "vigenciaMeses"> = {
+    tarifas: [],
+    fuentes: base.fuentes,
+    vigenciaMeses: 12,
+  };
 
   it("fijo sin monto o sin fuente → Consultar TUPA", () => {
-    expect(costoDePaso(proc({ tipo: "fijo", monto: null }), null, b).tipo).toBe("consultar_tupa");
-    expect(costoDePaso(proc({ tipo: "fijo", monto: 10 }, []), null, b).tipo).toBe("consultar_tupa");
-    expect(costoDePaso(proc({ tipo: "formula", formula: null }), null, b).tipo).toBe("consultar_tupa");
+    expect(costoDePaso(proc({ tipo: "fijo", monto: null }), null, b, HOY).tipo).toBe("consultar_tupa");
+    expect(costoDePaso(proc({ tipo: "fijo", monto: 10 }, []), null, b, HOY).tipo).toBe("consultar_tupa");
+    expect(costoDePaso(proc({ tipo: "formula", formula: null }), null, b, HOY).tipo).toBe("consultar_tupa");
   });
 
   it("un monto referencial no verificado conserva su estado", () => {
-    const c = costoDePaso(proc({ tipo: "fijo", monto: 10 }), null, b);
+    const c = costoDePaso(proc({ tipo: "fijo", monto: 10 }), null, b, HOY);
     expect(c).toMatchObject({ tipo: "referencial", monto: 10, estado_verificacion: "por_verificar" });
   });
 
@@ -207,7 +213,7 @@ describe("costoDePaso: casos borde", () => {
       fuente_id: "F-NO-EXISTE",
       estado_verificacion: "verificado",
     };
-    const c = costoDePaso(proc({ tipo: "por_verificar", nota: "Según TUPA" }), "150114", { ...b, tarifas: [tarifa] });
+    const c = costoDePaso(proc({ tipo: "por_verificar", nota: "Según TUPA" }), "150114", { ...b, tarifas: [tarifa] }, HOY);
     expect(c).toEqual({ tipo: "consultar_tupa", nota: "Según TUPA" });
   });
 });
@@ -261,5 +267,43 @@ describe("totales", () => {
     expect(h.totales.pasosOpcionales).toBe(1);
     const sinOpcional = h.etapas.flatMap((e) => e.pasos).filter((p) => !p.opcional).length;
     expect(h.totales.pasosObligatorios).toBe(sinOpcional);
+  });
+});
+
+describe("antigüedad (Fase 9)", () => {
+  // Las fuentes de La Molina y de SUNARP se consultaron el 2026-09-30 (data/fuentes.json).
+  const en = (id: string, hoy: string, b: BaseHojaDeRuta = base) => {
+    const r = caso(id);
+    return armarHojaDeRuta(diagnosticar(r, knowledgeRepo.baseReglas), ubigeoDeRespuestas(r.distrito), b, hoy);
+  };
+
+  it("una tarifa verificada consultada hace 11 meses sigue verificada; a los 13, Versión anterior", () => {
+    const antes = en("comercio-grande", "2027-08-30");
+    expect(estadoDeCosto(paso(antes, "P-MUN-LIC-D").costo)).toBe("verificado");
+
+    const despues = en("comercio-grande", "2027-10-30");
+    const costo = paso(despues, "P-MUN-LIC-D").costo;
+    expect(estadoDeCosto(costo)).toBe("desactualizado");
+    if (costo.tipo !== "tarifa_distrital") throw new Error("se esperaba tarifa distrital");
+    expect(costo.incluyeNoVerificados).toBe(true);
+    expect(costo.variantes.every((v) => v.antiguedad_meses === 12)).toBe(true);
+    expect(despues.totales.montosNoVerificados).toBeGreaterThan(antes.totales.montosNoVerificados);
+  });
+
+  it("degrada también los montos por fórmula y el propio procedimiento", () => {
+    const p = paso(en("caso-angel", "2027-10-30"), "P-SUN-FAB27157");
+    expect(p.costo).toMatchObject({ tipo: "formula", estado_verificacion: "desactualizado", antiguedad_meses: 12 });
+    expect(p.procedimiento.estado_verificacion).toBe("desactualizado");
+    expect(p.procedimiento.antiguedad_meses).toBe(12);
+    expect(paso(ruta("caso-angel"), "P-SUN-FAB27157").procedimiento.antiguedad_meses).toBeNull();
+  });
+
+  it("el umbral se cambia solo con vigenciaMeses (meta.json)", () => {
+    const h = en("comercio-grande", "2027-10-30", { ...base, vigenciaMeses: 24 });
+    expect(estadoDeCosto(paso(h, "P-MUN-LIC-D").costo)).toBe("verificado");
+  });
+
+  it("los datos no verificados conservan su estado original", () => {
+    expect(estadoDeCosto(paso(en("caso-angel", "2030-01-01"), "P-MUN-LIC-B").costo)).toBe("por_verificar");
   });
 });

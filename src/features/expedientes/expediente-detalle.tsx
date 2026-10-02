@@ -36,6 +36,7 @@ import { ListaAlertas } from "@/features/alertas/lista-alertas";
 import { Bitacora } from "@/features/bitacora/bitacora";
 import { Checklist } from "@/features/checklist/checklist";
 import { LineaDeTiempo, ResumenTotales } from "@/features/hoja-de-ruta/hoja-de-ruta";
+import { urlHojaDeRuta } from "@/domain/reporte";
 import { formatSoles } from "@/lib/format";
 import { AlmacenamientoNoDisponible, Cargando, ErrorCarga, SesionVencida } from "./avisos";
 import { FichaExpediente } from "./ficha-expediente";
@@ -61,7 +62,16 @@ const slug = (t: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "") || "expediente";
 
-export function ExpedienteDetalle({ id, base }: { id: string; base: BaseExpedientes }) {
+export function ExpedienteDetalle({
+  id,
+  base,
+  sitio,
+}: {
+  id: string;
+  base: BaseExpedientes;
+  /** Origen público del sitio, para citar la hoja de ruta al reportar un dato. */
+  sitio: string;
+}) {
   const { carga, setCarga } = useExpediente(id);
   if (carga.estado === "cargando") return <Cargando texto="Cargando expediente…" />;
   if (carga.estado === "no_disponible") return <AlmacenamientoNoDisponible />;
@@ -83,6 +93,7 @@ export function ExpedienteDetalle({ id, base }: { id: string; base: BaseExpedien
     <Detalle
       registro={carga.registro}
       base={base}
+      sitio={sitio}
       onCambio={(registro) => setCarga({ estado: "listo", registro })}
       onNoDisponible={() => setCarga({ estado: "no_disponible" })}
     />
@@ -92,11 +103,13 @@ export function ExpedienteDetalle({ id, base }: { id: string; base: BaseExpedien
 function Detalle({
   registro,
   base,
+  sitio,
   onCambio,
   onNoDisponible,
 }: {
   registro: ExpedienteRegistro;
   base: BaseExpedientes;
+  sitio: string;
   onCambio: (r: ExpedienteRegistro) => void;
   onNoDisponible: () => void;
 }) {
@@ -237,6 +250,7 @@ function Detalle({
           )}
           <LineaDeTiempo
             hoja={analisis.hoja}
+            paginaReporte={urlHojaDeRuta(sitio, e.respuestas_diagnostico)}
             extras={(paso) => {
               const p = pasosPorId.get(paso.procedimiento.id);
               if (!p) return {};
