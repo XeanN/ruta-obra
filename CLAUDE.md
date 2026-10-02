@@ -87,6 +87,7 @@ python scripts/simulate.py        # motor de referencia contra fixtures
 python scripts/simulate.py --export  # regenerar fixtures/resultados-motor.json (paridad TS)
 pnpm test:coverage                # tests + cobertura del dominio (mínimo 90 %)
 python scripts/watch_sources.py --dry-run  # vigilancia de fuentes (Fase 8), sin tocar GitHub
+python scripts/extract_tupa.py --ubigeo <ubigeo> --pdf <ruta|URL> --dry-run  # extracción de TUPA con IA (Fase 10)
 python -m pytest scripts/tests    # pruebas de los scripts de Python
 python scripts/export_excel.py    # regenerar data/ruta-obra.xlsx
 pnpm e2e                          # Playwright a 375 px

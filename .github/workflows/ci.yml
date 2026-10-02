@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: pip install jsonschema openpyxl pytest
+      - run: pip install jsonschema openpyxl pytest pdfplumber
       - run: python scripts/validate_data.py
       - run: python -m pytest scripts/tests -q
       - run: python scripts/simulate.py

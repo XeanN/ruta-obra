@@ -195,6 +195,17 @@ def test_vigilar_dos_corridas_solo_avisa_lo_nuevo():
     assert c3.nuevas == []  # sigue caída, pero ya se avisó: no se comenta de nuevo
 
 
+def test_tupa_de_un_distrito_que_cambia_sugiere_extraer_sus_montos():
+    d = datos_base()  # F-A es el TUPA de Chorrillos (150108)
+    estado = {"fuentes": {}, "novedades": []}
+    for dia, h in ((5, "h1"), (12, "h2"), (19, "h2")):  # el cambio se confirma al repetirse
+        c = ws.vigilar(d, estado, date(2026, 10, dia), {URL: ok(h)}.__getitem__, pausa=0, reintento=0)
+        estado = c.estado
+    assert [r.estado for r in c.resultados] == ["CAMBIO"]
+    assert "Es el TUPA de Chorrillos (150108)" in c.reporte
+    assert "**Extraer TUPA** (ubigeo `150108`" in c.reporte
+
+
 def test_reintento_evita_falsas_fallas():
     llamadas = []
 

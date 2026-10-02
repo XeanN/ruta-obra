@@ -1,0 +1,72 @@
+name: Extraer TUPA
+
+# Fase 10: extrae con IA los montos de edificación de un TUPA y abre un PR data: con todas las
+# filas en por_verificar. Se lanza a mano (Actions → Extraer TUPA → Run workflow), por ejemplo
+# cuando la vigilancia de fuentes (Fase 8) reporta que cambió el TUPA de un distrito.
+# Nunca hace merge: una persona compara cada fila con el PDF.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ubigeo:
+        description: "Ubigeo del distrito (6 dígitos, p. ej. 150142)"
+        required: true
+      pdf_url:
+        description: "URL del PDF del TUPA"
+        required: true
+      fuente_id:
+        description: "Fuente en data/fuentes.json (vacío: la del TUPA del distrito)"
+        required: false
+      anio:
+        description: "Año del TUPA (vacío: el de data/distritos.json)"
+        required: false
+      paginas:
+        description: "Páginas a enviar, p. ej. 10-40,52 (vacío: los trámites de edificación)"
+        required: false
+      dry_run:
+        description: "Solo leer el PDF y mostrar qué se enviaría (sin API ni PR)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: extraer-tupa-${{ inputs.ubigeo }}
+  cancel-in-progress: false
+
+jobs:
+  extraer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Tesseract (OCR para PDF escaneados)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-spa
+      - run: pip install anthropic pdfplumber pytesseract jsonschema openpyxl
+      - name: Extraer y abrir PR
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
+          UBIGEO: ${{ inputs.ubigeo }}
+          PDF_URL: ${{ inputs.pdf_url }}
+          FUENTE_ID: ${{ inputs.fuente_id }}
+          ANIO: ${{ inputs.anio }}
+          PAGINAS: ${{ inputs.paginas }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          args=(--ubigeo "$UBIGEO" --pdf "$PDF_URL" --reporte "$RUNNER_TEMP/reporte.md")
+          [ -n "$FUENTE_ID" ] && args+=(--fuente-id "$FUENTE_ID")
+          [ -n "$ANIO" ] && args+=(--anio "$ANIO")
+          [ -n "$PAGINAS" ] && args+=(--paginas "$PAGINAS")
+          [ "$DRY_RUN" = "true" ] && args+=(--dry-run)
+          python scripts/extract_tupa.py "${args[@]}"
+      - name: Reporte en el resumen
+        if: always()
+        run: '[ -f "$RUNNER_TEMP/reporte.md" ] && cat "$RUNNER_TEMP/reporte.md" >> "$GITHUB_STEP_SUMMARY" || true'
