@@ -16,7 +16,7 @@
 | 7 | Landing, pulido, modo demo y despliegue | Hecha (#13) | — |
 | 8 | Vigilancia automática de fuentes | Hecha (#16) | — |
 | 9 | Antigüedad visible y "Reportar un dato desactualizado" | Hecha (#20) | — |
-| 10 | Extracción asistida por IA de TUPAs | Pendiente | **Siguiente**, cuando haya que cargar distritos nuevos o la Fase 8 detecte un TUPA nuevo |
+| 10 | Extracción asistida por IA de TUPAs | Hecha; falta la corrida real con Villa El Salvador (requiere `ANTHROPIC_API_KEY`) | — |
 | 11 | Agente de consultas y migración a AWS | Futuro | Después de validar con profesionales (ver PRD, sección 9) |
 
 **Dónde vive cada dato** (detalle en `docs/PRD.md`, sección 6):
@@ -426,6 +426,15 @@ Crea scripts/extract_tupa.py (Python, fuera de la app):
    verifica el mapeo, el formato de las filas y que nada sale como "verificado".
 ```
 **Aceptación:** correr el script con el TUPA 2025 de Villa El Salvador genera un PR con sus montos de edificación en `por_verificar`, cada uno con su página del PDF; CI en verde; la hoja de ruta de Villa El Salvador muestra esos montos con la etiqueta "Por confirmar" hasta que se verifiquen.
+
+**Entregado:**
+- `scripts/extract_tupa.py`: lectura con pdfplumber y OCR con Tesseract (`spa`) en las páginas sin texto; llamada a `claude-opus-5-5` con salida estructurada (`output_config.format`, ids de procedimientos como `enum`), un lote por grupo de trámites; filas validadas contra el `$def` "tarifa"; comparación NUEVA / CAMBIÓ / IGUAL sin borrar filas; rama, commit y PR con la tabla para revisar. Modos `--dry-run` (sin API), `--sin-pr` (sin git) y `--guardar-respuestas` / `--desde-respuestas` (repetir sin pagar).
+- Selección de páginas por **trámite**: en el formato del SUT cada procedimiento empieza en "Denominación del Procedimiento" y el monto suele estar en la página siguiente, así que se envía el bloque completo y nunca se parte entre lotes. Se elige por el título del trámite (no por cualquier mención de "edificación", que también aparece en licencias de funcionamiento, inspecciones de seguridad, publicidad y eventos). Con el TUPA de Villa El Salvador (515 páginas): 106 trámites, 211 páginas, 18 lotes, ~166 mil tokens de texto.
+- El campo `origen` no cabe en `tarifas_distritales.json` (esquema estricto): las filas leídas por OCR lo dicen en la `nota` ("leído por OCR: revisar con cuidado") y en la columna Origen del PR.
+- Un monto corregido vuelve a `por_verificar` aunque antes estuviera verificado. Las filas sin monto que probablemente sobran se listan en el PR para que las borre quien revisa.
+- `.github/workflows/extraer-tupa.yml` (manual, con `dry_run`). La vigilancia (Fase 8) sugiere correrlo cuando cambia la fuente del TUPA de un distrito.
+- 23 pruebas con pytest (PDF generado en la prueba y API simulada); `pdfplumber` se agregó al job `data` del CI.
+- Pendiente: la corrida real con el TUPA 2025 de Villa El Salvador (`https://cdn.www.gob.pe/uploads/document/file/5885469/5214868-texto-unico-de-procedimientos-administrativos-tupa-vigente%282%29.pdf`) cuando haya saldo en la API.
 
 ---
 

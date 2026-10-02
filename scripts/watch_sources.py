@@ -353,6 +353,19 @@ def _afectados(usos: list[tuple[str, str]], maximo: int = 12) -> str:
     return "  - Datos afectados: " + "; ".join(partes)
 
 
+def _sugerir_extraccion(usos: list[tuple[str, str]]) -> list[str]:
+    """Si la fuente es el TUPA de un distrito, cómo extraer sus montos nuevos (Fase 10)."""
+    lineas = []
+    for archivo, ident in usos:
+        m = re.search(r"\((\d{6})\)$", ident) if archivo == "distritos.json" else None
+        if m:
+            lineas.append(
+                f"  - Es el TUPA de {ident}: si publicó uno nuevo, extrae sus montos con Actions → "
+                f"**Extraer TUPA** (ubigeo `{m.group(1)}` y la URL del PDF)."
+            )
+    return lineas
+
+
 def novedades(resultados: list[Resultado]) -> list[str]:
     """Claves de lo que hay que mirar (para saber qué es nuevo respecto de la corrida anterior)."""
     return sorted(f"{r.estado}:{r.fuente['id']}" for r in resultados if r.estado in ("CAIDA", "CAMBIO", "REDIRIGE"))
@@ -403,6 +416,7 @@ def armar_reporte(
         for r in cambios + redirigen:
             etiqueta = "Cambió" if r.estado == "CAMBIO" else "Redirige"
             l += [f"- {etiqueta}: {_linea_fuente(r.fuente)}", f"  - {r.detalle}", _afectados(usos.get(r.fuente["id"], []))]
+            l += _sugerir_extraccion(usos.get(r.fuente["id"], []))
     else:
         l.append("Ninguna.")
 

@@ -82,6 +82,7 @@ python scripts/simulate.py        # motor de referencia contra fixtures/casos.js
 python scripts/simulate.py --export  # regenera fixtures/resultados-motor.json (paridad TS)
 python scripts/export_excel.py    # regenera data/ruta-obra.xlsx
 python scripts/watch_sources.py --dry-run   # vigilancia de fuentes: imprime el reporte sin tocar GitHub
+python scripts/extract_tupa.py --ubigeo 150142 --pdf tupa.pdf --dry-run  # qué páginas de un TUPA se enviarían a la IA
 python -m pytest scripts/tests    # pruebas de los scripts de Python
 
 pnpm db:generate                  # nueva migración desde src/data/db/*.ts
@@ -124,6 +125,13 @@ Los archivos de R2 no entran en el respaldo de la base: se pueden copiar con `rc
 ## Vigilancia de fuentes
 
 Cada lunes a las 07:00 (Lima) el workflow **Vigilancia de fuentes** revisa las URLs de `data/fuentes.json` y actualiza el issue "Vigilancia de fuentes" (etiqueta `vigilancia-datos`): caídas, cambios con los datos afectados, fuentes sin revisar hace más de 180 días y recordatorios (UIT, TUPAs y programas antiguos). No cambia datos: cada novedad se corrige con un PR `data:` y, al revisar la fuente, se actualiza su `fecha_consulta`. Se puede correr a mano desde Actions; con la opción `dry_run` solo imprime el reporte.
+
+### Extracción de montos de un TUPA con IA
+
+`scripts/extract_tupa.py` lee el PDF del TUPA de un distrito (con OCR si está escaneado), envía a Claude solo los trámites de edificación y propone los montos en un PR `data:`. **Todas las filas entran como `por_verificar`**, cada una con la página del PDF donde se leyó; quien revisa las compara con el PDF y marca `verificado` solo lo que confirmó. Nunca borra filas ni hace merge.
+
+- En GitHub: Actions → **Extraer TUPA** → ubigeo y URL del PDF (con la opción `dry_run` solo muestra qué páginas enviaría). Necesita el secreto `ANTHROPIC_API_KEY` y, en Settings → Actions, permitir que GitHub Actions cree pull requests. Los PR que abre el bot no lanzan el CI solos: ciérralo y vuelve a abrirlo para que corran los checks.
+- En local: `pip install anthropic pdfplumber pytesseract jsonschema openpyxl` (y Tesseract con el idioma `spa` para PDF escaneados), luego `python scripts/extract_tupa.py --ubigeo <ubigeo> --pdf <ruta o URL>`. `--sin-pr` escribe `data/` sin tocar git; `--guardar-respuestas` y `--desde-respuestas` repiten una corrida sin volver a pagar la API.
 
 ### Antigüedad y reportes de usuarios
 
