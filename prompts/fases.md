@@ -15,7 +15,7 @@
 | 6 | Bitácora de obra (F6), con fotos en R2 | Hecha (#11) | — |
 | 7 | Landing, pulido, modo demo y despliegue | Hecha (#13) | — |
 | 8 | Vigilancia automática de fuentes | Hecha (#16) | — |
-| 9 | Antigüedad visible y "Reportar un dato desactualizado" | Hecha | — |
+| 9 | Antigüedad visible y "Reportar un dato desactualizado" | Hecha (#20) | — |
 | 10 | Extracción asistida por IA de TUPAs | Pendiente | **Siguiente**, cuando haya que cargar distritos nuevos o la Fase 8 detecte un TUPA nuevo |
 | 11 | Agente de consultas y migración a AWS | Futuro | Después de validar con profesionales (ver PRD, sección 9) |
 
@@ -382,7 +382,7 @@ Objetivo: que el usuario vea qué tan reciente es cada dato y pueda avisar cuand
 ```
 **Aceptación:** un dato `verificado` con fuente consultada hace 13 meses se muestra como "Versión anterior" y uno de 11 meses no; el umbral se cambia solo en `meta.json`; el enlace de reporte abre el formulario o el correo con los datos prellenados; tests del dominio en verde y cobertura ≥ 90 %.
 
-**Entregado:**
+**Entregado (#20):**
 - `src/domain/freshness.ts`: `estadoEfectivo()` (el día exacto del umbral todavía vale), `conEstadoEfectivo()` (copia del dato con su estado efectivo y `antiguedad_meses` para explicar la degradación) y `vencidosPorArchivo()` para `/fuentes`. Con varias fuentes, la fecha de revisión es la consulta **más antigua** (criterio conservador).
 - La antigüedad se aplica a las tarifas, los costos referenciales y por fórmula, el procedimiento de cada paso y sus alternativas, la licencia de la modalidad, los programas y el TUPA del distrito. `armarHojaDeRuta()` y `resumirDiagnostico()` reciben `hoy`; en el servidor es la fecha de Lima (`src/lib/fecha.ts`) y en los expedientes, la del navegador.
 - `meta.json` → `vigencia_verificacion_meses: 12` (obligatorio en `MetaSchema`).
