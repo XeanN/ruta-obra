@@ -32,6 +32,8 @@ import {
   ZonaEspecialSchema,
 } from "@/domain/schemas";
 import type { BaseExpedientes } from "@/domain/analisis";
+import type { BaseResumen } from "@/domain/diagnostico";
+import type { BaseAntiguedad } from "@/domain/freshness";
 import type { BaseHojaDeRuta } from "@/domain/roadmap";
 import type { BaseReglas } from "@/domain/rules-engine";
 
@@ -109,6 +111,7 @@ export function createKnowledgeRepo(raw: unknown) {
     fuentes: k.fuentes,
     tarifas: k.tarifas,
     distritos: k.distritos,
+    vigenciaMeses: k.meta.vigencia_verificacion_meses,
   };
 
   const baseExpedientes: BaseExpedientes = {
@@ -118,11 +121,29 @@ export function createKnowledgeRepo(raw: unknown) {
     versionDatos: k.meta.version_datos,
   };
 
+  const baseResumen: BaseResumen = {
+    ...baseReglas,
+    programas: k.programas,
+    fuentes: k.fuentes,
+    vigenciaMeses: k.meta.vigencia_verificacion_meses,
+  };
+
+  const baseAntiguedad: BaseAntiguedad = {
+    fuentes: k.fuentes,
+    procedimientos: k.procedimientos,
+    tarifas: k.tarifas,
+    programas: k.programas,
+    zonas: k.zonas,
+    distritos: k.distritos,
+  };
+
   return {
     meta: k.meta,
     baseReglas,
     baseHojaDeRuta,
     baseExpedientes,
+    baseResumen,
+    baseAntiguedad,
     getFuentes: () => k.fuentes,
     getNormas: () => k.normas,
     getEtapas: () => etapasOrdenadas,

@@ -15,6 +15,7 @@
     "desactualizado": "Dato oficial de una versión anterior del TUPA o norma; confirmar vigencia.",
     "por_verificar": "Campo previsto pero sin dato confirmado. No mostrar como cierto al usuario."
   },
+  "vigencia_verificacion_meses": 12,
   "vigilancia": {
     "dias_sin_revision": 180
   },

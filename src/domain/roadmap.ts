@@ -4,6 +4,11 @@
 // Regla de montos (CLAUDE.md, regla 5): tarifa del distrito (ubigeo) > costo_referencial
 // del procedimiento > "Consultar TUPA". Nunca se inventa un monto, y un monto sin fuente
 // no se muestra como monto.
+//
+// Antigüedad (Fase 9): cada monto y cada procedimiento llevan su estado efectivo; un dato
+// verificado cuya fuente se consultó hace más de `vigenciaMeses` se muestra como
+// "desactualizado". Por eso la hoja depende de "hoy", que entra como parámetro.
+import { conEstadoEfectivo, type Antiguedad, type Vigencia } from "./freshness";
 import type { Diagnostico } from "./rules-engine";
 import type {
   Distrito,
@@ -26,6 +31,8 @@ export interface BaseHojaDeRuta {
   fuentes: readonly Fuente[];
   tarifas: readonly Tarifa[];
   distritos: readonly Distrito[];
+  /** meta.vigencia_verificacion_meses: antigüedad máxima de un dato verificado. */
+  vigenciaMeses: number;
 }
 
 /** Dónde se tramita: la institución, o la municipalidad concreta si es de nivel distrital. */
@@ -35,7 +42,7 @@ export interface EntidadPaso {
   canal: string | null;
 }
 
-export interface VarianteTarifa {
+export interface VarianteTarifa extends Antiguedad {
   variante: string;
   codigo_tupa: string | null;
   monto: number | null;
@@ -64,19 +71,30 @@ export type CostoPaso =
       monto: number;
       nota: string | null;
       estado_verificacion: EstadoVerificacion;
+      antiguedad_meses: number | null;
       fuentes: Fuente[];
     }
-  | { tipo: "formula"; formula: string; nota: string | null; estado_verificacion: EstadoVerificacion; fuentes: Fuente[] }
+  | {
+      tipo: "formula";
+      formula: string;
+      nota: string | null;
+      estado_verificacion: EstadoVerificacion;
+      antiguedad_meses: number | null;
+      fuentes: Fuente[];
+    }
   | { tipo: "honorarios_libres"; nota: string | null }
   | { tipo: "consultar_tupa"; nota: string | null };
 
+/** Procedimiento con su estado efectivo según la antigüedad de sus fuentes. */
+export type ProcedimientoRuta = Procedimiento & Antiguedad;
+
 export interface AlternativaPaso {
-  procedimiento: Procedimiento;
+  procedimiento: ProcedimientoRuta;
   costo: CostoPaso;
 }
 
 export interface PasoRuta {
-  procedimiento: Procedimiento;
+  procedimiento: ProcedimientoRuta;
   institucion: Institucion | undefined;
   entidad: EntidadPaso | undefined;
   opcional: boolean;
@@ -128,9 +146,11 @@ function resolver<T>(ids: readonly string[], mapa: Map<string, T>): T[] {
 export function costoDePaso(
   proc: Procedimiento,
   ubigeo: string | null,
-  base: Pick<BaseHojaDeRuta, "tarifas" | "fuentes">,
+  base: Pick<BaseHojaDeRuta, "tarifas" | "fuentes" | "vigenciaMeses">,
+  hoy: string,
 ): CostoPaso {
   const fuentes = porId(base.fuentes);
+  const vigencia: Vigencia = { hoy, meses: base.vigenciaMeses };
 
   if (ubigeo) {
     const variantes: VarianteTarifa[] = base.tarifas
@@ -138,12 +158,14 @@ export function costoDePaso(
       .flatMap((t) => {
         const fuente = fuentes.get(t.fuente_id);
         if (!fuente) return []; // sin fuente no se muestra
+        const { estado_verificacion, antiguedad_meses } = conEstadoEfectivo(t, [fuente], vigencia);
         return [
           {
             variante: t.variante,
             codigo_tupa: t.codigo_tupa ?? null,
             monto: t.derecho_soles ?? null,
-            estado_verificacion: t.estado_verificacion,
+            estado_verificacion,
+            antiguedad_meses,
             fuente,
             nota: t.nota ?? null,
           },
@@ -164,6 +186,7 @@ export function costoDePaso(
   const c = proc.costo_referencial;
   const nota = c.nota ?? null;
   const fuentesProc = resolver(proc.fuentes, fuentes);
+  const { estado_verificacion, antiguedad_meses } = conEstadoEfectivo(proc, fuentesProc, vigencia);
   switch (c.tipo) {
     case "fijo":
     case "gratuito": {
@@ -174,7 +197,8 @@ export function costoDePaso(
         clase: c.tipo,
         monto,
         nota,
-        estado_verificacion: proc.estado_verificacion,
+        estado_verificacion,
+        antiguedad_meses,
         fuentes: fuentesProc,
       };
     }
@@ -184,7 +208,8 @@ export function costoDePaso(
         tipo: "formula",
         formula: c.formula,
         nota,
-        estado_verificacion: proc.estado_verificacion,
+        estado_verificacion,
+        antiguedad_meses,
         fuentes: fuentesProc,
       };
     case "honorarios_libres":
@@ -247,6 +272,7 @@ export function armarHojaDeRuta(
   diagnostico: Diagnostico,
   ubigeo: string | null,
   base: BaseHojaDeRuta,
+  hoy: string,
 ): HojaDeRuta {
   const procs = porId(base.procedimientos);
   const instituciones = porId(base.instituciones);
@@ -255,6 +281,9 @@ export function armarHojaDeRuta(
   const fuentes = porId(base.fuentes);
   const etapas = [...base.etapas].sort((a, b) => a.orden - b.orden);
   const distrito = ubigeo ? base.distritos.find((d) => d.ubigeo === ubigeo) : undefined;
+  const vigencia: Vigencia = { hoy, meses: base.vigenciaMeses };
+  const conEstado = (proc: Procedimiento): ProcedimientoRuta =>
+    conEstadoEfectivo(proc, resolver(proc.fuentes, fuentes), vigencia);
 
   const etapaDePaso = new Map<PasoRuta, string>();
   const pasos = diagnostico.pasos.map((p): PasoRuta => {
@@ -262,13 +291,13 @@ export function armarHojaDeRuta(
     if (!proc) throw new Error(`Procedimiento inexistente: ${p.procedimiento_id}`);
     const institucion = proc.institucion_id ? instituciones.get(proc.institucion_id) : undefined;
     const paso: PasoRuta = {
-      procedimiento: proc,
+      procedimiento: conEstado(proc),
       institucion,
       entidad: entidadDePaso(institucion, distrito),
       opcional: p.opcional,
       regla_id: p.regla_id,
       plazo: { dias: proc.plazo_dias_habiles ?? null, nota: proc.plazo_nota ?? null },
-      costo: costoDePaso(proc, ubigeo, base),
+      costo: costoDePaso(proc, ubigeo, base, hoy),
       requisitos: resolver(proc.requisitos, documentos),
       resultados: resolver(proc.documentos_resultado, documentos),
       normas: resolver(proc.normas, normas),
@@ -276,7 +305,7 @@ export function armarHojaDeRuta(
       alternativas: p.alternativas
         .map((id) => procs.get(id))
         .filter((x): x is Procedimiento => x !== undefined)
-        .map((alt) => ({ procedimiento: alt, costo: costoDePaso(alt, ubigeo, base) })),
+        .map((alt) => ({ procedimiento: conEstado(alt), costo: costoDePaso(alt, ubigeo, base, hoy) })),
     };
     etapaDePaso.set(paso, p.etapa_id);
     return paso;

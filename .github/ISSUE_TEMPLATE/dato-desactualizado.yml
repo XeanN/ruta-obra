@@ -1,0 +1,58 @@
+name: Dato desactualizado
+description: Un monto, requisito o plazo de RutaObra no coincide con la fuente oficial vigente.
+title: "Dato desactualizado: <procedimiento> (<distrito>)"
+labels: ["vigilancia-datos"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Usa este formulario para pasar un reporte de usuario (formulario o correo de "¿Este dato cambió? Repórtalo") a un issue.
+        Nada cambia en `data/` hasta que alguien lo confirme en la fuente oficial y lo corrija con un PR `data:` (ver "Prompts de mantenimiento" en `prompts/fases.md`).
+        No copies datos personales de quien reportó.
+  - type: input
+    id: procedimiento
+    attributes:
+      label: Procedimiento (id)
+      placeholder: P-MUN-LIC-B
+    validations:
+      required: true
+  - type: input
+    id: ubigeo
+    attributes:
+      label: Distrito (ubigeo)
+      description: Vacío si el dato no depende del distrito.
+      placeholder: "150108"
+  - type: input
+    id: variante
+    attributes:
+      label: Variante de la tarifa
+      placeholder: general
+  - type: input
+    id: monto
+    attributes:
+      label: Monto o dato mostrado en RutaObra
+      placeholder: S/ 1,234.50
+  - type: input
+    id: pagina
+    attributes:
+      label: Página donde se vio
+      placeholder: https://…/diagnostico/hoja-de-ruta?…
+  - type: textarea
+    id: que-vio
+    attributes:
+      label: ¿Qué vio quien reportó?
+      description: El valor vigente según el reporte y dónde lo vio (TUPA, ventanilla, portal).
+    validations:
+      required: true
+  - type: input
+    id: fuente
+    attributes:
+      label: Fuente oficial para confirmarlo
+      description: URL del TUPA, norma o portal. Si es un documento nuevo, se agrega a `data/fuentes.json`.
+  - type: checkboxes
+    id: revision
+    attributes:
+      label: Antes de cerrar
+      options:
+        - label: Confirmé el dato en la fuente oficial (si no, entra como `por_verificar`).
+        - label: Abrí el PR `data:` con el cambio (antes → después) y actualicé `fecha_consulta` de la fuente.

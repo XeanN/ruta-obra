@@ -2,9 +2,14 @@ import { ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { knowledgeRepo } from "@/data/knowledge-repo";
+import { conEstadoEfectivo, vencidosPorArchivo } from "@/domain/freshness";
 import type { EstadoVerificacion, Fuente } from "@/domain/types";
 import { EstadoVerificacionBadge } from "@/features/fuentes/estado-verificacion-badge";
+import { hoyEnLima } from "@/lib/fecha";
 import { formatFecha } from "@/lib/format";
+
+// La antigüedad depende de "hoy": la página se regenera una vez al día.
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Cómo sabemos esto",
@@ -48,6 +53,10 @@ export default function FuentesPage() {
   const fuentes = knowledgeRepo.getFuentes();
   const normas = knowledgeRepo.getNormas();
   const distritos = knowledgeRepo.getDistritos();
+  const meses = meta.vigencia_verificacion_meses;
+  const vigencia = { hoy: hoyEnLima(), meses };
+  const vencidos = vencidosPorArchivo(knowledgeRepo.baseAntiguedad, vigencia);
+  const totalVencidos = vencidos.reduce((n, a) => n + a.vencidos, 0);
 
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 space-y-6 px-4 py-8 sm:py-12">
@@ -91,6 +100,52 @@ export default function FuentesPage() {
 
       <Card>
         <CardHeader>
+          <CardTitle className="text-lg">Antigüedad de los datos</CardTitle>
+          <CardDescription>
+            Un dato verificado se muestra como &quot;Versión anterior&quot; si su fuente lleva más de{" "}
+            {meses} meses sin revisarse.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3 text-sm">
+          <p>
+            {totalVencidos === 0
+              ? "Todos los datos verificados se revisaron dentro de ese plazo."
+              : `${totalVencidos} ${totalVencidos === 1 ? "dato verificado está vencido" : "datos verificados están vencidos"} por antigüedad.`}
+          </p>
+          <table className="w-full text-left">
+            <caption className="sr-only">Datos vencidos por antigüedad, por archivo</caption>
+            <thead className="text-muted-foreground text-xs">
+              <tr>
+                <th scope="col" className="pb-1 font-medium">Archivo</th>
+                <th scope="col" className="pb-1 pl-3 text-right font-medium">Verificados</th>
+                <th scope="col" className="pb-1 pl-3 text-right font-medium">Vencidos</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              {vencidos.map((a) => (
+                <tr key={a.archivo}>
+                  <th scope="row" className="py-1.5 font-normal">
+                    <code className="text-xs">{a.archivo}</code>
+                  </th>
+                  <td className="py-1.5 text-right tabular-nums">{a.verificados}</td>
+                  <td
+                    className={
+                      a.vencidos > 0
+                        ? "py-1.5 text-right font-medium text-orange-800 tabular-nums dark:text-orange-300"
+                        : "py-1.5 text-right tabular-nums"
+                    }
+                  >
+                    {a.vencidos}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle className="text-lg">Cobertura por distrito</CardTitle>
           <CardDescription>Tasas cargadas desde el TUPA de cada municipalidad.</CardDescription>
         </CardHeader>
@@ -98,12 +153,16 @@ export default function FuentesPage() {
           <ul className="divide-y text-sm">
             {distritos.map((d) => {
               const fuente = d.tupa.fuente_id ? knowledgeRepo.getFuente(d.tupa.fuente_id) : undefined;
+              const estado = conEstadoEfectivo(d, fuente ? [fuente] : [], vigencia);
               return (
                 <li key={d.ubigeo} className="space-y-1 py-3 first:pt-0 last:pb-0">
                   <p className="flex flex-wrap items-center gap-2">
                     <span className="font-medium">{d.nombre}</span>
                     {d.tupa.anio && <span className="text-muted-foreground">TUPA {d.tupa.anio}</span>}
-                    <EstadoVerificacionBadge estado={d.estado_verificacion} />
+                    <EstadoVerificacionBadge
+                      estado={estado.estado_verificacion}
+                      antiguedadMeses={estado.antiguedad_meses}
+                    />
                   </p>
                   {d.tupa.nota && <p className="text-muted-foreground">{d.tupa.nota}</p>}
                   {fuente && <EnlaceExterno href={fuente.url}>{fuente.titulo}</EnlaceExterno>}
@@ -151,7 +210,7 @@ export default function FuentesPage() {
                   <li key={f.id} className="space-y-0.5 py-2.5 first:pt-0 last:pb-0">
                     <EnlaceExterno href={f.url}>{f.titulo}</EnlaceExterno>
                     <p className="text-muted-foreground text-xs">
-                      Consultada el {formatFecha(f.fecha_consulta)}
+                      Revisado el {formatFecha(f.fecha_consulta)}
                     </p>
                   </li>
                 ))}

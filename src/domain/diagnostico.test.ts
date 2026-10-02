@@ -22,10 +22,9 @@ const pregunta = (id: string): Pregunta => {
   if (!p) throw new Error(id);
   return p;
 };
-const base: BaseResumen = {
-  ...knowledgeRepo.baseReglas,
-  programas: knowledgeRepo.getProgramas(),
-};
+const base: BaseResumen = knowledgeRepo.baseResumen;
+/** Fecha fija: las fuentes de data/ se consultaron en 2026-09, dentro del umbral de 12 meses. */
+const HOY = "2026-10-01";
 const casoAngel = casos.find((c) => c.id === "caso-angel")!;
 
 describe("preguntas visibles (mostrar_si)", () => {
@@ -144,7 +143,7 @@ describe("URL", () => {
 
 describe("resumirDiagnostico", () => {
   it("caso-angel: modalidad B explicada con la licencia B y alertas por nivel", () => {
-    const res = resumirDiagnostico(casoAngel.respuestas, base);
+    const res = resumirDiagnostico(casoAngel.respuestas, base, HOY);
     expect(res.modalidad?.modalidad).toBe("B");
     expect(res.modalidad?.regla.id).toBe("R-MOD-B");
     expect(res.modalidad?.licencia?.id).toBe("P-MUN-LIC-B");
@@ -159,13 +158,13 @@ describe("resumirDiagnostico", () => {
 
   it("programas aplicables se resuelven a su ficha", () => {
     const techo = casos.find((c) => c.id === "post-2018-techo-propio")!;
-    const res = resumirDiagnostico(techo.respuestas, base);
+    const res = resumirDiagnostico(techo.respuestas, base, HOY);
     expect(res.programas.map((p) => p.id)).toContain("PR-TP-CSP");
     expect(res.alertasPorNivel[0]?.nivel).toBe("critica");
   });
 
   it("sin modalidad cuando ninguna regla cumple", () => {
-    const res = resumirDiagnostico({}, { ...base, reglas: base.reglas.filter((r) => r.tipo !== "modalidad") });
+    const res = resumirDiagnostico({}, { ...base, reglas: base.reglas.filter((r) => r.tipo !== "modalidad") }, HOY);
     expect(res.modalidad).toBeNull();
   });
 
@@ -173,9 +172,29 @@ describe("resumirDiagnostico", () => {
     const res = resumirDiagnostico(casoAngel.respuestas, {
       ...base,
       reglas: [{ id: "PG-X", tipo: "programa", si: { todas: [] }, programa_id: "PR-NO-EXISTE" }],
-    });
+    }, HOY);
     expect(res.diagnostico.programas).toEqual(["PR-NO-EXISTE"]);
     expect(res.programas).toEqual([]);
+  });
+});
+
+describe("resumirDiagnostico: antigüedad (Fase 9)", () => {
+  it("la licencia verificada pasa a Versión anterior cuando su fuente vence", () => {
+    const hoy = resumirDiagnostico(casoAngel.respuestas, base, HOY);
+    expect(hoy.modalidad?.licencia?.estado_verificacion).toBe("verificado");
+    expect(hoy.modalidad?.licencia?.antiguedad_meses).toBeNull();
+
+    const despues = resumirDiagnostico(casoAngel.respuestas, base, "2030-01-01");
+    expect(despues.modalidad?.licencia?.estado_verificacion).toBe("desactualizado");
+    expect(despues.modalidad?.licencia?.antiguedad_meses).toBe(base.vigenciaMeses);
+  });
+
+  it("programas: solo se degradan los verificados", () => {
+    const techo = casos.find((c) => c.id === "post-2018-techo-propio")!;
+    const res = resumirDiagnostico(techo.respuestas, base, "2030-01-01");
+    const tp = res.programas.find((p) => p.id === "PR-TP-CSP");
+    expect(tp?.estado_verificacion).toBe("fuente_secundaria");
+    expect(tp?.antiguedad_meses).toBeNull();
   });
 });
 

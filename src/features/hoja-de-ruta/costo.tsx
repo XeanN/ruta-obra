@@ -1,6 +1,8 @@
+import { textoAntiguedad } from "@/domain/freshness";
 import { estadoDeCosto, type CostoPaso, type Rango } from "@/domain/roadmap";
 import { EstadoVerificacionBadge } from "@/features/fuentes/estado-verificacion-badge";
 import { FuentesLinks } from "@/features/fuentes/fuentes-links";
+import { ReportarDato, type ContextoReporte } from "@/features/fuentes/reportar-dato";
 import { formatSoles, textoVariante } from "@/lib/format";
 
 export function textoRango(r: Rango): string {
@@ -30,7 +32,16 @@ export function CostoBadge({ costo }: { costo: CostoPaso }) {
   return estado ? <EstadoVerificacionBadge estado={estado} ocultarSiVerificado /> : null;
 }
 
-export function CostoDetalle({ costo }: { costo: CostoPaso }) {
+export function CostoDetalle({
+  costo,
+  procedimientoId,
+  reporte,
+}: {
+  costo: CostoPaso;
+  procedimientoId: string;
+  /** Si se indica, cada monto del distrito lleva su enlace para reportarlo. */
+  reporte?: ContextoReporte;
+}) {
   switch (costo.tipo) {
     case "tarifa_distrital":
       return (
@@ -50,8 +61,23 @@ export function CostoDetalle({ costo }: { costo: CostoPaso }) {
                     <EstadoVerificacionBadge estado={v.estado_verificacion} />
                   </span>
                 </div>
+                {v.antiguedad_meses !== null && (
+                  <p className="text-muted-foreground text-xs">{textoAntiguedad(v.antiguedad_meses)}.</p>
+                )}
                 {v.nota && <p className="text-muted-foreground text-xs">{v.nota}</p>}
                 <FuentesLinks fuentes={[v.fuente]} />
+                {reporte && (
+                  <ReportarDato
+                    texto="¿Este monto cambió? Repórtalo"
+                    dato={{
+                      procedimientoId,
+                      ubigeo: reporte.ubigeo,
+                      variante: v.variante,
+                      montoMostrado: v.monto !== null ? formatSoles(v.monto) : "Por confirmar",
+                      pagina: reporte.pagina,
+                    }}
+                  />
+                )}
               </li>
             ))}
           </ul>
@@ -69,7 +95,7 @@ export function CostoDetalle({ costo }: { costo: CostoPaso }) {
             <span className="font-medium tabular-nums">
               {costo.clase === "gratuito" ? "Gratuito" : formatSoles(costo.monto)}
             </span>
-            <EstadoVerificacionBadge estado={costo.estado_verificacion} />
+            <EstadoVerificacionBadge estado={costo.estado_verificacion} antiguedadMeses={costo.antiguedad_meses} />
           </p>
           {costo.nota && <p className="text-muted-foreground text-xs">{costo.nota}</p>}
           <FuentesLinks fuentes={costo.fuentes} />
@@ -80,7 +106,7 @@ export function CostoDetalle({ costo }: { costo: CostoPaso }) {
         <div className="space-y-1">
           <p className="flex flex-wrap items-center gap-2">
             <span>{costo.formula}</span>
-            <EstadoVerificacionBadge estado={costo.estado_verificacion} />
+            <EstadoVerificacionBadge estado={costo.estado_verificacion} antiguedadMeses={costo.antiguedad_meses} />
           </p>
           {costo.nota && <p className="text-muted-foreground text-xs">{costo.nota}</p>}
           <FuentesLinks fuentes={costo.fuentes} />
