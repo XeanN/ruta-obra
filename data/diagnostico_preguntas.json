@@ -110,6 +110,18 @@
         "etiqueta": "Chorrillos"
       },
       {
+        "valor": "150114",
+        "etiqueta": "La Molina"
+      },
+      {
+        "valor": "150119",
+        "etiqueta": "Lurín"
+      },
+      {
+        "valor": "150133",
+        "etiqueta": "San Juan de Miraflores"
+      },
+      {
         "valor": "150140",
         "etiqueta": "Santiago de Surco"
       },
@@ -118,8 +130,16 @@
         "etiqueta": "Villa El Salvador"
       },
       {
-        "valor": "150114",
-        "etiqueta": "La Molina"
+        "valor": "150143",
+        "etiqueta": "Villa María del Triunfo"
+      },
+      {
+        "valor": "150501",
+        "etiqueta": "San Vicente de Cañete (provincia de Cañete)"
+      },
+      {
+        "valor": "150509",
+        "etiqueta": "Mala (provincia de Cañete)"
       },
       {
         "valor": "otro",

@@ -89,5 +89,47 @@
     "numero": "Ordenanza 682-MSS",
     "fuente_id": "F-SURCO-REG",
     "tema": "regularización"
+  },
+  {
+    "id": "N-ORD-488-2024-MDCH",
+    "nombre": "TUPA de la Municipalidad de Chorrillos",
+    "numero": "Ordenanza 488-2024-MDCH",
+    "fuente_id": "F-CHORR-TUPA24",
+    "tema": "tupa"
+  },
+  {
+    "id": "N-ORD-399-2020-ML",
+    "nombre": "Procedimientos de edificación y habilitación del TUPA de Lurín",
+    "numero": "Ordenanza 399-2020/ML",
+    "fuente_id": "F-LURIN-TUPA20",
+    "tema": "tupa"
+  },
+  {
+    "id": "N-ORD-336-MVMT",
+    "nombre": "TUPA de la Municipalidad de Villa María del Triunfo",
+    "numero": "Ordenanza 336-MVMT",
+    "fuente_id": "F-VMT-TUPA22",
+    "tema": "tupa"
+  },
+  {
+    "id": "N-ORD-565-MDSJM",
+    "nombre": "Derechos de tramitación del TUPA de San Juan de Miraflores",
+    "numero": "Ordenanza 565/MDSJM",
+    "fuente_id": "F-SJM-TUPA26",
+    "tema": "tupa"
+  },
+  {
+    "id": "N-ORD-09-2024-MPC",
+    "nombre": "TUPA de la Municipalidad Provincial de Cañete",
+    "numero": "Ordenanza 09-2024-MPC",
+    "fuente_id": "F-CANETE-TUPA24",
+    "tema": "tupa"
+  },
+  {
+    "id": "N-ORD-019-2019-MDM",
+    "nombre": "TUPA de la Municipalidad Distrital de Mala",
+    "numero": "Ordenanza 019-2019-MDM",
+    "fuente_id": "F-MALA-TUPA23",
+    "tema": "tupa"
   }
 ]

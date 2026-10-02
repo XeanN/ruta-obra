@@ -1,14 +1,14 @@
 {
   "proyecto": "RutaObra",
-  "version_datos": "0.1.0",
-  "fecha_corte": "2026-09-30",
+  "version_datos": "0.2.0",
+  "fecha_corte": "2026-10-02",
   "moneda": "PEN",
   "uit": {
     "anio": 2026,
     "valor": 5500,
     "norma_id": "N-DS-301-2025-EF"
   },
-  "alcance": "Edificaciones privadas en Lima Metropolitana. Capa nacional + distritos Chorrillos, Santiago de Surco y Villa El Salvador (La Molina como referencia de tasas completas).",
+  "alcance": "Edificaciones privadas en Lima Metropolitana y la provincia de Cañete. Capa nacional + distritos Chorrillos, Santiago de Surco, Villa El Salvador, Lurín, San Juan de Miraflores, Villa María del Triunfo, San Vicente de Cañete y Mala (La Molina como referencia de tasas completas).",
   "estados_verificacion": {
     "verificado": "Dato leído en la fuente oficial citada.",
     "fuente_secundaria": "Dato de una fuente no oficial (medio, estudio, consultora); confirmar en la oficial.",

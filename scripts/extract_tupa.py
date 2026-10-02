@@ -71,8 +71,9 @@ EXCLUIR = (
     "condiciones de seguridad",
 )
 
-# Encabezado con el que empieza cada procedimiento en los TUPA del formato del SUT.
-INICIO_PROCEDIMIENTO = "denominacion del procedimiento"
+# Encabezados con los que empieza cada procedimiento (o servicio prestado en exclusividad, como el
+# certificado de parámetros) en los TUPA del formato del SUT.
+INICIO_PROCEDIMIENTO = re.compile(r"denominacion del (?:procedimiento|servicio)")
 
 NUEVA, CAMBIO, IGUAL = "NUEVA", "CAMBIÓ", "IGUAL"
 
@@ -176,7 +177,7 @@ def bloques(paginas: list[Pagina]) -> list[list[Pagina]]:
     grupos: list[list[Pagina]] = []
     abierto = False
     for p in paginas:
-        inicio = INICIO_PROCEDIMIENTO in _clave(p.texto)
+        inicio = INICIO_PROCEDIMIENTO.search(_clave(p.texto)) is not None
         if inicio or not abierto:
             grupos.append([p])
             abierto = inicio
@@ -188,11 +189,11 @@ def bloques(paginas: list[Pagina]) -> list[list[Pagina]]:
 def titulo_procedimiento(texto: str) -> str | None:
     """Nombre del procedimiento (sin tildes, en minúsculas) en una página del formato del SUT."""
     clave = _clave(texto)
-    i = clave.find(INICIO_PROCEDIMIENTO)
-    if i < 0:
+    m = INICIO_PROCEDIMIENTO.search(clave)
+    if m is None:
         return None
-    j = clave.find("codigo:", i)
-    return clave[i + len(INICIO_PROCEDIMIENTO) : j if j > 0 else i + 400]
+    j = clave.find("codigo:", m.end())
+    return clave[m.end() : j if j > 0 else m.end() + 400]
 
 
 def es_de_obra(titulo: str) -> bool:

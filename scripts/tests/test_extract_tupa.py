@@ -118,6 +118,12 @@ def test_seleccion_por_procedimiento_formato_sut():
     assert [[p.numero for p in g] for g in et.seleccionar(paginas)] == [[4, 5], [6]]
 
 
+def test_servicios_prestados_en_exclusividad_tambien_son_bloques():
+    servicio = et.Pagina(1, 'Denominación del Servicio "Certificado de Parámetros Urbanísticos y Edificatorios" Código: SE1', "texto")
+    assert et.titulo_procedimiento(servicio.texto).strip(' "') == "certificado de parametros urbanisticos y edificatorios"
+    assert [[p.numero for p in g] for g in et.seleccionar([servicio])] == [[1]]
+
+
 def test_titulo_de_obra_aunque_mencione_espectaculos():
     assert et.es_de_obra("licencia de edificacion modalidad c - para locales de espectaculos")
     assert not et.es_de_obra("licencia de funcionamiento para edificaciones de riesgo alto")

@@ -5,17 +5,17 @@
     "provincia": "Lima",
     "institucion_local": "Municipalidad Distrital de Chorrillos",
     "tupa": {
-      "norma_id": "N-ORD-409-2021-MDCH",
-      "anio": 2021,
-      "estandarizado_ds146": null,
-      "fuente_id": "F-CHORR-TUPA21",
-      "nota": "El PDF publicado no expone montos legibles de edificación; confirmar TUPA vigente y su adecuación al D.S. 146-2023-PCM."
+      "norma_id": "N-ORD-488-2024-MDCH",
+      "anio": 2024,
+      "estandarizado_ds146": true,
+      "fuente_id": "F-CHORR-TUPA24",
+      "nota": "TUPA aprobado por Ord. 488-2024-MDCH (El Peruano, 30-11-2024), adecuado al D.S. 146-2023-PCM. Montos extraídos del PDF: por confirmar."
     },
     "canal": "Presencial (mesa de partes); canal virtual por confirmar",
     "zonas_especiales": [
       "Z-PANTANOS-VILLA"
     ],
-    "estado_verificacion": "desactualizado"
+    "estado_verificacion": "por_verificar"
   },
   {
     "ubigeo": "150140",
@@ -26,12 +26,12 @@
       "norma_id": "N-ORD-704-MSS",
       "anio": 2024,
       "estandarizado_ds146": true,
-      "fuente_id": "F-SURCO-TUPA24",
-      "nota": "TUPA publicado el 27-09-2024 (220 procedimientos). Montos de licencias tomados de la versión 2022: confirmar."
+      "fuente_id": "F-SURCO-TUPA24-PDF",
+      "nota": "TUPA aprobado por Ord. 704-MSS (27-09-2024), adecuado al D.S. 146-2023-PCM. Montos 2024 extraídos del PDF: por confirmar."
     },
     "canal": "Presencial con planos en digital; confirmar mesa de partes virtual",
     "zonas_especiales": [],
-    "estado_verificacion": "fuente_secundaria"
+    "estado_verificacion": "por_verificar"
   },
   {
     "ubigeo": "150142",
@@ -64,5 +64,85 @@
     "canal": "Presencial; fichas por procedimiento publicadas",
     "zonas_especiales": [],
     "estado_verificacion": "verificado"
+  },
+  {
+    "ubigeo": "150119",
+    "nombre": "Lurín",
+    "provincia": "Lima",
+    "institucion_local": "Municipalidad Distrital de Lurín",
+    "tupa": {
+      "norma_id": "N-ORD-399-2020-ML",
+      "anio": 2020,
+      "estandarizado_ds146": false,
+      "fuente_id": "F-LURIN-TUPA20",
+      "nota": "Edificaciones según Ord. 399-2020/ML (ratificada por A.C. 435-MML, El Peruano 09-01-2021), anterior al D.S. 146-2023-PCM: confirmar si hay un TUPA más reciente."
+    },
+    "canal": "Por confirmar",
+    "zonas_especiales": [],
+    "estado_verificacion": "por_verificar"
+  },
+  {
+    "ubigeo": "150133",
+    "nombre": "San Juan de Miraflores",
+    "provincia": "Lima",
+    "institucion_local": "Municipalidad Distrital de San Juan de Miraflores",
+    "tupa": {
+      "norma_id": "N-ORD-565-MDSJM",
+      "anio": 2026,
+      "estandarizado_ds146": null,
+      "fuente_id": "F-SJM-TUPA26",
+      "nota": "Derechos aprobados por Ord. 565/MDSJM (El Peruano, 17-01-2026). Montos por extraer del anexo (publicado en el portal del SAT)."
+    },
+    "canal": "Por confirmar",
+    "zonas_especiales": [],
+    "estado_verificacion": "por_verificar"
+  },
+  {
+    "ubigeo": "150143",
+    "nombre": "Villa María del Triunfo",
+    "provincia": "Lima",
+    "institucion_local": "Municipalidad Distrital de Villa María del Triunfo",
+    "tupa": {
+      "norma_id": "N-ORD-336-MVMT",
+      "anio": 2022,
+      "estandarizado_ds146": false,
+      "fuente_id": "F-VMT-TUPA22",
+      "nota": "TUPA Ord. 336-MVMT (El Peruano, 17-11-2022); modificado por D.A. 04-2023 y D.A. 01-2024-MDVMT (adecuación al D.S. 146-2023-PCM): confirmar montos vigentes."
+    },
+    "canal": "Por confirmar",
+    "zonas_especiales": [],
+    "estado_verificacion": "por_verificar"
+  },
+  {
+    "ubigeo": "150501",
+    "nombre": "San Vicente de Cañete",
+    "provincia": "Cañete",
+    "institucion_local": "Municipalidad Provincial de Cañete",
+    "tupa": {
+      "norma_id": "N-ORD-09-2024-MPC",
+      "anio": 2024,
+      "estandarizado_ds146": null,
+      "fuente_id": "F-CANETE-TUPA24",
+      "nota": "TUPA actualizado por Ord. 09-2024-MPC (El Peruano, 16-08-2024). PDF escaneado: montos leídos por OCR, revisar con cuidado. En la provincia de Cañete las tasas no pasan por la ratificación de la MML."
+    },
+    "canal": "Por confirmar",
+    "zonas_especiales": [],
+    "estado_verificacion": "por_verificar"
+  },
+  {
+    "ubigeo": "150509",
+    "nombre": "Mala",
+    "provincia": "Cañete",
+    "institucion_local": "Municipalidad Distrital de Mala",
+    "tupa": {
+      "norma_id": "N-ORD-019-2019-MDM",
+      "anio": 2023,
+      "estandarizado_ds146": false,
+      "fuente_id": "F-MALA-TUPA23",
+      "nota": "TUPA publicado en gob.pe (2023), aprobado por Ord. 019-2019-MDM y modificatorias. Montos extraídos del PDF: por confirmar."
+    },
+    "canal": "Por confirmar",
+    "zonas_especiales": [],
+    "estado_verificacion": "por_verificar"
   }
 ]

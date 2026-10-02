@@ -23,6 +23,15 @@ describe("formatos", () => {
     expect(textoVariante("multifamiliar_mas_5_pisos")).toBe("Multifamiliar más de 5 pisos");
     expect(textoVariante("demas_edificaciones")).toBe("Demás edificaciones");
     expect(textoVariante("educacion_salud_hospedaje")).toBe("Educación salud hospedaje");
+    expect(textoVariante("CD")).toBe("Modalidad C o D");
+    expect(textoVariante("B_con_variaciones")).toBe("Modalidad B, con variaciones");
+    expect(textoVariante("antes_licencia_C")).toBe("Antes de emitida la licencia, modalidad C");
+    expect(textoVariante("no_sustancial_B_ru")).toBe("No sustancial, modalidad B (revisores urbanos)");
+    expect(textoVariante("sustancial_CD")).toBe("Sustancial, modalidad C o D");
+    expect(textoVariante("espectaculos_deportivos")).toBe("Espectáculos deportivos");
+    expect(textoVariante("ampliacion_remodelacion_demolicion_parcial")).toBe(
+      "Ampliación remodelación demolición parcial",
+    );
   });
 
   it("profesionales legibles", () => {
